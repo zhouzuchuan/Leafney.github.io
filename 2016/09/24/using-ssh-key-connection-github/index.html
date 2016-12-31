@@ -1,0 +1,703 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="GitHub,SSH," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用SSH密钥连接Github">
+<meta property="og:url" content="http://yoursite.com/2016/09/24/using-ssh-key-connection-github/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！">
+<meta property="og:updated_time" content="2016-12-31T08:34:22.870Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用SSH密钥连接Github">
+<meta name="twitter:description" content="每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/24/using-ssh-key-connection-github/"/>
+
+  <title> 使用SSH密钥连接Github | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用SSH密钥连接Github
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-24T21:10:50+08:00" content="2016-09-24">
+              2016-09-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/24/using-ssh-key-connection-github/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/24/using-ssh-key-connection-github/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！</p>
+<p>下面我主要介绍在Windows下如何通过 SSH密钥 来连接GitHub。</p>
+<h4 id="第一步-查看是否已经存在SSH秘钥-keys"><a href="#第一步-查看是否已经存在SSH秘钥-keys" class="headerlink" title="第一步 查看是否已经存在SSH秘钥(keys)"></a>第一步 查看是否已经存在SSH秘钥(keys)</h4><p>右键打开Git Bash,并运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cd ~/.ssh</div></pre></td></tr></table></figure>
+<p>如果提示如下信息为 <code>No such file or directory</code>，则说明不存在SSH秘钥，如果已经存在，可以直接进入<strong>第三步</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd ~/.ssh</div><div class="line">sh.exe&quot;: cd: /c/Users/Xue/.ssh: No such file or directory</div></pre></td></tr></table></figure>
+<p>如果无提示信息，进入 <code>.ssh</code> 目录执行 <code>ls</code> 命令，可查看本机已经存在的SSH的公钥和私钥。</p>
+<hr>
+<h4 id="第二步-创建新的SSH密钥-keys"><a href="#第二步-创建新的SSH密钥-keys" class="headerlink" title="第二步 创建新的SSH密钥(keys)"></a>第二步 创建新的SSH密钥(keys)</h4><p>输入如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd ~   		# 保证当前路径在 `~` 下，即 `C:/Users/用户名` 目录</div><div class="line">$ ssh-keygen -t rsa -C &quot;your_email@example.com&quot;   # 这将根据你提供的邮箱地址，创建一对密钥</div></pre></td></tr></table></figure>
+<p>提示信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t rsa -C &quot;your_email@example.com&quot;</div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file in which to save the key (/c/Users/用户名/.ssh/id_rsa):   # 直接回车，则将密钥按默认路径及文件名进行存储。此时也可以输入特定的文件名</div><div class="line">Created directory &apos;/c/Users/用户名/.ssh&apos;.</div><div class="line">Enter passphrase (empty for no passphrase):   # 根据提示，你需要输入密码和确认密码。可以不填，设置为空值，直接回车</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved in /c/Users/用户名/.ssh/id_rsa.</div><div class="line">Your public key has been saved in /c/Users/用户名/.ssh/id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">6d:40:da:xx:xx:xx:xx:b8:60:4a:bd:61:5f:c5:d6:db your_email@example.com</div><div class="line">The key&apos;s randomart image is:</div><div class="line">+--[ RSA 2048]----+</div><div class="line">|   .   .=oo.     |</div><div class="line">|  . * .=.*o .    |</div><div class="line">| . + =oo+..  o   |</div><div class="line">|  . ..o. o  . E  |</div><div class="line">|      . S o      |</div><div class="line">|         .       |</div><div class="line">|                 |</div><div class="line">|                 |</div><div class="line">|                 |</div><div class="line">+-----------------+</div></pre></td></tr></table></figure>
+<p>然后在目录 <code>~/.ssh</code> 下，就新创建了两个文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd ~/.ssh</div><div class="line">$ ls</div><div class="line">id_rsa  id_rsa.pub</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="第三步-在GitHub账户中添加你的公钥"><a href="#第三步-在GitHub账户中添加你的公钥" class="headerlink" title="第三步 在GitHub账户中添加你的公钥"></a>第三步 在GitHub账户中添加你的公钥</h4><p>执行如下命令，将公钥的内容复制到系统剪切板中(或直接打开该文件进行复制操作)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clip &lt; ~/.ssh/id_rsa.pub</div></pre></td></tr></table></figure>
+<p>登陆Github网站，选择 <code>Settings</code> –&gt; <code>SSH and GPG keys</code> 菜单，点击 <code>New SSH key</code> 按钮。<br>粘贴你的密钥到 <code>Key</code> 输入框中并设置 <code>Title</code> 信息，点击 <code>Add SSH key</code> 按钮完成。</p>
+<p>至此，添加完毕。</p>
+<hr>
+<h4 id="第四步-连接测试"><a href="#第四步-连接测试" class="headerlink" title="第四步 连接测试"></a>第四步 连接测试</h4><p>先保证本地 <code>Git</code> 已设置好git账户的 <code>用户名</code> 和 <code>邮箱</code> 信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.name &quot;your_username&quot;   # 设置用户名</div><div class="line">$ git config --global user.email &quot;your_email@example.com&quot;  # 设置邮箱地址</div></pre></td></tr></table></figure>
+<p>测试SSH keys 是否设置成功，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh -T git@github.com</div></pre></td></tr></table></figure>
+<p>提示信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ ssh -T git@github.com</div><div class="line">The authenticity of host &apos;github.com (192.30.253.113)&apos; can&apos;t be established.</div><div class="line">RSA key fingerprint is 16:27:xx:xx:xx:xx:xx:36:63:1b:56:4d:eb:df:a6:48.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes  # 确认你是否继续连接，输入yes</div><div class="line">Warning: Permanently added &apos;github.com,192.30.253.113&apos; (RSA) to the list of know</div><div class="line">n hosts.</div><div class="line">Hi xxx! You&apos;ve successfully authenticated, but GitHub does not provide shell</div><div class="line"> access.  #  出现这句话，说明设置成功</div></pre></td></tr></table></figure>
+<p>当提示如下信息，说明连通Github成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Hi xxx! You&apos;ve successfully authenticated, but GitHub does not provide shell</div><div class="line"> access.</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="第五步-将本地项目通过-SSH-push-到-GitHub"><a href="#第五步-将本地项目通过-SSH-push-到-GitHub" class="headerlink" title="第五步 将本地项目通过 SSH push 到 GitHub"></a>第五步 将本地项目通过 SSH push 到 GitHub</h4><p>在github新建一个仓库，如 <code>test_ssh</code> 。</p>
+<p>执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">## 创建目录</div><div class="line">$ mkdir test</div><div class="line">$ cd test</div><div class="line">## 初始化git仓库</div><div class="line">$ git init</div><div class="line">## 创建readme.md文件</div><div class="line">$ echo &quot;this is a test ssh keys&quot; &gt; README.md</div><div class="line">## 提交到本地</div><div class="line">## 提交当前目录下的所有文件</div><div class="line">$ git add .</div><div class="line">## 提交记录说明</div><div class="line">$ git commit -m &quot;add readme.md&quot;</div><div class="line">## 提交到github</div><div class="line">$ git remote add origin git@github.com:your_github_name/test_ssh.git</div><div class="line">$ git push -u origin master</div></pre></td></tr></table></figure>
+<p>刷新 <code>test_ssh</code> 仓库，就能看到提交的文件了。</p>
+<p>如果是本地已经存在的git项目，只需要执行以下命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">## 提交到github</div><div class="line">$ git remote add origin git@github.com:your_github_name/test_ssh.git</div><div class="line">$ git push -u origin master</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="相关参考文章"><a href="#相关参考文章" class="headerlink" title="相关参考文章"></a>相关参考文章</h4><ul>
+<li><a href="http://www.xuanfengge.com/using-ssh-key-link-github-photo-tour.html" target="_blank" rel="external">使用SSH密钥连接Github【图文教程】 - 轩枫阁 – 前端开发 | web前端技术博客</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GitHub/" rel="tag">#GitHub</a>
+          
+            <a href="/tags/SSH/" rel="tag">#SSH</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/24/use-github-to-build-hexo-static-blog/" rel="next" title="使用GitHub搭建Hexo静态博客">
+                <i class="fa fa-chevron-left"></i> 使用GitHub搭建Hexo静态博客
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/24/docker-and-flask-build-wechat-public-platform-first/" rel="prev" title="Docker+Flask搭建微信公众平台之一">
+                Docker+Flask搭建微信公众平台之一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/24/using-ssh-key-connection-github/"
+           data-title="使用SSH密钥连接Github" data-url="http://yoursite.com/2016/09/24/using-ssh-key-connection-github/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步-查看是否已经存在SSH秘钥-keys"><span class="nav-number">1.</span> <span class="nav-text">第一步 查看是否已经存在SSH秘钥(keys)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步-创建新的SSH密钥-keys"><span class="nav-number">2.</span> <span class="nav-text">第二步 创建新的SSH密钥(keys)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步-在GitHub账户中添加你的公钥"><span class="nav-number">3.</span> <span class="nav-text">第三步 在GitHub账户中添加你的公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四步-连接测试"><span class="nav-number">4.</span> <span class="nav-text">第四步 连接测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五步-将本地项目通过-SSH-push-到-GitHub"><span class="nav-number">5.</span> <span class="nav-text">第五步 将本地项目通过 SSH push 到 GitHub</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考文章"><span class="nav-number">6.</span> <span class="nav-text">相关参考文章</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

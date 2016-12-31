@@ -1,0 +1,766 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Gogs,Git Server,代码管理," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="目前为止最好的自搭建Git服务端项目-Gogs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统下使用Gogs搭建Git Service">
+<meta property="og:url" content="http://yoursite.com/2016/12/26/use-gogs-to-build-yourself-git-server/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="目前为止最好的自搭建Git服务端项目-Gogs">
+<meta property="og:updated_time" content="2016-12-31T08:34:22.870Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux系统下使用Gogs搭建Git Service">
+<meta name="twitter:description" content="目前为止最好的自搭建Git服务端项目-Gogs">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/12/26/use-gogs-to-build-yourself-git-server/"/>
+
+  <title> Linux系统下使用Gogs搭建Git Service | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux系统下使用Gogs搭建Git Service
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-26T20:18:53+08:00" content="2016-12-26">
+              2016-12-26
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/26/use-gogs-to-build-yourself-git-server/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/26/use-gogs-to-build-yourself-git-server/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="基本环境搭建"><a href="#基本环境搭建" class="headerlink" title="基本环境搭建"></a>基本环境搭建</h4><ul>
+<li>新建用户</li>
+</ul>
+<p>Gogs 默认以 <code>git</code> 用户运行（你应该也不会想一个能修改 <code>ssh</code> 配置的程序以 <code>root</code> 用户运行吧？）。<br>运行 <code>sudo adduser git</code> 新建好 <code>git</code> 用户并设置密码。</p>
+<p>然后 <code>su - git</code> 切换至 <code>git</code> 用户登录。</p>
+<p>具体操作如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo adduser git</div></pre></td></tr></table></figure>
+<p>根据提示信息，输入新账户 <code>git</code> 密码，其他用户信息直接敲回车即可。</p>
+<hr>
+<ul>
+<li>安装git</li>
+</ul>
+<p>因为新创建的用户 <code>git</code> 没有设置管理员权限，所以我们先在 <code>root</code> 账户或其他管理员账户下安装 <code>git</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install git</div><div class="line">$ git --version  //检查git是否安装成功</div></pre></td></tr></table></figure>
+<hr>
+<p>切换到新创建的git用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ su - git</div></pre></td></tr></table></figure>
+<p>进入用户git的根目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cd ~</div></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>下载解包</li>
+</ul>
+<p>我使用的是预编译的二进制安装包。需要从源码编译的话，请参考一般 Go 语言项目的编译。</p>
+<p>数据库采用 <code>Sqlite3</code> 数据库，如想使用<code>Mysql</code> 获取其他数据库，请参考官网的安装方法。</p>
+<p>创建gogs应用的解压目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ mkdir goapp</div><div class="line">$ cd goapp</div><div class="line">$ pwd</div><div class="line">/home/git/goapp</div></pre></td></tr></table></figure>
+<p>从 <a href="https://gogs.io/docs/installation/install_from_binary.html" target="_blank" rel="external">官网</a> 或从 <a href="https://github.com/gogits/gogs/tags" target="_blank" rel="external">GitHub Tags</a> 下载当前最新的版本 <code>v0.9.13</code> 版，<a href="https://dl.gogs.io/gogs_v0.9.13_linux_amd64.zip" target="_blank" rel="external">linux amd64</a> 并解压：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ wget https://dl.gogs.io/gogs_v0.9.13_linux_amd64.zip</div><div class="line">$ unzip gogs_v0.9.13_linux_amd64.zip</div><div class="line">$ ls</div><div class="line">gogs gogs_v0.9.13_linux_amd64.zip</div></pre></td></tr></table></figure>
+<p>进入 <code>gogs</code> 目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd gogs</div><div class="line">$ ls</div><div class="line">gogs LICENSE public README.md README_ZH.md scripts templates</div></pre></td></tr></table></figure>
+<p>创建自定义配置文件目录并修改文件夹权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ mkdir custom</div><div class="line">$ mkdir custom/conf</div><div class="line"></div><div class="line">$ sudo chmod -R 777 custom</div></pre></td></tr></table></figure>
+<p>在当前 <code>git</code> 用户下，如果提示没有 <code>sudo</code> 权限，可以先临时更新为其他用户，更改目录读写权限，改完后再切换回 <code>git</code> 用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ su root</div><div class="line">$ sudo chmod -R 777 custom</div><div class="line">$ su - git</div></pre></td></tr></table></figure>
+<p>创建日志目录并修改文件夹权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ mkdir log</div><div class="line"></div><div class="line">$ sudo chmod -R 777 log</div></pre></td></tr></table></figure>
+<hr>
+<ul>
+<li>启动gogs:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ pwd</div><div class="line">/home/git/goapp/gogs</div><div class="line"></div><div class="line">$ ./gogs web</div></pre></td></tr></table></figure>
+<p>执行命令后，出现 <code>Listen:http://0.0.0.0:3000</code> 提示信息，表示 <code>gogs</code> 启动成功。</p>
+<p>然后访问 <code>http://服务器IP:3000/</code> 来进行安装，填写好表单之后提交就可以了。默认第一个创建的账户为管理员账户。</p>
+<p>表单中指定了 <code>Database Settings</code> – <code>Path</code> 为数据库的存放目录。<code>Application General Settings</code> – <code>Repository Root Path</code> 为仓库文件的存放目录。</p>
+<hr>
+<h4 id="配置Nginx"><a href="#配置Nginx" class="headerlink" title="配置Nginx"></a>配置Nginx</h4><p>在管理员账户下执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install nginx</div></pre></td></tr></table></figure>
+<p>在 <code>/etc/nginx/conf.d</code> 目录下添加 <code>gogsweb.conf</code> 文件，填入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">server &#123;		</div><div class="line">	server_name git.****.com;</div><div class="line">	listen 80;</div><div class="line"></div><div class="line">	location / &#123;</div><div class="line">		proxy_pass http://127.0.0.1:3000/;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后通过 <code>sudo service nginx restart</code> 重启 <code>nginx</code> 服务。</p>
+<hr>
+<h4 id="配置-supervisor-启动"><a href="#配置-supervisor-启动" class="headerlink" title="配置 supervisor 启动"></a>配置 supervisor 启动</h4><p>在管理员账户下执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install supervisor</div></pre></td></tr></table></figure>
+<p>在 <code>/etc/supervisor/conf.d</code> 目录下添加 <code>gogsweb.conf</code> 文件，填入如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[program:gogs]</div><div class="line">directory=/home/git/goapp/gogs/</div><div class="line">command=/home/git/goapp/gogs/gogs web</div><div class="line">autostart=true</div><div class="line">autorestart=true</div><div class="line">startsecs=10</div><div class="line">stdout_logfile=/home/git/goapp/gogs/log/stdout.log</div><div class="line">stdout_logfile_maxbytes=1MB</div><div class="line">stdout_logfile_backups=10</div><div class="line">stdout_capture_maxbytes=1MB</div><div class="line">stderr_logfile=/home/git/goapp/gogs/log/stderr.log</div><div class="line">stderr_logfile_maxbytes=1MB</div><div class="line">stderr_logfile_backups=10</div><div class="line">stderr_capture_maxbytes=1MB</div><div class="line">user = git</div><div class="line">environment = HOME=&quot;/home/git&quot;, USER=&quot;git&quot;</div></pre></td></tr></table></figure>
+<p>以上的配置信息在 <code>gogs</code> 目录下的 <code>Scripts</code> 文件夹下有给出，可参考。</p>
+<h5 id="开启-supervisor-UI-管理台"><a href="#开启-supervisor-UI-管理台" class="headerlink" title="开启 supervisor UI 管理台"></a>开启 supervisor UI 管理台</h5><p>编辑 <code>/etc/supervisor/supervisor.conf</code> 主配置文件，修改或添加(通过apt-get的方式安装后不包含该配置) 以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[inet_http_server]         ; inet (TCP) server disabled by default</div><div class="line">port=*:9001        ; (ip_address:port specifier, *:port for all iface)</div><div class="line">username=user              ; (default is no username (open server))</div><div class="line">password=123               ; (default is no password (open server))</div></pre></td></tr></table></figure>
+<p><code>port</code> 中 <code>*.9001</code> 表示接受任意网络的请求，如果设置成 <code>127.0.0.1</code> 则只接受本地访问请求。</p>
+<p>通过通过 <code>sudo supervisorctl reload</code> 重启服务。</p>
+<p>重启之后，如果之前的配置也没有问题的话，现在在浏览器上通过域名即可浏览该站点了。</p>
+<p>在浏览器中输入 <code>服务器IP:9001</code> 来访问 supervisor UI 的管理端页面。</p>
+<hr>
+<h4 id="Gogs的个性化配置"><a href="#Gogs的个性化配置" class="headerlink" title="Gogs的个性化配置"></a>Gogs的个性化配置</h4><ol>
+<li><p>顶部导航菜单中 “帮助” 链接文字，未登录用户不显示 “帮助” 按钮：</p>
+<ul>
+<li>目录:   <code>gogs\templates\base\head.tmpl</code></li>
+<li><p>位置：  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a class=&quot;item&quot; target=&quot;_blank&quot; href=&quot;http://gogs.io/docs&quot; rel=&quot;noreferrer&quot;&gt;&#123;&#123;.i18n.Tr &quot;help&quot;&#125;&#125;&lt;/a&gt;</div></pre></td></tr></table></figure></p>
+</li>
+<li><p>将 <code></code> 标签下面的改行注释掉。</p>
+</li>
+</ul>
+</li>
+<li><p>底部右下角显示 “官方网站” 字样，修改为 “Gogs官方网站”：</p>
+<ul>
+<li>目录： <code>gogs\templates\base\footer.tmpl</code></li>
+<li><p>位置： <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a target=&quot;_blank&quot; href=&quot;http://gogs.io&quot;&gt;&#123;&#123;.i18n.Tr &quot;website&quot;&#125;&#125;&lt;/a&gt;</div></pre></td></tr></table></figure></p>
+</li>
+<li><p>更改为：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a target=&quot;_blank&quot; href=&quot;https://gogs.io&quot;&gt;Gogs&#123;&#123;.i18n.Tr &quot;website&quot;&#125;&#125;&lt;/a&gt;</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+</li>
+<li><p>首页，首页样式改版：</p>
+<ul>
+<li>目录： <code>gogs\templates\home.tmpl</code></li>
+</ul>
+</li>
+<li><p>为md文件中的a标签链接添加target属性，在新页面打开</p>
+<p> 在 <code>goapp/gogs/public/js/</code> 目录下，添加名为 <code>mdlinktarget-1.0.min.js</code> 内容如下：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$(document).ready(function()&#123;$(&apos;#file-content a[href^=&quot;http&quot;]&apos;).each(function()&#123;$(this).attr(&quot;target&quot;,&quot;_blank&quot;)&#125;)&#125;);</div></pre></td></tr></table></figure>
+<p>在项目目录 <code>gogs\templates\base</code> 下找到 <code>footer.tmpl</code> 文件，在最下面添加js引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;script src=&quot;&#123;&#123;AppSubUrl&#125;&#125;/js/mdlinktarget-1.0.min.js&quot;&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a href="https://gogs.io/docs/installation" target="_blank" rel="external">Installation - Gogs - Go Git Service</a></li>
+<li><a href="https://mynook.info/blog/post/host-your-own-git-server-using-gogs" target="_blank" rel="external">使用 Gogs 搭建自己的 Git 服务器 - My Nook</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gogs/" rel="tag">#Gogs</a>
+          
+            <a href="/tags/Git-Server/" rel="tag">#Git Server</a>
+          
+            <a href="/tags/代码管理/" rel="tag">#代码管理</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/26/setting-docker-mirror-image-accelerator/" rel="next" title="配置Docker镜像加速器">
+                <i class="fa fa-chevron-left"></i> 配置Docker镜像加速器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/28/python-independent-operating-environment-virtualenv/" rel="prev" title="Python独立运行环境Virtualenv">
+                Python独立运行环境Virtualenv <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/26/use-gogs-to-build-yourself-git-server/"
+           data-title="Linux系统下使用Gogs搭建Git Service" data-url="http://yoursite.com/2016/12/26/use-gogs-to-build-yourself-git-server/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本环境搭建"><span class="nav-number">1.</span> <span class="nav-text">基本环境搭建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Nginx"><span class="nav-number">2.</span> <span class="nav-text">配置Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-supervisor-启动"><span class="nav-number">3.</span> <span class="nav-text">配置 supervisor 启动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启-supervisor-UI-管理台"><span class="nav-number">3.1.</span> <span class="nav-text">开启 supervisor UI 管理台</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gogs的个性化配置"><span class="nav-number">4.</span> <span class="nav-text">Gogs的个性化配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

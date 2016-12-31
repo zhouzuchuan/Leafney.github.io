@@ -1,0 +1,781 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker,Flask,Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在虚拟机中的Docker容器内结合Flask来配置微信公众平台的本地开发环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker+Flask搭建微信公众平台之一">
+<meta property="og:url" content="http://yoursite.com/2016/09/24/docker-and-flask-build-wechat-public-platform-first/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="在虚拟机中的Docker容器内结合Flask来配置微信公众平台的本地开发环境">
+<meta property="og:updated_time" content="2016-12-31T08:34:22.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker+Flask搭建微信公众平台之一">
+<meta name="twitter:description" content="在虚拟机中的Docker容器内结合Flask来配置微信公众平台的本地开发环境">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/24/docker-and-flask-build-wechat-public-platform-first/"/>
+
+  <title> Docker+Flask搭建微信公众平台之一 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Docker+Flask搭建微信公众平台之一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-24T22:02:06+08:00" content="2016-09-24">
+              2016-09-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/微信公众平台/" itemprop="url" rel="index">
+                    <span itemprop="name">微信公众平台</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/24/docker-and-flask-build-wechat-public-platform-first/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/24/docker-and-flask-build-wechat-public-platform-first/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前申请的个人公众号在申请通过后用.NET开发了一版比较简单的交互逻辑功能，最近在知乎中看到有关Python开发微信公众号的文章，正好前几天也在学习Docker技术，所以就想研究一下在Docker下如何用Flask配置微信公众平台的开发环境。</p>
+<p>因为我的公众号是 <strong>个人号且是未认证</strong> 的，可获得的权限有限，所以目前我只做了消息的发送和接收相关的功能，更多功能后期再考虑加入。</p>
+<p>下面测试Demo是申请的微信公众平台的测试号来开发的。</p>
+<h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><ul>
+<li><strong>主系统</strong> 为 <code>Win10</code></li>
+<li><strong>宿主机</strong> 为 在 <code>Win10</code> 下的 <code>Hyper-V</code> 虚拟机中安装的 <code>Ubuntu 14.04 LTS</code> 系统 宿主机ip地址为 <code>http://192.168.137.219/</code></li>
+<li><strong>测试Docker容器</strong> 为在 <code>宿主机</code> 下安装的 <code>Ubuntu 14.04 LTS</code> 系统 </li>
+<li>使用的软件是 <code>Sublime Text</code> 和 <code>Xshell 4</code> 、<code>FileZilla</code></li>
+<li>Python环境为 <code>2.7.12</code></li>
+</ul>
+<p>这里提一点，如果你不知如何配置Docker环境，或从未接触过Docker技术，在我之后的文章中我会有详细的介绍，欢迎关注。</p>
+<hr>
+<h4 id="安装流程"><a href="#安装流程" class="headerlink" title="安装流程"></a>安装流程</h4><h5 id="配置-Flask-运行环境"><a href="#配置-Flask-运行环境" class="headerlink" title="配置 Flask 运行环境"></a>配置 Flask 运行环境</h5><p>在 宿主机中，当前的账户为 <code>tiger</code>。在主目录下创建 <code>xweixin</code> 目录，添加的 <code>Flask</code> 程序为 <code>app.py</code> 文件。 </p>
+<p>启动一个前台运行的容器，将宿主机目录 <code>xweixin</code> 映射到容器的 <code>weixin</code> 目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -it --name weixin01 -p 80:80 -v /home/tiger/xweixin:/weixin ubuntu /bin/bash</div></pre></td></tr></table></figure>
+<p>查看容器中主目录下是否存在 <code>weixin</code> 目录，及该目录下是否存在 <code>app.py</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ls </div><div class="line"> ****** weixin</div></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 下面的操作主要在 <code>测试Docker容器</code> 中进行，因为在Docker中默认是 <code>root</code> 账户，所以下面的命令前面都没有加 <code>sudo</code> 。</p>
+<p>设置安装源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;deb http://archive.ubuntu.com/ubuntu/ precise universe&quot; &gt;&gt; /etc/apt/sources.list</div></pre></td></tr></table></figure>
+<p>更新，安装python ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ apt-get update</div><div class="line"></div><div class="line">$ apt-get install python -y  # 默认安装的是 2.7.12</div></pre></td></tr></table></figure>
+<p>安装 virtualenv : (由于是在容器内操作，只用来搭建Flask的运行环境，所以可以不安装虚拟环境)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ apt-get install python-virtualenv</div></pre></td></tr></table></figure>
+<p>安装 pip ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ apt-get install python-pip -y</div></pre></td></tr></table></figure>
+<p>安装 flask:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install Flask</div></pre></td></tr></table></figure>
+<p>安装 vim ：(主要用于查看)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ apt-get install vim</div></pre></td></tr></table></figure>
+<p>总结上面的操作：从 <code>Win10</code> 系统创建 flask 程序 <code>app.py</code> 后，通过 SFTP 传输到 宿主计算机的 <code>/home/tiger/xweixin</code> 目录下，该目录直接映射到了容器的 <code>/weixin</code> 目录。</p>
+<p>app.py 内容 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def hello_world():</div><div class="line">    return &apos;Hello World!&apos;</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    app.run(host=&apos;0.0.0.0&apos;,port=80,debug=True)</div></pre></td></tr></table></figure>
+<p>在容器中执行 <code>python app.py</code> 运行。</p>
+<p>在 <code>主系统Win10</code> 下访问 宿主机 的ip地址 <code>http://192.168.137.219/</code>，看到输出 <code>Hello World!</code> 说明Flask配置成功。</p>
+<hr>
+<h5 id="使用-ngrok-实现外网访问"><a href="#使用-ngrok-实现外网访问" class="headerlink" title="使用 ngrok 实现外网访问"></a>使用 ngrok 实现外网访问</h5><p><code>ngrok.exe</code> 程序可以从 <a href="https://ngrok.com/download" target="_blank" rel="external">ngrok - download</a> 下载。</p>
+<p>在 <code>主系统Win10</code> 下使用 <code>CMD</code> 命令运行 <code>ngrok</code> 工具，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; ngrok http 192.168.137.219:80</div></pre></td></tr></table></figure>
+<p>后面的 ip地址不要带 <code>http://</code> , 端口号不要丢。</p>
+<p>可以看到 ngrok 生成了一个 外网可以访问到的地址 <code>http://c62f4a09.ngrok.io/</code> ,在浏览器中打开，看到输出 <code>Hello World!</code> 说明可以实现外网访问了。</p>
+<hr>
+<h4 id="搭建微信公众平台处理逻辑"><a href="#搭建微信公众平台处理逻辑" class="headerlink" title="搭建微信公众平台处理逻辑"></a>搭建微信公众平台处理逻辑</h4><h5 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h5><p>由于 <code>ngrok</code> 每次重新启动就会重新分配一个新的域名地址，所以我们在启动ngrok之后，就不需要再去管它了。Flask中启用了 <code>debug=True</code> 的选项后，每次更新文件 <code>app.py</code> 都会自动重新加载(除非程序报错导致异常退出)，所以这样下来我们只需要负责修改 <code>app.py</code> 改完了上传到宿主机，直接刷新即可，不需要再进行重启ngrok，重新执行 <code>python app.py</code>启动程序等操作，非常方便。</p>
+<p>修改 <code>app.py</code> 的框架，假设网站的二级目录 <code>/weixin</code> 来实现我们的微信公众平台的接口操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"># coding:utf-8</div><div class="line">&quot;&quot;&quot;</div><div class="line">微信公众平台</div><div class="line">&quot;&quot;&quot;</div><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def hello_world():</div><div class="line">	return &apos;Hello World!&apos;</div><div class="line"></div><div class="line"># 微信公众平台接口</div><div class="line">@app.route(&apos;/weixin&apos;)</div><div class="line">def weixin_interface():</div><div class="line">	return &quot;这是微信接口&quot;</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">	app.run(host=&apos;0.0.0.0&apos;,port=80,debug=True)</div></pre></td></tr></table></figure>
+<p>通过 <code>ngrok</code> 分配的域名为 <code>http://d0dd1f96.ngrok.io/weixin</code> ,该域名用于之后填入 微信公众平台 的接口配置的URL处(此时如果尝试添加，在微信公众平台页面一直会报配置错误的问题，因为在点击确定后微信会向我们的服务器发送验证消息，只有验证通过后才能保存)。</p>
+<hr>
+<h5 id="处理逻辑"><a href="#处理逻辑" class="headerlink" title="处理逻辑"></a>处理逻辑</h5><h6 id="在-Flask-中通过不同的-method-处理微信的验证请求和交互请求"><a href="#在-Flask-中通过不同的-method-处理微信的验证请求和交互请求" class="headerlink" title="在 Flask 中通过不同的 method 处理微信的验证请求和交互请求"></a>在 Flask 中通过不同的 <code>method</code> 处理微信的验证请求和交互请求</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 微信公众平台接口</div><div class="line">@app.route(&apos;/weixin&apos;,methods=[&apos;GET&apos;,&apos;POST&apos;])</div><div class="line">def weixin_interface():</div><div class="line">	# return &quot;这是微信接口&quot;</div><div class="line">	if request.method==&apos;GET&apos;:</div><div class="line">		# 处理验证</div><div class="line">	else:</div><div class="line">		# 处理逻辑交互</div></pre></td></tr></table></figure>
+<h6 id="设置微信验证请求-验证消息的确来自微信服务器"><a href="#设置微信验证请求-验证消息的确来自微信服务器" class="headerlink" title="设置微信验证请求 - 验证消息的确来自微信服务器"></a>设置微信验证请求 - 验证消息的确来自微信服务器</h6><p>修改 <code>weixin_interface</code> 代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">....</div><div class="line">省略</div><div class="line">....</div><div class="line"></div><div class="line">from flask import Flask</div><div class="line">from flask import request</div><div class="line">import hashlib</div><div class="line">import time</div><div class="line"></div><div class="line"></div><div class="line"># 配置参数</div><div class="line">X_TOKEN=&apos;leafney&apos; #这里改写你在微信公众平台里输入的token</div><div class="line"></div><div class="line">....</div><div class="line">省略</div><div class="line">....</div><div class="line"></div><div class="line"># 微信公众平台接口</div><div class="line">@app.route(&apos;/weixin&apos;,methods=[&apos;GET&apos;,&apos;POST&apos;])</div><div class="line">def weixin_interface():</div><div class="line">	# return &quot;这是微信接口&quot;</div><div class="line">	if request.method==&apos;GET&apos;:</div><div class="line">		# 处理验证</div><div class="line"></div><div class="line">		# 接收参数</div><div class="line">		wx_signature=request.args.get(&apos;signature&apos;)</div><div class="line">		wx_timestamp=request.args.get(&apos;timestamp&apos;)</div><div class="line">		wx_nonce=request.args.get(&apos;nonce&apos;)</div><div class="line">		wx_echostr=request.args.get(&apos;echostr&apos;)</div><div class="line">		# 自己的token</div><div class="line">		wx_token=X_TOKEN</div><div class="line">		# 字典序排序</div><div class="line">		w_list=[wx_token,wx_timestamp,wx_nonce]</div><div class="line">		w_list.sort()</div><div class="line">		# sha1加密算法</div><div class="line">		w_sha1=hashlib.sha1()</div><div class="line">		map(w_sha1.update,w_list)</div><div class="line">		w_hashcode=w_sha1.hexdigest()</div><div class="line"></div><div class="line">		# 如果是来自微信的请求，则返回echostr</div><div class="line">		if w_hashcode == wx_signature:</div><div class="line">			return wx_echostr</div><div class="line"></div><div class="line">	else:</div><div class="line">		# 处理逻辑交互</div><div class="line">		pass</div></pre></td></tr></table></figure>
+<p>因为我用的是微信的测试号来进行配置，将程序上传并启动之后，在 “测试号配置” 页面中的 “接口配置信息” 处 填入 <code>URL</code> 和 <code>Token</code> 然后点击 “确定” 。</p>
+<p>如果程序接入成功，会提示 “配置成功” ，否则可以在之前配置的 <code>测试Docker容器</code> 下查看调试信息，来进行相应的修改。</p>
+<hr>
+<h6 id="实现业务逻辑"><a href="#实现业务逻辑" class="headerlink" title="实现业务逻辑"></a>实现业务逻辑</h6><p>​当普通微信用户向公众账号发消息时，微信服务器将POST消息的XML数据包到开发者填写的URL上。</p>
+<p>接收消息内容，在 Flask 中可以使用 <code>request.data</code> 来获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xml_data=request.data</div></pre></td></tr></table></figure>
+<p>根据微信公众平台开发文档的说明 <a href="http://mp.weixin.qq.com/wiki/10/79502792eef98d6e0c6e1739da387346.html" target="_blank" rel="external">接收普通消息 - 微信公众平台开发者文档</a> 我们可以通过 <code>MsgType</code> 参数来区分接收的消息的类型，</p>
+<p>例如文本消息的数据包如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;xml&gt;</div><div class="line">&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;</div><div class="line">&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt; </div><div class="line">&lt;CreateTime&gt;1348831860&lt;/CreateTime&gt;</div><div class="line">&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;</div><div class="line">&lt;Content&gt;&lt;![CDATA[this is a test]]&gt;&lt;/Content&gt;</div><div class="line">&lt;MsgId&gt;1234567890123456&lt;/MsgId&gt;</div><div class="line">&lt;/xml&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>ToUserName 表示消息的接收者</li>
+<li>FromUserName 表示消息的发送者</li>
+<li>CreateTime 表示消息创建的时间戳</li>
+<li>MsgType 表示消息的类型</li>
+<li>Content 表示消息的内容</li>
+<li>MsgId 表示消息的id，可以用来对消息排重</li>
+</ul>
+<p>我们可以使用 <code>lxml</code> 来解析xml文档，获取相应的参数值。</p>
+<p>添加引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import lxml</div><div class="line">from lxml import etree</div></pre></td></tr></table></figure>
+<p>解析得到所需的参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">wx_xml=etree.fromstring(xml_data) # 进行xml解析</div><div class="line">print(etree.tostring(wx_xml,pretty_print=True))  # 获取请求内容</div><div class="line"></div><div class="line"># 获取请求参数</div><div class="line">wx_msgType=wx_xml.find(&apos;MsgType&apos;).text</div><div class="line">wx_fromUser=wx_xml.find(&apos;FromUserName&apos;).text  # 微信公众号</div><div class="line">wx_toUser=wx_xml.find(&apos;ToUserName&apos;).text # 用户</div></pre></td></tr></table></figure>
+<p>在向微信服务器回复消息时，也要按照微信的规定来返回特定XML结构的数据，详细可见 <a href="http://mp.weixin.qq.com/wiki/14/89b871b5466b19b3efa4ada8e577d45e.html" target="_blank" rel="external">被动回复用户消息 - 微信公众平台开发者文档</a> ，比如回复文本消息格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;xml&gt;</div><div class="line">&lt;ToUserName&gt;&lt;![CDATA[toUser]]&gt;&lt;/ToUserName&gt;</div><div class="line">&lt;FromUserName&gt;&lt;![CDATA[fromUser]]&gt;&lt;/FromUserName&gt;</div><div class="line">&lt;CreateTime&gt;12345678&lt;/CreateTime&gt;</div><div class="line">&lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;</div><div class="line">&lt;Content&gt;&lt;![CDATA[你好]]&gt;&lt;/Content&gt;</div><div class="line">&lt;/xml&gt;</div></pre></td></tr></table></figure>
+<p>在向微信端回复消息时，<code>ToUserName</code> 和 <code>FromUserName</code> 我们可以从接收时的消息内容中来得到，只需要把接收者和发送者的角色互换一下即可，<code>Content</code> 为我们要回复的内容。</p>
+<p>详细的处理代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"># 根据请求类型来返回不同的处理结果</div><div class="line">if wx_msgType == &apos;text&apos;:</div><div class="line">	# 文本消息</div><div class="line"></div><div class="line">	# 获取文本消息内容</div><div class="line">	wx_content=wx_xml.find(&apos;Content&apos;).text</div><div class="line">	content=wx_content.encode(&apos;utf-8&apos;)</div><div class="line"></div><div class="line">	print(content)</div><div class="line">	if content == &apos;天气&apos;:</div><div class="line">		# return &apos;北京天气挺好的！&apos;</div><div class="line">		# 注意回复消息时，接收者和发送者的位置要互换一下</div><div class="line">		return TextReply(wx_fromUser,wx_toUser,u&apos;北京天气挺好的！&apos;).render()</div><div class="line"></div><div class="line">	else:</div><div class="line">		return TextReply(wx_fromUser,wx_toUser,wx_content).render()</div><div class="line"></div><div class="line">elif wx_msgType == &apos;image&apos;:</div><div class="line">	return &apos;success&apos;</div><div class="line">else:</div><div class="line">	return &apos;success&apos;</div></pre></td></tr></table></figure>
+<p>消息模板：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class TextReply(object):</div><div class="line">	&quot;&quot;&quot;回复文本消息&quot;&quot;&quot;</div><div class="line"></div><div class="line">	TEMPLATE=u&quot;&quot;&quot;</div><div class="line">	&lt;xml&gt;</div><div class="line">    &lt;ToUserName&gt;&lt;![CDATA[&#123;target&#125;]]&gt;&lt;/ToUserName&gt;</div><div class="line">    &lt;FromUserName&gt;&lt;![CDATA[&#123;source&#125;]]&gt;&lt;/FromUserName&gt;</div><div class="line">    &lt;CreateTime&gt;&#123;time&#125;&lt;/CreateTime&gt;</div><div class="line">    &lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;</div><div class="line">    &lt;Content&gt;&lt;![CDATA[&#123;content&#125;]]&gt;&lt;/Content&gt;</div><div class="line">    &lt;/xml&gt;</div><div class="line">	&quot;&quot;&quot;</div><div class="line"></div><div class="line">	def __init__(self, target,source,content):</div><div class="line">		self.target=target</div><div class="line">		self.source=source</div><div class="line">		self.content=content</div><div class="line">		self.time=int(time.time())</div><div class="line"></div><div class="line">	def render(self):</div><div class="line">		return TextReply.TEMPLATE.format(target=self.target,source=self.source,time=self.time,content=self.content)</div></pre></td></tr></table></figure>
+<p>至此，接收回复文本消息的功能我们就做好了，上传到 <code>宿主机</code> 的 <code>xweixin</code> 目录下即可。</p>
+<hr>
+<p>在运行代码之前，先要安装依赖包 <code>lxml</code> ,不然会报 <code>No module named lxml</code> 的错误。</p>
+<h5 id="安装-lxml"><a href="#安装-lxml" class="headerlink" title="安装 lxml"></a>安装 lxml</h5><p>先安装 lxml 的依赖包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ apt-get install python-dev libxml2-dev libxslt1-dev zlib1g-dev</div></pre></td></tr></table></figure>
+<p>再安装 lxml :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install lxml</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="完整的代码实现"><a href="#完整的代码实现" class="headerlink" title="完整的代码实现"></a>完整的代码实现</h5><p>app.py (主程序)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"># coding:utf-8</div><div class="line">&quot;&quot;&quot;</div><div class="line">微信公众平台</div><div class="line">&quot;&quot;&quot;</div><div class="line"></div><div class="line">from flask import Flask</div><div class="line">from flask import request</div><div class="line">import hashlib</div><div class="line">import lxml</div><div class="line">from lxml import etree</div><div class="line">import time</div><div class="line"> </div><div class="line"># 消息返回模板</div><div class="line">from reply import TextReply</div><div class="line"></div><div class="line"># 配置参数</div><div class="line">X_TOKEN=&apos;leafney&apos; #这里改写你在微信公众平台里输入的token</div><div class="line"></div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def hello_world():</div><div class="line">	return &apos;Hello World!&apos;</div><div class="line"></div><div class="line"># 微信公众平台接口</div><div class="line">@app.route(&apos;/weixin&apos;,methods=[&apos;GET&apos;,&apos;POST&apos;])</div><div class="line">def weixin_interface():</div><div class="line">	# return &quot;这是微信接口&quot;</div><div class="line">	if request.method==&apos;GET&apos;:</div><div class="line">		# 处理验证</div><div class="line"></div><div class="line">		# 接收参数</div><div class="line">		wx_signature=request.args.get(&apos;signature&apos;)</div><div class="line">		wx_timestamp=request.args.get(&apos;timestamp&apos;)</div><div class="line">		wx_nonce=request.args.get(&apos;nonce&apos;)</div><div class="line">		wx_echostr=request.args.get(&apos;echostr&apos;)</div><div class="line">		# 自己的token</div><div class="line">		wx_token=X_TOKEN</div><div class="line">		# 字典序排序</div><div class="line">		w_list=[wx_token,wx_timestamp,wx_nonce]</div><div class="line">		w_list.sort()</div><div class="line">		# sha1加密算法</div><div class="line">		w_sha1=hashlib.sha1()</div><div class="line">		map(w_sha1.update,w_list)</div><div class="line">		w_hashcode=w_sha1.hexdigest()</div><div class="line"></div><div class="line">		# 如果是来自微信的请求，则返回echostr</div><div class="line">		if w_hashcode == wx_signature:</div><div class="line">			return wx_echostr</div><div class="line"></div><div class="line">	else:</div><div class="line">		# 处理逻辑交互</div><div class="line"></div><div class="line">		xml_data=request.data # 获得post来的数据</div><div class="line">		wx_xml=etree.fromstring(xml_data) # 进行xml解析</div><div class="line">		# print(etree.tostring(wx_xml,pretty_print=True))  # 获取请求内容</div><div class="line">		</div><div class="line">		# 获取请求参数</div><div class="line">		wx_msgType=wx_xml.find(&apos;MsgType&apos;).text</div><div class="line">		wx_fromUser=wx_xml.find(&apos;FromUserName&apos;).text  # 微信公众号</div><div class="line">		wx_toUser=wx_xml.find(&apos;ToUserName&apos;).text # 用户</div><div class="line"></div><div class="line">		# 根据请求类型来返回不同的处理结果</div><div class="line">		if wx_msgType == &apos;text&apos;:</div><div class="line">			# 文本消息</div><div class="line"></div><div class="line">			# 获取文本消息内容</div><div class="line">			wx_content=wx_xml.find(&apos;Content&apos;).text</div><div class="line">			content=wx_content.encode(&apos;utf-8&apos;)</div><div class="line"></div><div class="line">			print(content)</div><div class="line">			if content == &apos;天气&apos;:</div><div class="line">				# return &apos;北京天气挺好的！&apos;</div><div class="line">				# 注意回复消息时，接收者和发送者的位置要互换一下</div><div class="line">				return TextReply(wx_fromUser,wx_toUser,u&apos;北京天气挺好的！&apos;).render()</div><div class="line"></div><div class="line">			else:</div><div class="line">				return TextReply(wx_fromUser,wx_toUser,wx_content).render()</div><div class="line"></div><div class="line">		elif wx_msgType == &apos;image&apos;:</div><div class="line">			return &apos;success&apos;</div><div class="line">		else:</div><div class="line">			return &apos;success&apos;</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">	app.run(host=&apos;0.0.0.0&apos;,port=80,debug=True)</div></pre></td></tr></table></figure>
+<p>reply.py (消息模板)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"># coding:utf-8</div><div class="line">&quot;&quot;&quot;</div><div class="line">微信公众平台 消息回复模板</div><div class="line">&quot;&quot;&quot;</div><div class="line">import time</div><div class="line"></div><div class="line">class TextReply(object):</div><div class="line">	&quot;&quot;&quot;回复文本消息&quot;&quot;&quot;</div><div class="line"></div><div class="line">	TEMPLATE=u&quot;&quot;&quot;</div><div class="line">	&lt;xml&gt;</div><div class="line">    &lt;ToUserName&gt;&lt;![CDATA[&#123;target&#125;]]&gt;&lt;/ToUserName&gt;</div><div class="line">    &lt;FromUserName&gt;&lt;![CDATA[&#123;source&#125;]]&gt;&lt;/FromUserName&gt;</div><div class="line">    &lt;CreateTime&gt;&#123;time&#125;&lt;/CreateTime&gt;</div><div class="line">    &lt;MsgType&gt;&lt;![CDATA[text]]&gt;&lt;/MsgType&gt;</div><div class="line">    &lt;Content&gt;&lt;![CDATA[&#123;content&#125;]]&gt;&lt;/Content&gt;</div><div class="line">    &lt;/xml&gt;</div><div class="line">	&quot;&quot;&quot;</div><div class="line"></div><div class="line">	def __init__(self, target,source,content):</div><div class="line">		self.target=target</div><div class="line">		self.source=source</div><div class="line">		self.content=content</div><div class="line">		self.time=int(time.time())</div><div class="line"></div><div class="line">	def render(self):</div><div class="line">		return TextReply.TEMPLATE.format(target=self.target,source=self.source,time=self.time,content=self.content)</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h4><p>至此，上面我们就实现了最基本的微信公众号的验证和简单文本消息的接收和回复功能。</p>
+<p>之后我会介绍如何来处理复杂的消息内容，图片、语音、图文等等。然后通过一些有趣的小功能来让我们这即使没有特殊权限的公众号也能玩得更有意思，欢迎关注！</p>
+<hr>
+<p>PublishTime: 2016-9-24 22:35:16</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+            <a href="/tags/Flask/" rel="tag">#Flask</a>
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/24/using-ssh-key-connection-github/" rel="next" title="使用SSH密钥连接Github">
+                <i class="fa fa-chevron-left"></i> 使用SSH密钥连接Github
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/01/first-install-ubuntu-need-config/" rel="prev" title="重新安装Ubuntu系统后的必要设置">
+                重新安装Ubuntu系统后的必要设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/24/docker-and-flask-build-wechat-public-platform-first/"
+           data-title="Docker+Flask搭建微信公众平台之一" data-url="http://yoursite.com/2016/09/24/docker-and-flask-build-wechat-public-platform-first/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#环境配置"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装流程"><span class="nav-number">2.</span> <span class="nav-text">安装流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#配置-Flask-运行环境"><span class="nav-number">2.1.</span> <span class="nav-text">配置 Flask 运行环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用-ngrok-实现外网访问"><span class="nav-number">2.2.</span> <span class="nav-text">使用 ngrok 实现外网访问</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#搭建微信公众平台处理逻辑"><span class="nav-number">3.</span> <span class="nav-text">搭建微信公众平台处理逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备工作"><span class="nav-number">3.1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#处理逻辑"><span class="nav-number">3.2.</span> <span class="nav-text">处理逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#在-Flask-中通过不同的-method-处理微信的验证请求和交互请求"><span class="nav-number">3.2.1.</span> <span class="nav-text">在 Flask 中通过不同的 method 处理微信的验证请求和交互请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#设置微信验证请求-验证消息的确来自微信服务器"><span class="nav-number">3.2.2.</span> <span class="nav-text">设置微信验证请求 - 验证消息的确来自微信服务器</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实现业务逻辑"><span class="nav-number">3.2.3.</span> <span class="nav-text">实现业务逻辑</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-lxml"><span class="nav-number">3.3.</span> <span class="nav-text">安装 lxml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#完整的代码实现"><span class="nav-number">3.4.</span> <span class="nav-text">完整的代码实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未完待续"><span class="nav-number">4.</span> <span class="nav-text">未完待续</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

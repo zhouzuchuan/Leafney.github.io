@@ -1,0 +1,781 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ubuntu,Python,Selenium," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Selenium，自动化测试工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu下配置Selenium运行环境">
+<meta property="og:url" content="http://yoursite.com/2016/10/19/configuration-the-selenium-running-environment-in-ubuntu/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Selenium，自动化测试工具">
+<meta property="og:updated_time" content="2016-12-31T08:34:22.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu下配置Selenium运行环境">
+<meta name="twitter:description" content="Selenium，自动化测试工具">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/19/configuration-the-selenium-running-environment-in-ubuntu/"/>
+
+  <title> Ubuntu下配置Selenium运行环境 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ubuntu下配置Selenium运行环境
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-19T22:35:59+08:00" content="2016-10-19">
+              2016-10-19
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/19/configuration-the-selenium-running-environment-in-ubuntu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/19/configuration-the-selenium-running-environment-in-ubuntu/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Selenium，自动化测试工具。</p>
+<h4 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h4><ul>
+<li>Ubuntu 16.04 TLS</li>
+</ul>
+<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><h5 id="设置软件安装源"><a href="#设置软件安装源" class="headerlink" title="设置软件安装源"></a>设置软件安装源</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse&quot; &gt;&gt; /etc/apt/sources.list</div></pre></td></tr></table></figure>
+<p>也可以改成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo &quot;deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse&quot; &gt; /etc/apt/sources.list</div></pre></td></tr></table></figure>
+<h5 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h5><p>执行以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install python python-pip curl unzip -y</div><div class="line">$ sudo pip install selenium</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="支持的浏览器及-WebDriver-驱动"><a href="#支持的浏览器及-WebDriver-驱动" class="headerlink" title="支持的浏览器及 WebDriver 驱动"></a>支持的浏览器及 WebDriver 驱动</h4><p>Selenium可以调用Chrome 、Firefox 、Safari 等浏览器。</p>
+<p>WebDriver 支持以下的</p>
+<ul>
+<li>ChromeDriver</li>
+<li>EventFiringWebDriver</li>
+<li>FirefoxDriver</li>
+<li>HtmlUnitDriver</li>
+<li>InternetExplorerDriver</li>
+<li>PhantomJSDriver</li>
+<li>RemoteWebDriver</li>
+<li>SafariDriver</li>
+</ul>
+<p>这里我以常用的Chrome 和 Firefox 为例，来配置运行环境。</p>
+<p>我们需要安装相对应的浏览器和浏览器驱动 WebDriver 。比如 Selenium 无法直接启动 Chrome ，需要用第三方插件 ChromeDriver 来调用。</p>
+<h4 id="Selenium调用Chrome浏览器"><a href="#Selenium调用Chrome浏览器" class="headerlink" title="Selenium调用Chrome浏览器"></a>Selenium调用Chrome浏览器</h4><p>Chrome浏览器我们可以使用官方的 Google Chrome 浏览器 或者 开源的 Chromium 浏览器</p>
+<h5 id="安装-Google-Chrome"><a href="#安装-Google-Chrome" class="headerlink" title="安装 Google Chrome"></a>安装 Google Chrome</h5><p>执行如下命令安装，这里我们选择的是 <code>google-chrome-stable</code> 版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -</div><div class="line"></div><div class="line">$ sudo sh -c &apos;echo &quot;deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main&quot; &gt;&gt; /etc/apt/sources.list.d/google.list&apos;</div><div class="line"></div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install google-chrome-stable</div></pre></td></tr></table></figure>
+<p>详细可访问：</p>
+<ul>
+<li><a href="http://www.ubuntuupdates.org/ppa/google_chrome" target="_blank" rel="external">UbuntuUpdates-Google Chrome</a></li>
+<li><a href="http://www.ubuntuupdates.org/pm/google-chrome-stable" target="_blank" rel="external">All “google-chrome-stable” versions</a></li>
+</ul>
+<p>或者可以通过以下命令直接下载 <code>*.deb</code> 安装包：</p>
+<ul>
+<li>x64 – <code>$ curl http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_54.0.2840.59-1_amd64.deb -O</code></li>
+<li>x32 – 32位版本已不可用</li>
+</ul>
+<p>安装deb安装包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ dpkg -i google-chrome-stable_54.0.2840.59-1_amd64.deb</div></pre></td></tr></table></figure>
+<p>安装过程中可能会安装失败，缺少依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dpkg: error processing package google-chrome-stable (--install):</div><div class="line"> dependency problems - leaving unconfigured</div><div class="line">Processing triggers for mime-support (3.59ubuntu1) ...</div><div class="line">Errors were encountered while processing:</div><div class="line"> google-chrome-stable</div></pre></td></tr></table></figure>
+<p>通过如下命令解决：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ apt-get -f install</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="http://askubuntu.com/questions/510056/how-to-install-google-chrome" target="_blank" rel="external">software installation - How to install Google Chrome? - Ask Ubuntu</a></li>
+</ul>
+<hr>
+<h5 id="安装-Chromium"><a href="#安装-Chromium" class="headerlink" title="安装 Chromium"></a>安装 Chromium</h5><p>Google Chrome isn’t in the repositories - however, Chromium is.</p>
+<p>因为在软件库中存在 Chromium 的包，所以可以直接通过 <code>apt-get</code> 来安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install chromium-browser</div></pre></td></tr></table></figure>
+<h5 id="未安装Chrome浏览器异常"><a href="#未安装Chrome浏览器异常" class="headerlink" title="未安装Chrome浏览器异常"></a>未安装Chrome浏览器异常</h5><p>如果未安装 Google-Chrome 或  Chromium 浏览器，会提示如下错误信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">selenium.common.exceptions.WebDriverException: Message: unknown error: cannot find Chrome binary</div></pre></td></tr></table></figure>
+<h5 id="安装-ChromeDriver"><a href="#安装-ChromeDriver" class="headerlink" title="安装 ChromeDriver"></a>安装 ChromeDriver</h5><p>ChromeDriver是一个实现了WebDriver与Chromium联接协议的独立服务。</p>
+<h6 id="下载-ChromeDriver"><a href="#下载-ChromeDriver" class="headerlink" title="下载 ChromeDriver"></a>下载 ChromeDriver</h6><p>访问站点 <a href="http://chromedriver.storage.googleapis.com/index.html" target="_blank" rel="external">chromedriver</a> 下载当前系统对应的 <code>chromedriver</code> 程序, 页面中给出了不同Chrome版本对应的 ChromeDriver 程序。</p>
+<p>执行命令如下，下载并解压：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ curl http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip -O</div><div class="line"></div><div class="line">$ unzip chromedriver_linux64.zip</div><div class="line"></div><div class="line">$ ls</div><div class="line">chromedriver</div></pre></td></tr></table></figure>
+<p>解压后我们得到了一个 <code>chromedriver</code> 执行程序。</p>
+<h6 id="将-ChromeDriver-放到系统-PATH-目录下"><a href="#将-ChromeDriver-放到系统-PATH-目录下" class="headerlink" title="将 ChromeDriver 放到系统 PATH 目录下"></a>将 ChromeDriver 放到系统 PATH 目录下</h6><p>我们可以在程序中指定具体的 ChromeDriver 所在的目录，不指定的话会默认去系统PATH目录下找。为了编程方便，我们将其放到系统PATH目录下。</p>
+<p>查看系统目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo $PATH</div></pre></td></tr></table></figure>
+<p>这里我将其放到 <code>/usr/local/bin/</code> 目录下，并添加可执行权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo mv ./chromedriver /usr/local/bin/</div><div class="line"></div><div class="line">$ sudo chmod a+x /usr/local/bin/chromedriver</div></pre></td></tr></table></figure>
+<h6 id="测试-ChromeDriver"><a href="#测试-ChromeDriver" class="headerlink" title="测试 ChromeDriver"></a>测试 ChromeDriver</h6><p>执行 <code>chromedriver</code> 查看是否能正常运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ chromedriver </div><div class="line">Starting ChromeDriver 2.24.417424 (c5c5ea873213ee72e3d0929b47482681555340c3) on port 9515</div><div class="line">Only local connections are allowed.</div></pre></td></tr></table></figure>
+<p>当提示 <code>Starting ChromeDriver xxx on port 9515</code> 信息时，说明 <code>ChromeDriver</code> 设置成功。  </p>
+<p>如果提示如下错误信息，则是在系统PATH下找不到 <code>ChromeDriver</code> :</p>
+<blockquote>
+<p>selenium.common.exceptions.WebDriverException: Message: ‘chromedriver’ executable needs to be in PATH. Please see <a href="https://sites.google.com/a/chromium.org/chromedriver/home" target="_blank" rel="external">https://sites.google.com/a/chromium.org/chromedriver/home</a></p>
+</blockquote>
+<hr>
+<h4 id="Selenium调用Firefox浏览器"><a href="#Selenium调用Firefox浏览器" class="headerlink" title="Selenium调用Firefox浏览器"></a>Selenium调用Firefox浏览器</h4><h5 id="安装-Firefox-浏览器"><a href="#安装-Firefox-浏览器" class="headerlink" title="安装 Firefox 浏览器"></a>安装 Firefox 浏览器</h5><p>可以通过 <code>apt-get</code> 直接安装 Firefox 浏览器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install firefox</div></pre></td></tr></table></figure>
+<h5 id="未安装Firefox浏览器异常"><a href="#未安装Firefox浏览器异常" class="headerlink" title="未安装Firefox浏览器异常"></a>未安装Firefox浏览器异常</h5><p>如果未安装 Firefox 浏览器程序，则会提示如下错误：</p>
+<blockquote>
+<p>selenium.common.exceptions.WebDriverException: Message: Expected browser binary location, but unable to find binary in default location, no ‘moz:firefoxOptions.binary’ capability provided, and no binary flag set on the command line</p>
+</blockquote>
+<h5 id="安装-geckodriver"><a href="#安装-geckodriver" class="headerlink" title="安装 geckodriver"></a>安装 geckodriver</h5><h6 id="下载-geckodriver"><a href="#下载-geckodriver" class="headerlink" title="下载 geckodriver"></a>下载 geckodriver</h6><p>访问站点 <a href="https://github.com/mozilla/geckodriver/releases" target="_blank" rel="external">geckodriver</a> 下载当前系统对应 geckodriver 程序。</p>
+<p>执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ curl https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-linux64.tar.gz -O</div><div class="line"></div><div class="line">$ tar -zxvf geckodriver-v0.11.1-linux64.tar.gz</div><div class="line"></div><div class="line">$ ls</div><div class="line">geckodriver</div></pre></td></tr></table></figure>
+<p>解压后我们得到了一个 <code>geckodriver</code> 执行程序。</p>
+<p>该 <code>geckodriver</code> 压缩包可能由于网络原因下载失败，可通过迅雷等软件下载后拷贝到Linux系统中。</p>
+<h6 id="将-geckodriver-放到系统-PATH-目录下"><a href="#将-geckodriver-放到系统-PATH-目录下" class="headerlink" title="将 geckodriver 放到系统 PATH 目录下"></a>将 geckodriver 放到系统 PATH 目录下</h6><p>我们可以在程序中指定具体的 geckodriver 所在的目录，不指定的话会默认去系统PATH目录下找。为了编程方便，我们将其放到系统PATH目录下。</p>
+<p>查看系统目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ echo $PATH</div></pre></td></tr></table></figure>
+<p>这里我将其放到 <code>/usr/local/bin/</code> 目录下，并添加可执行权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo mv ./geckodriver /usr/local/bin/</div><div class="line"></div><div class="line">$ sudo chmod a+x /usr/local/bin/geckodriver</div></pre></td></tr></table></figure>
+<h6 id="测试-geckodriver"><a href="#测试-geckodriver" class="headerlink" title="测试 geckodriver"></a>测试 geckodriver</h6><p>执行 <code>geckodriver</code> 查看是否能正常运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ geckodriver </div><div class="line">1476443497207	geckodriver	INFO	Listening on 127.0.0.1:4444</div></pre></td></tr></table></figure>
+<p>当提示 <code>Listening on 127.0.0.1:4444</code> 信息时，说明 <code>geckodriver</code> 设置成功。  </p>
+<p>如果提示如下错误信息，则是在系统PATH下找不到 <code>geckodriver</code> :</p>
+<blockquote>
+<p>selenium.common.exceptions.WebDriverException: Message: ‘geckodriver’ executable needs to be in PATH.</p>
+</blockquote>
+<hr>
+<h4 id="安装虚拟显示器-xvfb"><a href="#安装虚拟显示器-xvfb" class="headerlink" title="安装虚拟显示器 xvfb"></a>安装虚拟显示器 xvfb</h4><h5 id="为什么要用-xvfb"><a href="#为什么要用-xvfb" class="headerlink" title="为什么要用 xvfb??"></a>为什么要用 xvfb??</h5><p>xvfb 这个工具相当于一个wrapper，给应用程序提供虚拟的 X server</p>
+<h5 id="执行如下命令安装"><a href="#执行如下命令安装" class="headerlink" title="执行如下命令安装"></a>执行如下命令安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install xvfb</div><div class="line">$ sudo pip install pyvirtualdisplay</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="测试selenium调用浏览器获取网页"><a href="#测试selenium调用浏览器获取网页" class="headerlink" title="测试selenium调用浏览器获取网页"></a>测试selenium调用浏览器获取网页</h4><h5 id="Chrome-版本"><a href="#Chrome-版本" class="headerlink" title="Chrome 版本"></a>Chrome 版本</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#coding:utf-8</div><div class="line"></div><div class="line">import time</div><div class="line">from selenium import webdriver</div><div class="line">from pyvirtualdisplay import Display</div><div class="line"></div><div class="line">display=Display(visible=0,size=(800,800))</div><div class="line">display.start()</div><div class="line"></div><div class="line">driver=webdriver.Chrome()</div><div class="line">driver.get(&apos;http://www.cnblogs.com/&apos;)</div><div class="line">time.sleep(5)</div><div class="line">title=driver.title</div><div class="line">print(title.encode(&apos;utf-8&apos;))</div><div class="line">driver.close()</div><div class="line"></div><div class="line">display.stop()</div></pre></td></tr></table></figure>
+<p>将以上代码保存为 <code>chrome.py</code> ，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python chrome.py</div><div class="line">博客园 - 开发者的网上家园</div></pre></td></tr></table></figure>
+<h5 id="Firefox-版本"><a href="#Firefox-版本" class="headerlink" title="Firefox 版本"></a>Firefox 版本</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#coding:utf-8</div><div class="line"></div><div class="line">import time</div><div class="line">from selenium import webdriver</div><div class="line">from pyvirtualdisplay import Display</div><div class="line"></div><div class="line">display=Display(visible=0,size=(800,800))</div><div class="line">display.start()</div><div class="line"></div><div class="line">driver=webdriver.Firefox()</div><div class="line">driver.get(&apos;http://www.cnblogs.com/&apos;)</div><div class="line">time.sleep(5)</div><div class="line">title=driver.title</div><div class="line">print(title.encode(&apos;utf-8&apos;))</div><div class="line">driver.close()</div><div class="line"></div><div class="line">display.stop()</div></pre></td></tr></table></figure>
+<p>将以上代码保存为 <code>firefox.py</code> ，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ python firefox.py</div><div class="line">博客园 - 开发者的网上家园</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="代码详解"><a href="#代码详解" class="headerlink" title="代码详解"></a>代码详解</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">#coding:utf-8</div><div class="line"></div><div class="line">import time</div><div class="line">from selenium import webdriver</div><div class="line">from pyvirtualdisplay import Display</div><div class="line"></div><div class="line"># 设置虚拟显示器的窗口大小</div><div class="line">display=Display(visible=0,size=(800,800))</div><div class="line">display.start()</div><div class="line"></div><div class="line">driver=webdriver.Chrome()</div><div class="line">driver.get(&apos;http://www.cnblogs.com/&apos;)</div><div class="line">time.sleep(5)</div><div class="line"></div><div class="line"># 打印网页的标题</div><div class="line">title=driver.title</div><div class="line">print(title.encode(&apos;utf-8&apos;))</div><div class="line"># 退出浏览器</div><div class="line">driver.close()</div><div class="line"></div><div class="line"># 关闭虚拟显示器窗口</div><div class="line">display.stop()</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="Docker实现"><a href="#Docker实现" class="headerlink" title="Docker实现"></a>Docker实现</h4><p>详情请参考开源项目：</p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://chromedriver.storage.googleapis.com/index.html" target="_blank" rel="external">ChromeDriver</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver" target="_blank" rel="external">WebDriver - Mozilla | MDN</a></li>
+<li><a href="https://github.com/mozilla/geckodriver" target="_blank" rel="external">GitHub - mozilla/geckodriver: WebDriver &lt;-&gt; Marionette proxy</a> <strong>☆</strong></li>
+<li><a href="http://stackoverflow.com/questions/6183276/how-do-i-run-selenium-in-xvfb" target="_blank" rel="external">python - How do I run Selenium in Xvfb? - Stack Overflow</a> <strong>☆</strong></li>
+<li><a href="http://blog.163.com/he_junwei/blog/static/1979376462013126105119274/" target="_blank" rel="external">Selenium2.0</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ubuntu/" rel="tag">#Ubuntu</a>
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/Selenium/" rel="tag">#Selenium</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/06/ubuntu-install-mysql-db/" rel="next" title="Ubuntu下安装及配置MySql数据库">
+                <i class="fa fa-chevron-left"></i> Ubuntu下安装及配置MySql数据库
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/19/configuration-the-selenium-running-environment-in-alpine/" rel="prev" title="Alpine下配置Selenium运行环境">
+                Alpine下配置Selenium运行环境 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/19/configuration-the-selenium-running-environment-in-ubuntu/"
+           data-title="Ubuntu下配置Selenium运行环境" data-url="http://yoursite.com/2016/10/19/configuration-the-selenium-running-environment-in-ubuntu/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置环境"><span class="nav-number">1.</span> <span class="nav-text">配置环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.</span> <span class="nav-text">安装依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#设置软件安装源"><span class="nav-number">2.1.</span> <span class="nav-text">设置软件安装源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装依赖包"><span class="nav-number">2.2.</span> <span class="nav-text">安装依赖包</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#支持的浏览器及-WebDriver-驱动"><span class="nav-number">3.</span> <span class="nav-text">支持的浏览器及 WebDriver 驱动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selenium调用Chrome浏览器"><span class="nav-number">4.</span> <span class="nav-text">Selenium调用Chrome浏览器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-Google-Chrome"><span class="nav-number">4.1.</span> <span class="nav-text">安装 Google Chrome</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-Chromium"><span class="nav-number">4.2.</span> <span class="nav-text">安装 Chromium</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#未安装Chrome浏览器异常"><span class="nav-number">4.3.</span> <span class="nav-text">未安装Chrome浏览器异常</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-ChromeDriver"><span class="nav-number">4.4.</span> <span class="nav-text">安装 ChromeDriver</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载-ChromeDriver"><span class="nav-number">4.4.1.</span> <span class="nav-text">下载 ChromeDriver</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#将-ChromeDriver-放到系统-PATH-目录下"><span class="nav-number">4.4.2.</span> <span class="nav-text">将 ChromeDriver 放到系统 PATH 目录下</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#测试-ChromeDriver"><span class="nav-number">4.4.3.</span> <span class="nav-text">测试 ChromeDriver</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Selenium调用Firefox浏览器"><span class="nav-number">5.</span> <span class="nav-text">Selenium调用Firefox浏览器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-Firefox-浏览器"><span class="nav-number">5.1.</span> <span class="nav-text">安装 Firefox 浏览器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#未安装Firefox浏览器异常"><span class="nav-number">5.2.</span> <span class="nav-text">未安装Firefox浏览器异常</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-geckodriver"><span class="nav-number">5.3.</span> <span class="nav-text">安装 geckodriver</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#下载-geckodriver"><span class="nav-number">5.3.1.</span> <span class="nav-text">下载 geckodriver</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#将-geckodriver-放到系统-PATH-目录下"><span class="nav-number">5.3.2.</span> <span class="nav-text">将 geckodriver 放到系统 PATH 目录下</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#测试-geckodriver"><span class="nav-number">5.3.3.</span> <span class="nav-text">测试 geckodriver</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装虚拟显示器-xvfb"><span class="nav-number">6.</span> <span class="nav-text">安装虚拟显示器 xvfb</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#为什么要用-xvfb"><span class="nav-number">6.1.</span> <span class="nav-text">为什么要用 xvfb??</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行如下命令安装"><span class="nav-number">6.2.</span> <span class="nav-text">执行如下命令安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试selenium调用浏览器获取网页"><span class="nav-number">7.</span> <span class="nav-text">测试selenium调用浏览器获取网页</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Chrome-版本"><span class="nav-number">7.1.</span> <span class="nav-text">Chrome 版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Firefox-版本"><span class="nav-number">7.2.</span> <span class="nav-text">Firefox 版本</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码详解"><span class="nav-number">8.</span> <span class="nav-text">代码详解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker实现"><span class="nav-number">9.</span> <span class="nav-text">Docker实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">10.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

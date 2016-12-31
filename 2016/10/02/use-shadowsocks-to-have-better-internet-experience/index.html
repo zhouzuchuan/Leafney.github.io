@@ -1,0 +1,777 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Google,Shadowsocks,科学上网," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在国内要想用Google来上网着实是要费一翻心思的，如果你有一台国外的服务器的话，一切都变得如此简单。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Shadowsocks轻松实现科学上网">
+<meta property="og:url" content="http://yoursite.com/2016/10/02/use-shadowsocks-to-have-better-internet-experience/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="在国内要想用Google来上网着实是要费一翻心思的，如果你有一台国外的服务器的话，一切都变得如此简单。">
+<meta property="og:updated_time" content="2016-12-31T08:34:22.870Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Shadowsocks轻松实现科学上网">
+<meta name="twitter:description" content="在国内要想用Google来上网着实是要费一翻心思的，如果你有一台国外的服务器的话，一切都变得如此简单。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/02/use-shadowsocks-to-have-better-internet-experience/"/>
+
+  <title> 使用Shadowsocks轻松实现科学上网 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Shadowsocks轻松实现科学上网
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-02T10:24:44+08:00" content="2016-10-02">
+              2016-10-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/02/use-shadowsocks-to-have-better-internet-experience/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/02/use-shadowsocks-to-have-better-internet-experience/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于个人对百度的厌恶，平时上网很少用百度搜索。而又因为众所周知的原因，在国内要想用Google来上网着实是要费一翻心思的。所以也只能退而求其次，用微软的Bing来查询一些资料。</p>
+<p>前几天刚刚把我在香港的云服务器进行了系统更换，从Windows Server换成了Linux系统，想起之前曾看过的使用Shadowsocks实现代理上网的文章，所以就想要亲自实现一下。</p>
+<p>shadowsocks是一个著名的轻量级socket代理，原始版本是基于Python编写，后来又有了Go语言版本。不过该版本在Github上的源代码由于“你懂得”的原因，已经被开发者删除了。</p>
+<p>这里我推荐安装的是 <code>shadowsocks-libev</code> 版本。<code>shadowsocks-libev</code> 是一个 shadowsocks 协议的轻量级实现，是 shadowsocks-android, shadowsocks-ios 以及 shadowsocks-openwrt 的上游项目。其特点如下：</p>
+<ul>
+<li>体积小巧，静态编译并打包后只有 100 KB</li>
+<li>高并发，基于 libev 实现的异步 I/O，以及基于线程池的异步 DNS，同时连接数可上万。</li>
+<li>基于C语言实现，内存占用小（600k左右），低 CPU 消耗</li>
+</ul>
+<hr>
+<h4 id="shadowsocks-libev-的安装"><a href="#shadowsocks-libev-的安装" class="headerlink" title="shadowsocks-libev 的安装"></a>shadowsocks-libev 的安装</h4><p>我的云服务器系统为 <code>Ubuntu 14.04 TFS</code></p>
+<p>通常 <code>shadowsocks-libev</code> 版本有两种安装方式，从源码安装和通过软件源来安装。这里我推荐使用源码安装的方式。</p>
+<h5 id="从源码安装-Ubuntu-Debian系统下"><a href="#从源码安装-Ubuntu-Debian系统下" class="headerlink" title="从源码安装 (Ubuntu/Debian系统下)"></a>从源码安装 (Ubuntu/Debian系统下)</h5><h6 id="安装必须的包"><a href="#安装必须的包" class="headerlink" title="安装必须的包"></a>安装必须的包</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get udpate</div><div class="line"></div><div class="line">$ mkdir shadowsocks-libev &amp;&amp; cd shadowsocks-libev</div><div class="line"></div><div class="line">$ sudo apt-get install build-essential autoconf libtool libssl-dev gawk debhelper dh-systemd init-system-helpers pkg-config asciidoc xmlto apg libpcre3-dev</div></pre></td></tr></table></figure>
+<p>安装过程会需要一些时间。</p>
+<h6 id="通过Git下载源码"><a href="#通过Git下载源码" class="headerlink" title="通过Git下载源码"></a>通过Git下载源码</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/shadowsocks/shadowsocks-libev.git</div></pre></td></tr></table></figure>
+<p>然后生成deb包并安装，依照以下步骤依次执行(如果出错请检查系统或者之前的步骤)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ cd shadowsocks-libev</div><div class="line"></div><div class="line">$ dpkg-buildpackage -b -us -uc -i</div><div class="line"></div><div class="line">$ cd ..</div><div class="line"></div><div class="line">$ sudo dpkg -i shadowsocks-libev*.deb</div></pre></td></tr></table></figure>
+<p>在上面的第三步 <code>cd ..</code> 后，可以看到目录下编译生成了三个 <code>*.deb</code> 文件，我这里的是：</p>
+<ul>
+<li><code>libshadowsocks-libev-dev_2.5.3-1_amd64.deb</code></li>
+<li><code>libshadowsocks-libev2_2.5.3-1_amd64.deb</code></li>
+<li><code>shadowsocks-libev_2.5.3-1_amd64.deb</code></li>
+</ul>
+<p>上面的步骤操作完成后，我们就已经安装成功了 <code>shadowsocks-libev</code> 。</p>
+<p>通过如下命令来查看运行状态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo service shadowsocks-libev status</div><div class="line"> * shadowsocks-libev is not running</div></pre></td></tr></table></figure>
+<p>通过deb包安装的方式默认会开启自启。</p>
+<hr>
+<h5 id="直接从作者提供的软件源安装（Ubuntu-Debian）"><a href="#直接从作者提供的软件源安装（Ubuntu-Debian）" class="headerlink" title="直接从作者提供的软件源安装（Ubuntu/Debian）"></a>直接从作者提供的软件源安装（Ubuntu/Debian）</h5><p>由于作者更新源码后并不一定及时更新这些预编译的包，所以无法保证最新版本，但操作步骤比较简单。</p>
+<h6 id="先添加GPG-Key"><a href="#先添加GPG-Key" class="headerlink" title="先添加GPG Key"></a>先添加GPG Key</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget -O- http://shadowsocks.org/debian/1D27208A.gpg | sudo apt-key add -</div></pre></td></tr></table></figure>
+<h6 id="配置安装源，在-etc-apt-sources-list末尾添加"><a href="#配置安装源，在-etc-apt-sources-list末尾添加" class="headerlink" title="配置安装源，在/etc/apt/sources.list末尾添加"></a>配置安装源，在/etc/apt/sources.list末尾添加</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Ubuntu 14.04 or above</div><div class="line">$ deb http://shadowsocks.org/ubuntu trusty main</div><div class="line"></div><div class="line"># Debian Wheezy, Ubuntu 12.04 or any distribution with libssl &gt; 1.0.1</div><div class="line">$ deb http://shadowsocks.org/debian wheezy main</div></pre></td></tr></table></figure>
+<h6 id="执行安装"><a href="#执行安装" class="headerlink" title="执行安装"></a>执行安装</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ apt-get update</div><div class="line">$ apt-get install shadowsocks-libev</div></pre></td></tr></table></figure>
+<p>这里我在 配置 <code>wget -O- http://shadowsocks.org/debian/1D27208A.gpg | sudo apt-key add -</code> 时无法连接到 <code>http://shadowsocks.org</code> 站点，所以这种方法我就没有继续测试。</p>
+<hr>
+<h5 id="shadowsocks-libev-一键安装"><a href="#shadowsocks-libev-一键安装" class="headerlink" title="shadowsocks-libev 一键安装"></a>shadowsocks-libev 一键安装</h5><p>待完善，详见：<a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-libev-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85" target="_blank" rel="external">https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-libev-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85</a></p>
+<hr>
+<h4 id="配置与启动"><a href="#配置与启动" class="headerlink" title="配置与启动"></a>配置与启动</h4><h5 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h5><p><code>shadowsocks-divev</code> 生成的默认配置文件在目录 <code>/etc/shadowsocks-libev</code> 下，找到 <code>config.json</code> 文件并编辑：</p>
+<p>将配置信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server&quot;:&quot;127.0.0.1&quot;,</div><div class="line">    &quot;server_port&quot;:8388,</div><div class="line">    &quot;local_port&quot;:1080,</div><div class="line">    &quot;password&quot;:&quot;OikIryahoa&quot;,</div><div class="line">    &quot;timeout&quot;:60,</div><div class="line">    &quot;method&quot;:null</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>修改为如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server&quot;:&quot;0.0.0.0&quot;,</div><div class="line">    &quot;server_port&quot;:8388,</div><div class="line">    &quot;local_port&quot;:1080,</div><div class="line">    &quot;password&quot;:&quot;OikIryahoa&quot;,</div><div class="line">    &quot;timeout&quot;:60,</div><div class="line">    &quot;method&quot;:&quot;aes-256-cfb&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中：</p>
+<ul>
+<li><code>server</code> ：主机域名或者IP地址，尽量填IP (可以为服务器实际的IP地址或 <code>0.0.0.0</code> ) </li>
+<li><code>server_port</code> ：服务器监听端口</li>
+<li>local_port: 客户端连接端口</li>
+<li><code>password</code> ：密码</li>
+<li><code>timeout</code> ：连接超时时间，单位秒。要适中</li>
+<li><code>method</code> ：加密方式 默认为table,其他有rc4,rc4-md5,aes-128-cfb, aes-192-cfb, aes-256-cfb,bf-cfb, camellia-128-cfb, camellia-192-cfb,camellia-256-cfb, cast5-cfb, des-cfb</li>
+</ul>
+<p><strong>注意：</strong> </p>
+<ul>
+<li>如果客户端有OpenWRT路由器等设备，推荐 <code>rc4-md5</code> ，性能更好；否则可以选用安全性更好的 <code>aes-256-cfb</code> 等。</li>
+<li><code>server</code> 配置项表示主机的域名或IP地址，这里默认情况下是 <code>127.0.0.1</code> 但不建议设置成 <code>127.0.0.1</code> ，测试时发现无法正确连通。你可以设置成 <strong><code>0.0.0.0</code></strong> 或 <strong>真实的服务器所在的IP地址</strong>。修改配置文件重启后生效。</li>
+<li>默认的客户端的IP地址为 <code>127.0.0.1</code></li>
+</ul>
+<hr>
+<h5 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h5><p>上面有提到，通过deb包安装后就默认启动了，通过如下命令来控制：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo service shadowsocks-libev start</div><div class="line">$ sudo service shadowsocks-libev stop</div><div class="line">$ sudo service shadowsocks-libev status</div><div class="line">$ sudo service shadowsocks-libev restart</div></pre></td></tr></table></figure>
+<p>安装后的shadowsocks程序名为 <code>ss-server</code> ，程序目录为 <code>/usr/bin/ss-server</code> 。</p>
+<p>查看 <code>ss-server</code> 的启动信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ sudo service shadowsocks-libev status</div><div class="line"> * shadowsocks-libev is not running</div><div class="line"></div><div class="line">$ ps ax |grep ss-server</div><div class="line">40160 ?        Ss     0:00 /usr/bin/ss-server -c /etc/shadowsocks-libev/config.json -a root -u -f /var/run/shadowsocks-libev/shadowsocks-libev.pid -u</div><div class="line">40162 ?        S+     0:00 grep --color=auto ss-server</div></pre></td></tr></table></figure>
+<p>注意其中有 <code>-u</code>，表示会通过udp的方式进行连接。</p>
+<p>通过 <code>netstat -lnp</code> 可以查看 <code>ss-server</code> 监听的端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ netstat -lnp</div><div class="line">(No info could be read for &quot;-p&quot;: geteuid()=1000 but you should be root.)</div><div class="line">Active Internet connections (only servers)</div><div class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</div><div class="line">tcp        0      0 0.0.0.0:8388            0.0.0.0:*               LISTEN      -                          </div><div class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -               </div><div class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -               </div><div class="line">tcp6       0      0 :::80                   :::*                    LISTEN      -               </div><div class="line">tcp6       0      0 :::22                   :::*                    LISTEN      -                        </div><div class="line">udp        0      0 0.0.0.0:8388            0.0.0.0:*                           -</div></pre></td></tr></table></figure>
+<p>可以看到 <code>ss-server</code> 通过 <code>tcp</code> 和 <code>udp</code> 两种方式监听了 <code>8388</code> 端口。</p>
+<hr>
+<h4 id="shadowsocks-客户端的设置"><a href="#shadowsocks-客户端的设置" class="headerlink" title="shadowsocks 客户端的设置"></a>shadowsocks 客户端的设置</h4><p>shadowsocks 默认支持多种客户端。可以从 <a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">Shadowsocks - Clients</a> 下载对应平台的客户端软件。</p>
+<h5 id="windows-客户端"><a href="#windows-客户端" class="headerlink" title="windows 客户端"></a>windows 客户端</h5><p>windows用户可以从 <a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="external">Releases · shadowsocks/shadowsocks-windows · GitHub</a> 下载安装包。解压后得到 <code>Shadowsocks.exe</code> 程序。</p>
+<p>运行，配置 <code>服务器地址</code> <code>服务器端口</code> <code>密码</code> <code>加密方式</code> 即可。按照配置文件中的设置，默认监听客户端所在本地系统 <code>127.0.0.1</code> 的 <code>1080</code> 端口。</p>
+<p>更加详细的内容可以参考如下文章：</p>
+<ul>
+<li><a href="https://github.com/shadowsocks/shadowsocks-windows/wiki/Shadowsocks-Windows-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E" target="_blank" rel="external">Shadowsocks Windows 使用说明 · shadowsocks/shadowsocks-windows Wiki · GitHub</a></li>
+</ul>
+<hr>
+<h5 id="Chrome-SwitchyOmega实现科学上网"><a href="#Chrome-SwitchyOmega实现科学上网" class="headerlink" title="Chrome+SwitchyOmega实现科学上网"></a>Chrome+SwitchyOmega实现科学上网</h5><p>待续。。。</p>
+<hr>
+<h4 id="shadowsocks-libev-的多用户配置"><a href="#shadowsocks-libev-的多用户配置" class="headerlink" title="shadowsocks-libev 的多用户配置"></a>shadowsocks-libev 的多用户配置</h4><p>C语言编写的shadowsocks客户端/服务端软件shadowsocks-libev并不像go版本或python版本的shadowsocks客户端/服务端软件那样直接支持多实例配置，具体可以查看如下说明：</p>
+<ul>
+<li><a href="https://github.com/shadowsocks/shadowsocks-libev/issues/5" target="_blank" rel="external">please support multi-port config.json · Issue #5</a></li>
+</ul>
+<p><code>shadowsocks-libev</code> 版本默认不支持在同一个配置文件 <code>config.json</code> 中一次设置多个端口和密码，如果想要设置多个，可以通过添加多个配置文件来实现。</p>
+<h5 id="方式一"><a href="#方式一" class="headerlink" title="方式一"></a>方式一</h5><p>先停止 <code>ss-server</code> 服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo service shadowsocks-libev status</div><div class="line"> * shadowsocks-libev is running</div><div class="line">$ sudo service shadowsocks-libev stop</div><div class="line">$ sudo service shadowsocks-libev status</div><div class="line"> * shadowsocks-libev is not running</div></pre></td></tr></table></figure>
+<p>然后，拷贝一份原来的配置文件，自定义新的文件名，只要保证扩展名为 <code>.json</code> 即可，我这里命名为 <code>configuser1.json</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd /etc/shadowsocks-libev</div><div class="line">$ sudo cp config.json configuser1.json</div><div class="line">$ sudo vim configuser1.json</div></pre></td></tr></table></figure>
+<p>修改配置参数中的端口号，密码等：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server&quot;:&quot;0.0.0.0&quot;,</div><div class="line">    &quot;server_port&quot;:8398,</div><div class="line">    &quot;local_port&quot;:1080,</div><div class="line">    &quot;password&quot;:&quot;OikIrya3oyt&quot;,</div><div class="line">    &quot;timeout&quot;:60,</div><div class="line">    &quot;method&quot;:&quot;aes-256-cfb&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后启动 <code>ss-server</code> 服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo service shadowsocks-libev start</div><div class="line">$ sudo service shadowsocks-libev status</div><div class="line"> * shadowsocks-libev is running</div></pre></td></tr></table></figure>
+<p>执行如下命令添加新的配置文件设置 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ setsid ss-server -c /etc/shadowsocks-libev/***.json -u</div></pre></td></tr></table></figure>
+<p>注意将其中的 <code>***</code> 替换为你的配置文件名称。</p>
+<hr>
+<h5 id="方式二"><a href="#方式二" class="headerlink" title="方式二"></a>方式二</h5><p>如果你嫌上面的“停止-拷贝已有配置文件-重启”操作太麻烦，也可以直接新建一个json配置文件，然后填入如下配置信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;server&quot;:&quot;0.0.0.0&quot;,</div><div class="line">    &quot;server_port&quot;:8398,</div><div class="line">    &quot;local_port&quot;:1080,</div><div class="line">    &quot;password&quot;:&quot;OikIrya3oyt&quot;,</div><div class="line">    &quot;timeout&quot;:60,</div><div class="line">    &quot;method&quot;:&quot;aes-256-cfb&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意 <code>server_port</code> 要设置成新的端口号。</p>
+<p>然后直接执行如下命令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ setsid ss-server -c /etc/shadowsocks-libev/***.json -u</div></pre></td></tr></table></figure>
+<p>查看启动信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ps ax |grep ss-server</div><div class="line">40103 ?        Ss     0:00 ss-server -c /etc/shadowsocks-libev/configuser1.json -u</div><div class="line">40160 ?        Ss     0:00 /usr/bin/ss-server -c /etc/shadowsocks-libev/config.json -a root -u -f /var/run/shadowsocks-libev/shadowsocks-libev.pid -u</div><div class="line">40162 ?        S+     0:00 grep --color=auto ss-server</div></pre></td></tr></table></figure>
+<p>可以看到比之前多了一条后台服务。</p>
+<p>通过 <code>netstat -lnp</code> 来查看 <code>ss-server</code> 是否监听了多个端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ netstat -lnp</div><div class="line">(No info could be read for &quot;-p&quot;: geteuid()=1000 but you should be root.)</div><div class="line">Active Internet connections (only servers)</div><div class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</div><div class="line">tcp        0      0 0.0.0.0:8388            0.0.0.0:*               LISTEN      -                          </div><div class="line">tcp        0      0 0.0.0.0:8398            0.0.0.0:*               LISTEN      -      </div><div class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -               </div><div class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -               </div><div class="line">tcp6       0      0 :::80                   :::*                    LISTEN      -               </div><div class="line">tcp6       0      0 :::22                   :::*                    LISTEN      -                        </div><div class="line">udp        0      0 0.0.0.0:8388            0.0.0.0:*                           -     </div><div class="line">udp        0      0 0.0.0.0:8398            0.0.0.0:*                           -</div></pre></td></tr></table></figure>
+<p>这样，就实现了监听多个端口，实现多用户连接了。如果想要停止新增的监听端口，只需要重启shadowsocks服务就又恢复默认，只会监听的 <code>config.json</code> 中配置的端口了。</p>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><ul>
+<li><a href="https://github.com/iMeiji/shadowsocks_install/wiki/shadowsocks-libev" target="_blank" rel="external">shadowsocks libev</a> <strong>☆</strong></li>
+<li><a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">shadowsocks client</a></li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-windows/wiki/Shadowsocks-Windows-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E" target="_blank" rel="external">Shadowsocks Windows 使用说明</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Google/" rel="tag">#Google</a>
+          
+            <a href="/tags/Shadowsocks/" rel="tag">#Shadowsocks</a>
+          
+            <a href="/tags/科学上网/" rel="tag">#科学上网</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/01/first-install-ubuntu-need-config/" rel="next" title="重新安装Ubuntu系统后的必要设置">
+                <i class="fa fa-chevron-left"></i> 重新安装Ubuntu系统后的必要设置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/04/supervisor-process-management/" rel="prev" title="Linux下进程管理Supervisor">
+                Linux下进程管理Supervisor <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/02/use-shadowsocks-to-have-better-internet-experience/"
+           data-title="使用Shadowsocks轻松实现科学上网" data-url="http://yoursite.com/2016/10/02/use-shadowsocks-to-have-better-internet-experience/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#shadowsocks-libev-的安装"><span class="nav-number">1.</span> <span class="nav-text">shadowsocks-libev 的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#从源码安装-Ubuntu-Debian系统下"><span class="nav-number">1.1.</span> <span class="nav-text">从源码安装 (Ubuntu/Debian系统下)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#安装必须的包"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装必须的包</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#通过Git下载源码"><span class="nav-number">1.1.2.</span> <span class="nav-text">通过Git下载源码</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#直接从作者提供的软件源安装（Ubuntu-Debian）"><span class="nav-number">1.2.</span> <span class="nav-text">直接从作者提供的软件源安装（Ubuntu/Debian）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#先添加GPG-Key"><span class="nav-number">1.2.1.</span> <span class="nav-text">先添加GPG Key</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#配置安装源，在-etc-apt-sources-list末尾添加"><span class="nav-number">1.2.2.</span> <span class="nav-text">配置安装源，在/etc/apt/sources.list末尾添加</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#执行安装"><span class="nav-number">1.2.3.</span> <span class="nav-text">执行安装</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shadowsocks-libev-一键安装"><span class="nav-number">1.3.</span> <span class="nav-text">shadowsocks-libev 一键安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置与启动"><span class="nav-number">2.</span> <span class="nav-text">配置与启动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#配置文件"><span class="nav-number">2.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动"><span class="nav-number">2.2.</span> <span class="nav-text">启动</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shadowsocks-客户端的设置"><span class="nav-number">3.</span> <span class="nav-text">shadowsocks 客户端的设置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#windows-客户端"><span class="nav-number">3.1.</span> <span class="nav-text">windows 客户端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Chrome-SwitchyOmega实现科学上网"><span class="nav-number">3.2.</span> <span class="nav-text">Chrome+SwitchyOmega实现科学上网</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shadowsocks-libev-的多用户配置"><span class="nav-number">4.</span> <span class="nav-text">shadowsocks-libev 的多用户配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方式一"><span class="nav-number">4.1.</span> <span class="nav-text">方式一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方式二"><span class="nav-number">4.2.</span> <span class="nav-text">方式二</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">5.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

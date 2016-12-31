@@ -1,0 +1,695 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="zsh," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu系统下安装终极Shell-zsh">
+<meta property="og:url" content="http://yoursite.com/2016/10/05/ubuntu-install-zsh/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
+<meta property="og:updated_time" content="2016-12-31T08:34:22.854Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu系统下安装终极Shell-zsh">
+<meta name="twitter:description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/05/ubuntu-install-zsh/"/>
+
+  <title> Ubuntu系统下安装终极Shell-zsh | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ubuntu系统下安装终极Shell-zsh
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-05T10:39:10+08:00" content="2016-10-05">
+              2016-10-05
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/05/ubuntu-install-zsh/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/05/ubuntu-install-zsh/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="查看系统-shell"><a href="#查看系统-shell" class="headerlink" title="查看系统 shell"></a>查看系统 shell</h4><p>终端输入 <code>echo $SHELL</code> ，可以输出当前使用的shell。</p>
+<p>终端输入 <code>cat /etc/shells</code> ，可以输出当前系统已经安装的shell。</p>
+<hr>
+<h4 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h4><p>安装 <code>zsh</code> 需要 <code>git</code> 环境支持，请先确保已安装 <code>git</code> 环境：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install git</div></pre></td></tr></table></figure>
+<h5 id="安装-zsh-1"><a href="#安装-zsh-1" class="headerlink" title="安装 zsh"></a>安装 zsh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install zsh</div></pre></td></tr></table></figure>
+<h5 id="安装增强插件-oh-my-zsh"><a href="#安装增强插件-oh-my-zsh" class="headerlink" title="安装增强插件 oh-my-zsh"></a>安装增强插件 oh-my-zsh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// wget</div><div class="line">$ wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</div><div class="line"></div><div class="line">// curl</div><div class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh</div></pre></td></tr></table></figure>
+<h5 id="将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效"><a href="#将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效" class="headerlink" title="将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效"></a>将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ chsh -s /bin/zsh</div><div class="line">//或:</div><div class="line">$ chsh -s `which zsh`</div><div class="line"></div><div class="line"></div><div class="line">$ sudo reboot</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="zsh-主题"><a href="#zsh-主题" class="headerlink" title="zsh 主题"></a>zsh 主题</h4><p>zsh的默认配置项都在 <code>~/.zshrc</code> 文件中，例如里面的<code>ZSH_THEME=&quot;robbyrussell&quot;</code> 表示当前zsh的主题为<code>robbyrussell</code>.</p>
+<p>配置完之后，我们需要重启终端或打开新的标签，或者用以下命令刷新配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure></p>
+<p><code>oh-my-zsh</code> 提供了数十种主题，我们可以在目录 <code>~/.oh-my-zsh/themes</code> 中看到他们：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~/.oh-my-zsh/themes</div></pre></td></tr></table></figure>
+<p>如果你不知道选哪个好，我们可以设置成随机项：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZSH_THEME=&quot;random&quot;</div></pre></td></tr></table></figure>
+<p>oh-my-zsh官方提供的主题如下：<br><a href="https://github.com/robbyrussell/oh-my-zsh/wiki/themes" target="_blank" rel="external">Themes · robbyrussell/oh-my-zsh Wiki · GitHub</a></p>
+<hr>
+<h4 id="zsh-下的后台程序"><a href="#zsh-下的后台程序" class="headerlink" title="zsh 下的后台程序"></a>zsh 下的后台程序</h4><p>在 <code>zsh</code> 下，如果有后台运行的程序，此时执行 <code>exit</code> 会提示如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜  ~ exit</div><div class="line">zsh: you have running jobs.</div></pre></td></tr></table></figure>
+<p>在一般的 <code>Bash</code> 下，我们设置后台运行程序用 <code>&amp;</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python cnblog.py &amp;</div></pre></td></tr></table></figure>
+<p>而在 <code>zsh</code> 下，我们设置后台运行程序则需要用 <code>&amp;!</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python cnblog.py &amp;!</div></pre></td></tr></table></figure>
+<p>StackOverflow上的提示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Start the program with—</div><div class="line">dolphin &amp;!</div><div class="line">The &amp;! (or equivalently, &amp;|) is a zsh-specific shortcut to both background and disown the process, such that exiting the shell will leave it running.</div></pre></td></tr></table></figure>
+<p>详见：<a href="http://stackoverflow.com/questions/19302913/exit-zsh-but-leave-running-jobs-open" target="_blank" rel="external">bash - Exit zsh, but leave running jobs open? - Stack Overflow</a></p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://logicmd.net/2012/11/installing-zsh-on-ubuntu/" target="_blank" rel="external">在Ubuntu上安装zsh</a></li>
+<li><a href="https://ldsink.com/archives/install-zsh-on-ubuntu.html" target="_blank" rel="external">Ubuntu 上安装 zsh</a></li>
+<li><a href="https://segmentfault.com/a/1190000003019439" target="_blank" rel="external">[Linux] ubuntu安装zsh - TangShangWen - SegmentFault</a></li>
+<li><a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">oh-my-zsh</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zsh/" rel="tag">#zsh</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/04/supervisor-process-management/" rel="next" title="Linux下进程管理Supervisor">
+                <i class="fa fa-chevron-left"></i> Linux下进程管理Supervisor
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/06/ubuntu-install-mysql-db/" rel="prev" title="Ubuntu下安装及配置MySql数据库">
+                Ubuntu下安装及配置MySql数据库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/05/ubuntu-install-zsh/"
+           data-title="Ubuntu系统下安装终极Shell-zsh" data-url="http://yoursite.com/2016/10/05/ubuntu-install-zsh/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统-shell"><span class="nav-number">1.</span> <span class="nav-text">查看系统 shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-zsh"><span class="nav-number">2.</span> <span class="nav-text">安装 zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-zsh-1"><span class="nav-number">2.1.</span> <span class="nav-text">安装 zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装增强插件-oh-my-zsh"><span class="nav-number">2.2.</span> <span class="nav-text">安装增强插件 oh-my-zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效"><span class="nav-number">2.3.</span> <span class="nav-text">将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-主题"><span class="nav-number">3.</span> <span class="nav-text">zsh 主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-下的后台程序"><span class="nav-number">4.</span> <span class="nav-text">zsh 下的后台程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
