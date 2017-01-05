@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Nginx," />
+  <meta name="keywords" content="Linux,Glances," />
 
 
 
@@ -84,16 +84,16 @@
 
 
 
-<meta name="description" content="HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large">
+<meta name="description" content="Glances 是一个由 Python 编写，使用 psutil 库来从系统抓取信息的基于 curses 开发的跨平台命令行系统监视工具。 通过 Glances，我们可以监视 CPU，平均负载，内存，网络流量，磁盘 I/O，其他处理器 和 文件系统 空间的利用情况。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large">
-<meta property="og:url" content="http://yoursite.com/2016/12/30/nginx-request-entity-too-large/index.html">
+<meta property="og:title" content="Linux系统实时监控工具-Glances">
+<meta property="og:url" content="http://yoursite.com/2017/01/05/linux-real-time-monitoring-glances/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large">
-<meta property="og:updated_time" content="2016-12-31T08:34:22.854Z">
+<meta property="og:description" content="Glances 是一个由 Python 编写，使用 psutil 库来从系统抓取信息的基于 curses 开发的跨平台命令行系统监视工具。 通过 Glances，我们可以监视 CPU，平均负载，内存，网络流量，磁盘 I/O，其他处理器 和 文件系统 空间的利用情况。">
+<meta property="og:updated_time" content="2017-01-05T16:04:54.111Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large">
-<meta name="twitter:description" content="HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large">
+<meta name="twitter:title" content="Linux系统实时监控工具-Glances">
+<meta name="twitter:description" content="Glances 是一个由 Python 编写，使用 psutil 库来从系统抓取信息的基于 curses 开发的跨平台命令行系统监视工具。 通过 Glances，我们可以监视 CPU，平均负载，内存，网络流量，磁盘 I/O，其他处理器 和 文件系统 空间的利用情况。">
 
 
 
@@ -114,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/12/30/nginx-request-entity-too-large/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/01/05/linux-real-time-monitoring-glances/"/>
 
-  <title> HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large | IT范儿 </title>
+  <title> Linux系统实时监控工具-Glances | IT范儿 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -265,7 +265,7 @@
             
             
               
-                HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large
+                Linux系统实时监控工具-Glances
               
             
           </h1>
@@ -277,8 +277,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-30T10:50:55+08:00" content="2016-12-30">
-              2016-12-30
+            <time itemprop="dateCreated" datetime="2017-01-05T23:54:56+08:00" content="2017-01-05">
+              2017-01-05
             </time>
           </span>
 
@@ -288,8 +288,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/30/nginx-request-entity-too-large/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/30/nginx-request-entity-too-large/" itemprop="commentsCount"></span>
+                <a href="/2017/01/05/linux-real-time-monitoring-glances/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/05/linux-real-time-monitoring-glances/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -312,21 +312,33 @@
       
 
       
-        <h4 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h4><p>在使用gogs时，<code>git push</code> 代码报如下错误：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">error: RPC failed; HTTP 413 curl 22 The requested URL returned error: 413 Request Entity Too Large</div></pre></td></tr></table></figure>
-<p>经查证，是服务器上的nginx默认情况下只允许上传最大 <code>1m</code> 大小的文件。nginx默认配置如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Syntax:		client_max_body_size size;</div><div class="line">Default:	client_max_body_size 1m;</div><div class="line">Context:	http, server, location</div></pre></td></tr></table></figure>
+        <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><h5 id="通过-apt-get-方式来安装"><a href="#通过-apt-get-方式来安装" class="headerlink" title="通过 apt-get 方式来安装"></a>通过 <code>apt-get</code> 方式来安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install glances</div></pre></td></tr></table></figure>
 <hr>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>在 <code>nginx</code> 的配置文件 <code>nginx.conf</code> 中的 <code>http</code> 段内，添加 <code>client_max_body_size</code> 配置：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">http &#123;</div><div class="line">	...</div><div class="line">	client_max_body_size 50m;</div><div class="line">	...</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
-<p>后面的 <code>50m</code> 表示最大允许上传 <code>50M</code> 大小的文件。</p>
-<p>然后重新加载 <code>nginx</code> 配置信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo service nginx reload</div></pre></td></tr></table></figure>
+<h5 id="通过-pip-方式来安装-推荐"><a href="#通过-pip-方式来安装-推荐" class="headerlink" title="通过 pip 方式来安装(推荐)"></a>通过 <code>pip</code> 方式来安装(推荐)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo pip install python-dev</div><div class="line">$ sudo pip install glances</div></pre></td></tr></table></figure>
+<p>建议通过 <code>pip</code> 的方式来安装，因为我通过 <code>apt-get</code> 方式安装的 <code>glances</code> 版本为 <code>Glances version 1.7.3 with PsUtil 1.2.1</code> ，而通过 <code>pip</code> 安装的为 <code>Glances v2.7.1 with psutil v4.3.1</code> ，旧版本的功能比较简单。</p>
+<hr>
+<p>在安装过程中出现报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">warning: no previously-included files matching &apos;*&apos; found under directory &apos;docs/_build&apos;</div></pre></td></tr></table></figure>
+<p>首先执行如下命令并尝试再次安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install libpq-dev python-dev</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="通过官方给出的方式安装"><a href="#通过官方给出的方式安装" class="headerlink" title="通过官方给出的方式安装"></a>通过官方给出的方式安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -L https://bit.ly/glances | /bin/bash</div></pre></td></tr></table></figure>
+<p>or:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget -O- https://bit.ly/glances | /bin/bash</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>安装完成后，可以执行下面的命令启动 Glances：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ glances</div></pre></td></tr></table></figure>
+<p>可以看到类似下面的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">MyServer (Ubuntu 14.04 64bit / Linux 4.4.0-38-generic)                                            Uptime: 1:41:59</div><div class="line"></div><div class="line">CPU  [  3.0%]   CPU       3.0%  nice:     0.0%  ctx_sw:   193   MEM      6.5%   SWAP      0.0%   LOAD    2-core</div><div class="line">MEM  [  6.5%]   user:     1.3%  irq:      0.0%  inter:    266   total:  1.95G   total:   2.24G   1 min:    0.00</div><div class="line">SWAP [    0%]   system:   1.3%  iowait:   0.0%  sw_int:   372   used:    129M   used:        0   5 min:    0.00</div><div class="line">                idle:    97.1%  steal:    0.2%                  free:   1.82G   free:    2.24G   15 min:   0.00</div><div class="line"></div><div class="line">NETWORK     Rx/s   Tx/s   TASKS 114 (140 thr), 1 run, 113 slp, 0 oth sorted automatically</div><div class="line">docker0       0b     0b</div><div class="line">eth0        75Kb   44Kb     CPU%  MEM%  VIRT   RES   PID USER        NI S     TIME+   R/s   W/s Command </div><div class="line">lo            0b     0b      4.7   1.2  377M 23.2M 11918 tiger        0 R   0:01.90     0     0 /usr/bin/python /</div><div class="line">                             0.3   0.1  250M 2.63M   556 syslog       0 S   0:00.18     0     0 rsyslogd</div><div class="line">DISK I/O     R/s    W/s      0.0   0.0     0     0    18 root       -20 S   0:00.00     0     0 perf</div><div class="line">dm-0           0    19K      0.0   0.1 23.1M 2.12M   915 root         0 S   0:00.00     0     0 cron</div><div class="line">dm-1           0      0      0.0   0.2 42.4M 3.22M   630 root         0 S   0:00.10     0     0 /lib/systemd/syst</div><div class="line">xvda1          0      0      0.0   0.0     0     0    19 root         0 S   0:00.00     0     0 xenwatch</div><div class="line">xvda2          0      0      0.0   0.0     0     0    81 root       -20 S   0:00.00     0     0 bioset</div><div class="line">xvda5          0    19K      0.0   0.0     0     0     2 root         0 S   0:00.00     0     0 kthreadd</div><div class="line">xvdb           0      0      0.0   0.0     0     0    71 root       -20 S   0:00.00     0     0 bioset</div></pre></td></tr></table></figure>
+<p>要退出 <code>Glances</code> 终端，按 <code>ESC</code> 键或 <code>Ctrl + C</code>。</p>
+<hr>
+<h4 id="通过browser查看"><a href="#通过browser查看" class="headerlink" title="通过browser查看"></a>通过browser查看</h4><p>先安装 <code>bottle</code> ，然后通过 <code>-w</code> 参数启动浏览器服务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo pip install bottle</div><div class="line"></div><div class="line">$ glances -w</div><div class="line">Glances web server started on http://0.0.0.0:61208/</div></pre></td></tr></table></figure>
+<p>然后在浏览器端输入网址即可查看。</p>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
-<li><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size" target="_blank" rel="external">Module ngx_http_core_module</a></li>
-<li><a href="http://yanghao.org/blog/archives/365" target="_blank" rel="external">nginx client_max_body_size 的问题 | yanghao&#039;s blog</a></li>
-<li><a href="http://stackoverflow.com/questions/7489813/github-push-error-rpc-failed-result-22-http-code-413" target="_blank" rel="external">git - Github Push Error: RPC failed; result=22, HTTP code = 413 - Stack Overflow</a></li>
+<li><a href="https://github.com/nicolargo/glances" target="_blank" rel="external">https://github.com/nicolargo/glances</a></li>
+<li><a href="https://glances.readthedocs.io/en/stable/index.html" target="_blank" rel="external">https://glances.readthedocs.io/en/stable/index.html</a></li>
 </ul>
 
       
@@ -366,7 +378,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Nginx/" rel="tag">#Nginx</a>
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+            <a href="/tags/Glances/" rel="tag">#Glances</a>
           
         </div>
       
@@ -375,17 +389,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/28/python-independent-operating-environment-virtualenv/" rel="next" title="Python独立运行环境Virtualenv">
-                <i class="fa fa-chevron-left"></i> Python独立运行环境Virtualenv
+              <a href="/2017/01/05/wx-xiaochengxu-development-experience/" rel="next" title="微信小程序开发体验">
+                <i class="fa fa-chevron-left"></i> 微信小程序开发体验
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/01/05/wx-xiaochengxu-development-experience/" rel="prev" title="微信小程序开发体验">
-                微信小程序开发体验 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -411,8 +421,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/30/nginx-request-entity-too-large/"
-           data-title="HTTP 413 curl 22 The requested URL returned error 413 Request Entity Too Large" data-url="http://yoursite.com/2016/12/30/nginx-request-entity-too-large/">
+      <div class="ds-thread" data-thread-key="2017/01/05/linux-real-time-monitoring-glances/"
+           data-title="Linux系统实时监控工具-Glances" data-url="http://yoursite.com/2017/01/05/linux-real-time-monitoring-glances/">
       </div>
     
   </div>
@@ -523,7 +533,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题原因"><span class="nav-number">1.</span> <span class="nav-text">问题原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方法"><span class="nav-number">2.</span> <span class="nav-text">解决方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">3.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#通过-apt-get-方式来安装"><span class="nav-number">1.1.</span> <span class="nav-text">通过 apt-get 方式来安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过-pip-方式来安装-推荐"><span class="nav-number">1.2.</span> <span class="nav-text">通过 pip 方式来安装(推荐)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过官方给出的方式安装"><span class="nav-number">1.3.</span> <span class="nav-text">通过官方给出的方式安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过browser查看"><span class="nav-number">3.</span> <span class="nav-text">通过browser查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">4.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
             
           </div>
         </section>
