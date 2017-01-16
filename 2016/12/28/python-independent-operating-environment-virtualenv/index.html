@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Python,Virtualenv," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/12/28/python-independent-operating-environment-virtualenv/index.html">
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="Python下通过virtualenv为每个应用创建独立的开发环境，是他们互不影响。">
-<meta property="og:updated_time" content="2016-12-31T08:34:22.854Z">
+<meta property="og:updated_time" content="2017-01-16T15:48:39.261Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python独立运行环境Virtualenv">
 <meta name="twitter:description" content="Python下通过virtualenv为每个应用创建独立的开发环境，是他们互不影响。">
@@ -325,16 +325,18 @@
 <h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>我通常创建一个包含虚拟名称为 <code>venv</code> 文件夹的项目文件夹:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ mkdir myproject</div><div class="line">$ cd myproject</div><div class="line">$ virtualenv venv</div><div class="line">New python executable in venv/bin/python2</div><div class="line">Also creating executable in venv/bin/python</div><div class="line">Installing setuptools, pip...done.</div></pre></td></tr></table></figure>
 <h4 id="激活虚拟环境"><a href="#激活虚拟环境" class="headerlink" title="激活虚拟环境"></a>激活虚拟环境</h4><p>现在，每次需要使用项目时，必须先激活相应的环境。</p>
-<h5 id="在Linux系统下执行"><a href="#在Linux系统下执行" class="headerlink" title="在Linux系统下执行"></a>在Linux系统下执行</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ ls</div><div class="line">-- venv</div><div class="line">$  . venv/bin/activate</div><div class="line"></div><div class="line">//结果：</div><div class="line">(venv)tiger@VirtualBox:~/xbox/myflask$</div></pre></td></tr></table></figure>
-<h5 id="在Win系统下执行"><a href="#在Win系统下执行" class="headerlink" title="在Win系统下执行"></a>在Win系统下执行</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ls</div><div class="line">venv/</div><div class="line">venv\Scripts\activate.bat</div><div class="line">(venv) D:\YYYY</div></pre></td></tr></table></figure>
-<p>你现在就进入你的 <code>virtualenv</code> 虚拟环境了（注意查看你的 shell 提示符已经改变了）。</p>
+<h5 id="在Linux系统下执行"><a href="#在Linux系统下执行" class="headerlink" title="在Linux系统下执行"></a>在Linux系统下执行</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ ls</div><div class="line">-- venv</div><div class="line">$ source ./venv/bin/activate</div><div class="line"></div><div class="line">//结果：</div><div class="line">(venv)tiger@VirtualBox:~/xbox/myflask$</div></pre></td></tr></table></figure>
+<h5 id="在Win系统下执行"><a href="#在Win系统下执行" class="headerlink" title="在Win系统下执行"></a>在Win系统下执行</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; ls</div><div class="line">venv/</div><div class="line">&gt; venv\Scripts\activate.bat</div><div class="line">(venv) D:\YYYY</div></pre></td></tr></table></figure>
+<p>你现在就进入你的 <code>virtualenv</code> 虚拟环境了（<strong>注意查看你的 <code>shell</code> 提示符已经改变了</strong>）。</p>
 <hr>
 <h4 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h4><p>通过 <code>deactivate</code> 命令退出虚拟环境。</p>
 <hr>
 <h4 id="virtualenv-命令整理"><a href="#virtualenv-命令整理" class="headerlink" title="virtualenv 命令整理"></a>virtualenv 命令整理</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install virtualenv</div></pre></td></tr></table></figure>
 <h5 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">virtualenv &lt;EnvName&gt;</div></pre></td></tr></table></figure>
-<h5 id="nix"><a href="#nix" class="headerlink" title="*nix"></a>*nix</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ source bin/activate</div></pre></td></tr></table></figure>
-<h5 id="Win"><a href="#Win" class="headerlink" title="Win"></a>Win</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; \path\to\EnvName\Scripts\activate</div></pre></td></tr></table></figure>
+<h5 id="nix"><a href="#nix" class="headerlink" title="*nix"></a>*nix</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ source ./venv/bin/activate</div></pre></td></tr></table></figure>
+<p>此处 <code>venv</code> 为 <code>&lt;EnvName&gt;</code></p>
+<h5 id="Win"><a href="#Win" class="headerlink" title="Win"></a>Win</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; venv\Scripts\activate</div></pre></td></tr></table></figure>
+<p>此处 <code>venv</code> 为 <code>&lt;EnvName&gt;</code></p>
 <h5 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deactivate</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
@@ -380,8 +382,6 @@
         <div class="post-tags">
           
             <a href="/tags/Python/" rel="tag">#Python</a>
-          
-            <a href="/tags/Virtualenv/" rel="tag">#Virtualenv</a>
           
         </div>
       
@@ -472,7 +472,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -489,7 +489,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
