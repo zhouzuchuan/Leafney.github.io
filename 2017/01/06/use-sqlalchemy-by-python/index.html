@@ -1,0 +1,764 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python,SQLAlchemy," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Python中通过SQLAlchemy操作数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python下操作SQLAlchemy">
+<meta property="og:url" content="http://yoursite.com/2017/01/06/use-sqlalchemy-by-python/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Python中通过SQLAlchemy操作数据库">
+<meta property="og:updated_time" content="2017-02-21T16:01:22.357Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python下操作SQLAlchemy">
+<meta name="twitter:description" content="Python中通过SQLAlchemy操作数据库">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/06/use-sqlalchemy-by-python/"/>
+
+  <title> Python下操作SQLAlchemy | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python下操作SQLAlchemy
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-06T09:31:03+08:00" content="2017-01-06">
+              2017-01-06
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/06/use-sqlalchemy-by-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/06/use-sqlalchemy-by-python/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Python中通过SQLAlchemy操作数据库。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>通过pip安装SQLAlchemy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install sqlalchemy</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="初始化数据库连接"><a href="#初始化数据库连接" class="headerlink" title="初始化数据库连接"></a>初始化数据库连接</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 初始化数据库连接</div><div class="line">engine=create_engine(&apos;sqlite:///./cnblogblog.db&apos;,echo=True)</div></pre></td></tr></table></figure>
+<p>其中，<code>echo=True</code> 表示 是否将执行过程中的sql语句进行输出显示</p>
+<h5 id="常用数据库连接写法"><a href="#常用数据库连接写法" class="headerlink" title="常用数据库连接写法"></a>常用数据库连接写法</h5><h6 id="整理常用-直接拷贝"><a href="#整理常用-直接拷贝" class="headerlink" title="整理常用-直接拷贝"></a>整理常用-直接拷贝</h6><ol>
+<li>sqlite内存：<code>engine = create_engine(&#39;sqlite:///:memory:&#39;, echo=True)</code></li>
+<li>sqlite文件: <code>engine=create_engine(&#39;sqlite:///./cnblogblog.db&#39;,echo=True)</code></li>
+<li>mysql+pymysql：<code>engine = create_engine(&quot;mysql+pymysql://username:password@hostname:port/dbname&quot;,echo=True)</code></li>
+<li>mssql+pymssql: <code>engine = create_engine(&#39;mssql+pymssql://username:password@hostname:port/dbname&#39;,echo=True)</code></li>
+</ol>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from sqlalchemy import create_engine</div></pre></td></tr></table></figure>
+<p><code>create_engine()</code> 用来初始化数据库连接。SQLAlchemy用一个字符串表示连接信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&apos;数据库类型+数据库驱动名称://用户名:口令@机器地址:端口号/数据库名&apos;</div></pre></td></tr></table></figure>
+<ol>
+<li>sqlite 内存 示例 <code>engine = create_engine(&#39;sqlite:///:memory:&#39;, echo=True)</code></li>
+<li>sqlite 文件 示例 <code>engine=create_engine(&#39;sqlite:///./cnblogblog.db&#39;,echo=True)</code></li>
+<li>mysql通用 <code>engine = create_engine(&#39;mysql+mysqlconnector://root:password@localhost:3306/test&#39;)</code></li>
+<li>mysql+pymysql 示例 <code>engine = create_engine(&quot;mysql+pymysql://username:password@hostname/dbname&quot;, encoding=&quot;utf8&quot;, echo=True)</code></li>
+<li>postgresql 示例 <code>engine = create_engine(&#39;postgresql://scott:tiger@localhost:5432/mydatabase&#39;)</code></li>
+</ol>
+<p><strong>PostgreSQL</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># default</div><div class="line">engine = create_engine(&apos;postgresql://scott:tiger@localhost/mydatabase&apos;)</div><div class="line"></div><div class="line"># psycopg2</div><div class="line">engine = create_engine(&apos;postgresql+psycopg2://scott:tiger@localhost/mydatabase&apos;)</div><div class="line"></div><div class="line"># pg8000</div><div class="line">engine = create_engine(&apos;postgresql+pg8000://scott:tiger@localhost/mydatabase&apos;)</div></pre></td></tr></table></figure>
+<p><strong>MySQL</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># default</div><div class="line">engine = create_engine(&apos;mysql://scott:tiger@localhost/foo&apos;)</div><div class="line"></div><div class="line"># mysql-python</div><div class="line">engine = create_engine(&apos;mysql+mysqldb://scott:tiger@localhost/foo&apos;)</div><div class="line"></div><div class="line"># MySQL-connector-python</div><div class="line">engine = create_engine(&apos;mysql+mysqlconnector://scott:tiger@localhost/foo&apos;)</div><div class="line"></div><div class="line"># OurSQL</div><div class="line">engine = create_engine(&apos;mysql+oursql://scott:tiger@localhost/foo&apos;)</div></pre></td></tr></table></figure>
+<p><strong>Oracle</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">engine = create_engine(&apos;oracle://scott:tiger@127.0.0.1:1521/sidname&apos;)</div><div class="line"></div><div class="line">engine = create_engine(&apos;oracle+cx_oracle://scott:tiger@tnsname&apos;)</div></pre></td></tr></table></figure>
+<p><strong>MS SQL</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># pyodbc</div><div class="line">engine = create_engine(&apos;mssql+pyodbc://scott:tiger@mydsn&apos;)</div><div class="line"></div><div class="line"># pymssql</div><div class="line">engine = create_engine(&apos;mssql+pymssql://scott:tiger@hostname:port/dbname&apos;)</div></pre></td></tr></table></figure>
+<p><strong>SQLite</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># sqlite://&lt;nohostname&gt;/&lt;path&gt;</div><div class="line"># where &lt;path&gt; is relative:</div><div class="line">engine = create_engine(&apos;sqlite:///foo.db&apos;)</div><div class="line"></div><div class="line">#Unix/Mac - 4 initial slashes in total</div><div class="line">engine = create_engine(&apos;sqlite:////absolute/path/to/foo.db&apos;)</div><div class="line">#Windows</div><div class="line">engine = create_engine(&apos;sqlite:///C:\\path\\to\\foo.db&apos;)</div><div class="line">#Windows alternative using raw string</div><div class="line">engine = create_engine(r&apos;sqlite:///C:\path\to\foo.db&apos;)</div><div class="line"></div><div class="line">#memory</div><div class="line">engine = create_engine(&apos;sqlite://&apos;)</div></pre></td></tr></table></figure>
+<p>详见官网文档：<a href="http://docs.sqlalchemy.org/en/latest/core/engines.html" target="_blank" rel="external">Engine Configuration</a></p>
+<hr>
+<h5 id="如何设置初始化表结构时字段的-主键-自增-等属性"><a href="#如何设置初始化表结构时字段的-主键-自增-等属性" class="headerlink" title="如何设置初始化表结构时字段的 主键 自增 等属性"></a>如何设置初始化表结构时字段的 <code>主键</code> <code>自增</code> 等属性</h5><p>sqlite中如果设置主键自增，还需要添加 <code>__table_args__</code> 参数，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Person(Base):</div><div class="line">    __tablename__ = &quot;person&quot;</div><div class="line">    __table_args__ = &#123;&apos;sqlite_autoincrement&apos;: True&#125;</div><div class="line"></div><div class="line">	id=Column(Integer,primary_key=True,autoincrement=True)</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="http://stackoverflow.com/questions/4567574/pylons-sqlite-and-autoincrementing-fields" target="_blank" rel="external">sqlalchemy - Pylons, SQlite and autoincrementing fields - Stack Overflow</a></li>
+</ul>
+<h5 id="设置表结构的-不可空-默认值-唯一-等属性"><a href="#设置表结构的-不可空-默认值-唯一-等属性" class="headerlink" title="设置表结构的 不可空  默认值  唯一 等属性"></a>设置表结构的 <code>不可空</code>  <code>默认值</code>  <code>唯一</code> 等属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 定义User对象</div><div class="line">class User(Base):</div><div class="line">	&quot;&quot;&quot;Users table&quot;&quot;&quot;</div><div class="line">	# 表的名字</div><div class="line">	__tablename__=&apos;users&apos;</div><div class="line">	__table_args__=&#123;&apos;sqlite_autoincrement&apos;: True&#125;</div><div class="line">	# 表结构</div><div class="line">	id=Column(Integer,primary_key=True,autoincrement=True)</div><div class="line">	name=Column(String(32),nullable=False)</div><div class="line">	age=Column(Integer,default=0)</div><div class="line">	password=Column(String(64),unique=True)</div></pre></td></tr></table></figure>
+<h5 id="插入中文数据"><a href="#插入中文数据" class="headerlink" title="插入中文数据"></a>插入中文数据</h5><p>直接插入中文数据，可能会报如下错误信息：</p>
+<blockquote>
+<p>sqlalchemy.exc.ProgrammingError: (sqlite3.ProgrammingError) You must not use 8-bit bytestrings unless you use a text_factory that can interpret 8-bit bytestrings (like text_factory = str). It is highly recommended that you instead just switch your application to Unicode strings.</p>
+</blockquote>
+<p>相应的解决方法是：将 <code>str</code> 类型的中文转成 <code>unicode</code> 类型再插入即可。</p>
+<p>示例代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 添加一条数据</div><div class="line">def addUserForZhCn():</div><div class="line">	session=DBSession()</div><div class="line">	new_user=User(name=u&apos;关羽2&apos;,password=&apos;12322233&apos;)</div><div class="line">	session.add(new_user)</div><div class="line">	session.commit()</div><div class="line">	session.close()</div></pre></td></tr></table></figure>
+<p>参考自：</p>
+<blockquote>
+<p>Python 官方文档中不建议使用这种方式：use of sys.setdefaultencoding() has always been discouraged，在文件头写上 # coding: utf-8 之类的注释并且在 Unicode 字符串前加上 <code>u</code> 就可以了。</p>
+</blockquote>
+<p><a href="http://python-china.org/t/1148" target="_blank" rel="external">Flask Sqlalchemy中文模糊搜索错误</a></p>
+<hr>
+<h5 id="Mysql-指定表的引擎和编码格式"><a href="#Mysql-指定表的引擎和编码格式" class="headerlink" title="Mysql 指定表的引擎和编码格式"></a>Mysql 指定表的引擎和编码格式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">from sqlalchemy import Column, Integer, String</div><div class="line"></div><div class="line">class User(BaseModel):</div><div class="line">	__tablename__=&apos;users&apos;</div><div class="line">	__table_args__=&#123;</div><div class="line">		&quot;mysql_engine&quot;:&quot;InnoDB&quot;,   # 表的引擎</div><div class="line">		&quot;mysql_charset&quot;:&quot;utf8&quot;   # 表的编码格式</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	id=Column(&quot;id&quot;,Integer,primary_key=True,autoincrement=True)</div><div class="line">	name=Column(&quot;name&quot;,String(50),nullable=False)</div><div class="line">	age=Column(&quot;age&quot;,Integer,default=0)</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="如果记录存在则修改，不存在则添加"><a href="#如果记录存在则修改，不存在则添加" class="headerlink" title="如果记录存在则修改，不存在则添加"></a>如果记录存在则修改，不存在则添加</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">session.merge()</div></pre></td></tr></table></figure>
+<h5 id="模型的属性名称和表的字段名称不一致"><a href="#模型的属性名称和表的字段名称不一致" class="headerlink" title="模型的属性名称和表的字段名称不一致"></a>模型的属性名称和表的字段名称不一致</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">id=Column(&quot;id&quot;,Integer,primary_key=True,autoincrement=True)</div><div class="line">name=Column(&quot;name&quot;,String(50),nullable=False)</div></pre></td></tr></table></figure>
+<h5 id="增删改-查询"><a href="#增删改-查询" class="headerlink" title="增删改 查询"></a>增删改 查询</h5><p>增删改需要 <code>commit</code> 操作 :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">session=DBSession()</div><div class="line">duser=session.query(User).filter(User.id==2).delete()</div><div class="line">session.commit()</div><div class="line">session.close()</div></pre></td></tr></table></figure>
+<p>查询不需要 <code>commit</code> 操作: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">session=DBSession()</div><div class="line">quser=session.query(User).filter(User.id==4).one()</div><div class="line">print(&apos;name:&apos;,quser.name)</div><div class="line">session.close()</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="first-和-one-的区别"><a href="#first-和-one-的区别" class="headerlink" title="first() 和 one() 的区别"></a>first() 和 one() 的区别</h5><p>query.first()：返回第一个元素<br>query.one()有且只有一个元素时才正确返回</p>
+<p>first()方法限制并仅作为标量返回结果集的第一条记录</p>
+<p>one()方法，完整的提取所有的记录行，并且如果没有明确的一条记录行(没有找到这条记录)或者结果中存在多条记录行，将会引发错误异常NoResultFound或者MultipleResultsFound。</p>
+<p>当没有数据行返回时，使用 <code>one()</code> 方法会报错，可以使用 <code>one_or_none()</code> 方法来代替，当没有数据时，会返回 <code>None</code> 而不是异常。</p>
+<hr>
+<h5 id="执行sql语句"><a href="#执行sql语句" class="headerlink" title="执行sql语句"></a>执行sql语句</h5><p>绑定参数也可以用基于字符串的SQL指派，使用冒号来标记替代参数，然后再使用params()方法指定相应的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">session.query(User).filter(&quot;id&lt;:value and name=:name&quot;).\</div><div class="line">params(value=224, name=&apos;fred&apos;).order_by(User.id).one()</div></pre></td></tr></table></figure>
+<p><strong>execute() 方法</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">s=DBSession()</div><div class="line"># 不能用 `?` 的方式来传递参数 要用 `:param` 的形式来指定参数</div><div class="line"># s.execute(&apos;INSERT INTO users (name, age, password) VALUES (?, ?, ?)&apos;,(&apos;bigpang&apos;,2,&apos;1122121&apos;))  </div><div class="line"># 这样执行报错 </div><div class="line"></div><div class="line"># s.execute(&apos;INSERT INTO users (name, age, password) VALUES (:aa, :bb, :cc)&apos;,(&#123;&apos;aa&apos;:&apos;bigpang2&apos;,&apos;bb&apos;:22,&apos;cc&apos;:&apos;998&apos;&#125;))</div><div class="line"># s.commit()</div><div class="line"># 这样执行成功</div><div class="line"></div><div class="line">res=s.execute(&apos;select * from users where age=:aaa&apos;,&#123;&apos;aaa&apos;:4&#125;)</div><div class="line"># print(res[&apos;name&apos;])  # 错误</div><div class="line"># print(res.name)    # 错误</div><div class="line"># print(type(res))   # 错误</div><div class="line">for r in res:</div><div class="line">	print(r[&apos;name&apos;])</div><div class="line">	</div><div class="line">s.close()</div></pre></td></tr></table></figure>
+<p>可参考：<a href="http://stackoverflow.com/questions/17972020/how-to-execute-raw-sql-in-sqlalchemy-flask-app" target="_blank" rel="external">python - How to execute raw SQL in SQLAlchemy-flask app - Stack Overflow</a></p>
+<hr>
+<h5 id="执行sql语句-高级"><a href="#执行sql语句-高级" class="headerlink" title="执行sql语句 高级"></a>执行sql语句 高级</h5><ul>
+<li>执行sql语句，可以使用传统的 <code>connection</code> 方式，也可以使用 <code>session</code> 方式</li>
+<li>sqlalchemy下的传统connection方式，执行sql语句时不需要 <code>cursor</code> 光标，执行增删改直接生效，执行sql语句不需要 <code>commit</code> 操作。</li>
+<li>sqlalchemy下的传统connection方式，参数形式与传统方式相同，使用 <code>?</code> 占位，元祖形式传值</li>
+<li>sqlalchemy下的session方式，执行增删改需要 <code>commit</code> 操作。</li>
+<li>sqlalchemy下的session方式，参数形式为 dict, 在sql语句中使用 <code>:key</code> 占位，dict形式传值</li>
+</ul>
+<hr>
+<h4 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"># **传统 connection方式**</div><div class="line"># 创建一个connection对象，使用方法与调用python自带的sqlite使用方式类似</div><div class="line"># 使用with 来创建 conn，不需要显示执行关闭连接</div><div class="line"># with engine.connect() as conn:</div><div class="line"># 	res=conn.execute(&apos;select * from users&apos;)</div><div class="line"># 	data=res.fetchone()</div><div class="line"># 	print(&apos;user is %s&apos; %data[1])</div><div class="line"></div><div class="line"># 与python自带的sqlite不同，这里不需要 cursor 光标，执行sql语句不需要commit。如果是增删改，则直接生效，也不需要commit.</div><div class="line"></div><div class="line"># **传统 connection 事务**</div><div class="line">with engine.connect() as conn:</div><div class="line">	trans=conn.begin()</div><div class="line">	try:</div><div class="line">		r1=conn.execute(&quot;select * from users&quot;)</div><div class="line">		print(r1.fetchone()[1])</div><div class="line">		r2=conn.execute(&quot;insert into users (name,age,password) values (?,?,?)&quot;,(&apos;tang&apos;,5,&apos;133444&apos;))</div><div class="line">		trans.commit()</div><div class="line">	except:</div><div class="line">		trans.rollback()</div><div class="line">		raise</div><div class="line"></div><div class="line"># **session**</div><div class="line">session=DBSession()</div><div class="line"></div><div class="line">session.execute(&apos;select * from users&apos;)</div><div class="line">session.execute(&apos;insert into users (name,age,password) values (:name,:age,:password)&apos;,&#123;&quot;name&quot;:&apos;dayuzhishui&apos;,&apos;age&apos;:6,&apos;password&apos;:&apos;887&apos;&#125;)</div><div class="line"># 注意参数使用dict，并在sql语句中使用:key占位</div><div class="line"></div><div class="line"># 如果是增删改，需要 commit</div><div class="line">session.commit()</div><div class="line"># 用完记得关闭，也可以用 with</div><div class="line">session.close()</div></pre></td></tr></table></figure>
+<p>详情可见：<a href="https://segmentfault.com/a/1190000006949536" target="_blank" rel="external">sqlalchemy学习笔记 - python学习笔记 - SegmentFault</a></p>
+<hr>
+<h4 id="完整测试代码"><a href="#完整测试代码" class="headerlink" title="完整测试代码"></a>完整测试代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div></pre></td><td class="code"><pre><div class="line"># coding:utf-8</div><div class="line"></div><div class="line">from sqlalchemy import create_engine</div><div class="line"></div><div class="line">from sqlalchemy.ext.declarative import declarative_base</div><div class="line"></div><div class="line">from sqlalchemy import Column, Integer, String</div><div class="line"></div><div class="line">from sqlalchemy.orm import sessionmaker</div><div class="line"></div><div class="line"># ***************************</div><div class="line"></div><div class="line"># 初始化数据库连接</div><div class="line">engine=create_engine(&apos;sqlite:///./cnblogblog.db&apos;,echo=True)</div><div class="line"></div><div class="line"># 创建对象的基类</div><div class="line">Base=declarative_base()</div><div class="line"># 创建会话类</div><div class="line">DBSession=sessionmaker(bind=engine)</div><div class="line"></div><div class="line"># ******************</div><div class="line"></div><div class="line"># 定义User对象</div><div class="line">class User(Base):</div><div class="line">	&quot;&quot;&quot;Users table&quot;&quot;&quot;</div><div class="line">	# 表的名字</div><div class="line">	__tablename__=&apos;users&apos;</div><div class="line">	__table_args__=&#123;&apos;sqlite_autoincrement&apos;: True&#125;</div><div class="line">	# 表结构</div><div class="line">	id=Column(Integer,primary_key=True,autoincrement=True)</div><div class="line">	name=Column(String(32),nullable=False)</div><div class="line">	age=Column(Integer,default=0)</div><div class="line">	password=Column(String(64),unique=True)</div><div class="line"></div><div class="line"></div><div class="line">class Blog(Base):</div><div class="line">	&quot;&quot;&quot;docstring for Blog&quot;&quot;&quot;</div><div class="line"></div><div class="line">	__tablename__=&apos;blogs&apos;</div><div class="line"></div><div class="line">	id=Column(Integer,primary_key=True)</div><div class="line">	title=Column(String(100))</div><div class="line">	desc=Column(String(500))</div><div class="line"></div><div class="line">class Tips(Base):</div><div class="line">	&quot;&quot;&quot;docstring for Tips&quot;&quot;&quot;</div><div class="line">	</div><div class="line">	__tablename__=&apos;tips&apos;</div><div class="line">		</div><div class="line">	id=Column(Integer,primary_key=True)</div><div class="line">	name=Column(String(32))</div><div class="line"></div><div class="line"># ***********************</div><div class="line"></div><div class="line"># 添加一条数据</div><div class="line">def newUser():</div><div class="line">	# 创建会话对象</div><div class="line">	session=DBSession()</div><div class="line"></div><div class="line">	new_user=User(name=&apos;Jery&apos;,password=&apos;123&apos;)</div><div class="line"></div><div class="line">	session.add(new_user)</div><div class="line"></div><div class="line">	session.commit()</div><div class="line">	session.close()</div><div class="line"></div><div class="line"># 添加一条数据</div><div class="line">def addUserForZhCn():</div><div class="line">	session=DBSession()</div><div class="line">	new_user=User(name=u&apos;关羽2&apos;,password=&apos;12322233&apos;)</div><div class="line">	session.add(new_user)</div><div class="line">	session.commit()</div><div class="line">	session.close()</div><div class="line"></div><div class="line"># 新增多条数据</div><div class="line">def addmoreUser():</div><div class="line">	session=DBSession()</div><div class="line">	session.add_all([</div><div class="line">		User(name=&apos;guanyu&apos;,age=4,password=&apos;11111&apos;),</div><div class="line">		User(name=&apos;zhangfei&apos;,password=&apos;2233&apos;),</div><div class="line">		User(name=&apos;zhenji&apos;,password=&apos;44556&apos;)</div><div class="line">		])</div><div class="line">	session.commit()</div><div class="line">	session.close()</div><div class="line"></div><div class="line"># 查询</div><div class="line">def queryUser():</div><div class="line">	session=DBSession()</div><div class="line">	quser=session.query(User).filter(User.id==4).one()</div><div class="line">	print(&apos;name:&apos;,quser.name)</div><div class="line">	session.close()</div><div class="line"></div><div class="line"># 删除</div><div class="line">def deleteUser():</div><div class="line">	session=DBSession()</div><div class="line">	duser=session.query(User).filter(User.id==2).delete()</div><div class="line">	session.commit()</div><div class="line">	session.close()</div><div class="line"></div><div class="line"># 执行sql语句</div><div class="line">def SQlUser():</div><div class="line">	s=DBSession()</div><div class="line">	# 不能用 `?` 的方式来传递参数 要用 `:param` 的形式来指定参数</div><div class="line">	# s.execute(&apos;INSERT INTO users (name, age, password) VALUES (?, ?, ?)&apos;,(&apos;bigpang&apos;,2,&apos;1122121&apos;))  </div><div class="line">	# 这样执行报错 </div><div class="line">	</div><div class="line">	# s.execute(&apos;INSERT INTO users (name, age, password) VALUES (:aa, :bb, :cc)&apos;,(&#123;&apos;aa&apos;:&apos;bigpang2&apos;,&apos;bb&apos;:22,&apos;cc&apos;:&apos;998&apos;&#125;))</div><div class="line">	# s.commit()</div><div class="line">	# 这样执行成功</div><div class="line"></div><div class="line">	res=s.execute(&apos;select * from users where age=:aaa&apos;,&#123;&apos;aaa&apos;:4&#125;)</div><div class="line">	# print(res[&apos;name&apos;])  # 错误</div><div class="line">	# print(res.name)    # 错误</div><div class="line">	# print(type(res))   # 错误</div><div class="line">	for r in res:</div><div class="line">		print(r[&apos;name&apos;])</div><div class="line"></div><div class="line">	s.close()</div><div class="line"></div><div class="line"># 执行sql语句</div><div class="line">def SQlUser2():</div><div class="line"></div><div class="line">	# **传统 connection方式**</div><div class="line">	# 创建一个connection对象，使用方法与调用python自带的sqlite使用方式类似</div><div class="line">	# 使用with 来创建 conn，不需要显示执行关闭连接</div><div class="line">	# with engine.connect() as conn:</div><div class="line">	# 	res=conn.execute(&apos;select * from users&apos;)</div><div class="line">	# 	data=res.fetchone()</div><div class="line">	# 	print(&apos;user is %s&apos; %data[1])</div><div class="line"></div><div class="line">	# 与python自带的sqlite不同，这里不需要 cursor 光标，执行sql语句不需要commit。如果是增删改，则直接生效，也不需要commit.</div><div class="line">	</div><div class="line">	# **传统 connection 事务**</div><div class="line">	with engine.connect() as conn:</div><div class="line">		trans=conn.begin()</div><div class="line">		try:</div><div class="line">			r1=conn.execute(&quot;select * from users&quot;)</div><div class="line">			print(r1.fetchone()[1])</div><div class="line">			r2=conn.execute(&quot;insert into users (name,age,password) values (?,?,?)&quot;,(&apos;tang&apos;,5,&apos;133444&apos;))</div><div class="line">			trans.commit()</div><div class="line">		except:</div><div class="line">			trans.rollback()</div><div class="line">			raise</div><div class="line"></div><div class="line">	# **session**</div><div class="line">	session=DBSession()</div><div class="line"></div><div class="line">	session.execute(&apos;select * from users&apos;)</div><div class="line">	session.execute(&apos;insert into users (name,age,password) values (:name,:age,:password)&apos;,&#123;&quot;name&quot;:&apos;dayuzhishui&apos;,&apos;age&apos;:6,&apos;password&apos;:&apos;887&apos;&#125;)</div><div class="line">	# 注意参数使用dict，并在sql语句中使用:key占位</div><div class="line"></div><div class="line">	# 如果是增删改，需要 commit</div><div class="line">	session.commit()</div><div class="line">	# 用完记得关闭，也可以用 with</div><div class="line">	session.close()</div><div class="line"></div><div class="line"></div><div class="line"># 更多操作</div><div class="line">def TestUser():</div><div class="line">	session=DBSession()</div><div class="line"></div><div class="line">	# test1</div><div class="line">	# 使用merge方法，如果存在则修改，如果不存在则插入（只判断主键，不判断unique列）</div><div class="line">	# t1=session.query(User).filter(User.name==&apos;zhenji&apos;).first()</div><div class="line">	# t1.age=34</div><div class="line">	# session.merge(t1)</div><div class="line">	# session.commit()</div><div class="line"></div><div class="line">	# test2</div><div class="line">	# merge方法，如果数据库中没有则添加</div><div class="line">	# t2=User()</div><div class="line">	# t2.name=&apos;haha&apos;</div><div class="line">	# session.merge(t2)</div><div class="line">	# session.commit()</div><div class="line"></div><div class="line"></div><div class="line">	# test3</div><div class="line">	# 获取第2-3项</div><div class="line">	# tUser=session.query(User)[1:3]   </div><div class="line">	# for u in tUser:</div><div class="line">	# 	print(u.id)</div><div class="line"></div><div class="line">	# test4</div><div class="line">	# </div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">	</div><div class="line">	# 删除全部数据库</div><div class="line">	# Base.metadata.drop_all(engine)</div><div class="line">	</div><div class="line">	# 初始化数据库</div><div class="line">	# Base.metadata.create_all(engine)</div><div class="line"></div><div class="line">	# 删除全部数据库</div><div class="line">	# Base.metadata.drop_all(engine)</div><div class="line"></div><div class="line">	# 删除指定的数据库</div><div class="line">	# 如删除 Blogs表</div><div class="line">	# 详见 ：http://stackoverflow.com/questions/35918605/how-to-delete-a-table-in-sqlalchemy</div><div class="line">	# Blog.__table__.drop(engine)</div><div class="line">	</div><div class="line"></div><div class="line">	# 新增数据</div><div class="line">	# newUser()</div><div class="line"></div><div class="line">	# 新增多条数据</div><div class="line">	# addmoreUser()</div><div class="line"></div><div class="line">	# 新增数据含中文</div><div class="line">	# addUserForZhCn()</div><div class="line"></div><div class="line">	# 查询数据</div><div class="line">	# queryUser()</div><div class="line">	</div><div class="line">	# 删除</div><div class="line">	# deleteUser()</div><div class="line"></div><div class="line">	# 测试</div><div class="line">	# TestUser()</div><div class="line">	 </div><div class="line">	# 执行sql语句</div><div class="line">	# SQlUser()</div><div class="line">	</div><div class="line">	# 执行sql语句2</div><div class="line">	SQlUser2()</div><div class="line"></div><div class="line">	print(&apos;ok&apos;)</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="sqlalchemy-教程"><a href="#sqlalchemy-教程" class="headerlink" title="sqlalchemy 教程"></a>sqlalchemy 教程</h4><h5 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h5><ul>
+<li><a href="https://gist.github.com/tuxmartin/ea5783d1ebb99057dd81" target="_blank" rel="external">Test.py</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/23190728" target="_blank" rel="external">作为一个Pythoner，不会SQLAlchemy</a>  <strong>☆</strong></li>
+<li><a href="http://www.jianshu.com/p/0d234e14b5d3" target="_blank" rel="external">SQLAlchemy ORM教程之一：Create - 简书</a>  <strong>☆</strong></li>
+<li><a href="http://www.jianshu.com/p/8d085e2f2657" target="_blank" rel="external">SQLAlchemy ORM教程之二：Query - 简书</a>  <strong>☆</strong></li>
+<li><a href="http://www.jianshu.com/p/9771b0a3e589" target="_blank" rel="external">SQLAlchemy ORM教程之三：Relationship - 简书</a> <strong>☆</strong></li>
+</ul>
+<h5 id="增删改查常用命令"><a href="#增删改查常用命令" class="headerlink" title="增删改查常用命令"></a>增删改查常用命令</h5><ul>
+<li><a href="https://segmentfault.com/a/1190000006949536" target="_blank" rel="external">sqlalchemy学习笔记 - python学习笔记 - SegmentFault</a> <strong>☆</strong></li>
+<li><a href="https://www.keakon.net/2012/12/03/SQLAlchemy%E4%BD%BF%E7%94%A8%E7%BB%8F%E9%AA%8C" target="_blank" rel="external">SQLAlchemy 使用经验</a></li>
+<li><a href="https://github.com/lzjun567/note/blob/master/note/python/sqlalchemy.md" target="_blank" rel="external">note/sqlalchemy.md at master · lzjun567/note · GitHub</a></li>
+</ul>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+            <a href="/tags/SQLAlchemy/" rel="tag">#SQLAlchemy</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/05/linux-real-time-monitoring-glances/" rel="next" title="Linux系统实时监控工具-Glances">
+                <i class="fa fa-chevron-left"></i> Linux系统实时监控工具-Glances
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/06/use-sqlalchemy-by-flask/" rel="prev" title="在Flask中使用SQLAlchemy">
+                在Flask中使用SQLAlchemy <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/06/use-sqlalchemy-by-python/"
+           data-title="Python下操作SQLAlchemy" data-url="http://yoursite.com/2017/01/06/use-sqlalchemy-by-python/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化数据库连接"><span class="nav-number">1.1.</span> <span class="nav-text">初始化数据库连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用数据库连接写法"><span class="nav-number">1.2.</span> <span class="nav-text">常用数据库连接写法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#整理常用-直接拷贝"><span class="nav-number">1.2.1.</span> <span class="nav-text">整理常用-直接拷贝</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何设置初始化表结构时字段的-主键-自增-等属性"><span class="nav-number">1.3.</span> <span class="nav-text">如何设置初始化表结构时字段的 主键 自增 等属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置表结构的-不可空-默认值-唯一-等属性"><span class="nav-number">1.4.</span> <span class="nav-text">设置表结构的 不可空  默认值  唯一 等属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#插入中文数据"><span class="nav-number">1.5.</span> <span class="nav-text">插入中文数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Mysql-指定表的引擎和编码格式"><span class="nav-number">1.6.</span> <span class="nav-text">Mysql 指定表的引擎和编码格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如果记录存在则修改，不存在则添加"><span class="nav-number">1.7.</span> <span class="nav-text">如果记录存在则修改，不存在则添加</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模型的属性名称和表的字段名称不一致"><span class="nav-number">1.8.</span> <span class="nav-text">模型的属性名称和表的字段名称不一致</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增删改-查询"><span class="nav-number">1.9.</span> <span class="nav-text">增删改 查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#first-和-one-的区别"><span class="nav-number">1.10.</span> <span class="nav-text">first() 和 one() 的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行sql语句"><span class="nav-number">1.11.</span> <span class="nav-text">执行sql语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#执行sql语句-高级"><span class="nav-number">1.12.</span> <span class="nav-text">执行sql语句 高级</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例代码"><span class="nav-number">2.</span> <span class="nav-text">示例代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完整测试代码"><span class="nav-number">3.</span> <span class="nav-text">完整测试代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sqlalchemy-教程"><span class="nav-number">4.</span> <span class="nav-text">sqlalchemy 教程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#入门"><span class="nav-number">4.1.</span> <span class="nav-text">入门</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增删改查常用命令"><span class="nav-number">4.2.</span> <span class="nav-text">增删改查常用命令</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
