@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/09/24/using-ssh-key-connection-github/index.html">
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！">
-<meta property="og:updated_time" content="2016-12-31T08:34:22.870Z">
+<meta property="og:updated_time" content="2017-03-13T14:16:12.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用SSH密钥连接Github">
 <meta name="twitter:description" content="每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！">
@@ -314,7 +314,12 @@
       
         <p>每次向GitHub签入代码时，都要输入用户名和密码，让人感觉非常麻烦。如果使用SSH，通过密钥的方式来连接GitHub，每次提交代码就可以享受不用输入密码的快感了！</p>
 <p>下面我主要介绍在Windows下如何通过 SSH密钥 来连接GitHub。</p>
-<h4 id="第一步-查看是否已经存在SSH秘钥-keys"><a href="#第一步-查看是否已经存在SSH秘钥-keys" class="headerlink" title="第一步 查看是否已经存在SSH秘钥(keys)"></a>第一步 查看是否已经存在SSH秘钥(keys)</h4><p>右键打开Git Bash,并运行：</p>
+<h4 id="引申"><a href="#引申" class="headerlink" title="引申"></a>引申</h4><ul>
+<li>Linux下：<a href="/2017/03/03/using-ssh-key-connection-github-in-linux/">Linux下使用SSH密钥连接Github</a></li>
+<li>Windows下：<a href="/2016/09/24/using-ssh-key-connection-github/">使用SSH密钥连接Github</a></li>
+</ul>
+<hr>
+<h4 id="第一步-查看是否已经存在SSH秘钥-keys"><a href="#第一步-查看是否已经存在SSH秘钥-keys" class="headerlink" title="第一步 查看是否已经存在SSH秘钥(keys)"></a>第一步 查看是否已经存在SSH秘钥(keys)</h4><p>右键打开 <code>Git Bash</code> ,并运行：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cd ~/.ssh</div></pre></td></tr></table></figure>
 <p>如果提示如下信息为 <code>No such file or directory</code>，则说明不存在SSH秘钥，如果已经存在，可以直接进入<strong>第三步</strong>。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd ~/.ssh</div><div class="line">sh.exe&quot;: cd: /c/Users/Xue/.ssh: No such file or directory</div></pre></td></tr></table></figure>
@@ -482,7 +487,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -548,7 +553,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步-查看是否已经存在SSH秘钥-keys"><span class="nav-number">1.</span> <span class="nav-text">第一步 查看是否已经存在SSH秘钥(keys)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步-创建新的SSH密钥-keys"><span class="nav-number">2.</span> <span class="nav-text">第二步 创建新的SSH密钥(keys)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步-在GitHub账户中添加你的公钥"><span class="nav-number">3.</span> <span class="nav-text">第三步 在GitHub账户中添加你的公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四步-连接测试"><span class="nav-number">4.</span> <span class="nav-text">第四步 连接测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五步-将本地项目通过-SSH-push-到-GitHub"><span class="nav-number">5.</span> <span class="nav-text">第五步 将本地项目通过 SSH push 到 GitHub</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考文章"><span class="nav-number">6.</span> <span class="nav-text">相关参考文章</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#引申"><span class="nav-number">1.</span> <span class="nav-text">引申</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步-查看是否已经存在SSH秘钥-keys"><span class="nav-number">2.</span> <span class="nav-text">第一步 查看是否已经存在SSH秘钥(keys)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步-创建新的SSH密钥-keys"><span class="nav-number">3.</span> <span class="nav-text">第二步 创建新的SSH密钥(keys)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步-在GitHub账户中添加你的公钥"><span class="nav-number">4.</span> <span class="nav-text">第三步 在GitHub账户中添加你的公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四步-连接测试"><span class="nav-number">5.</span> <span class="nav-text">第四步 连接测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五步-将本地项目通过-SSH-push-到-GitHub"><span class="nav-number">6.</span> <span class="nav-text">第五步 将本地项目通过 SSH push 到 GitHub</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考文章"><span class="nav-number">7.</span> <span class="nav-text">相关参考文章</span></a></li></ol></div>
             
           </div>
         </section>

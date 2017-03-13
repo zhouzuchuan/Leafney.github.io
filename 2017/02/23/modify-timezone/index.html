@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="zsh," />
+  <meta name="keywords" content="Docker,Linux," />
 
 
 
@@ -84,16 +84,16 @@
 
 
 
-<meta name="description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
+<meta name="description" content="一般通过默认方式安装的linux系统显示的都是UTC时间，这样导致一些依赖时间的程序就会出现时差问题。下面介绍在Ubuntu和Alpine系统下如何更改UTC时区为CST时区。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu系统下安装终极Shell-zsh">
-<meta property="og:url" content="http://yoursite.com/2016/10/05/ubuntu-install-zsh/index.html">
+<meta property="og:title" content="Linux下修改时区">
+<meta property="og:url" content="http://yoursite.com/2017/02/23/modify-timezone/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
-<meta property="og:updated_time" content="2017-01-16T15:48:39.261Z">
+<meta property="og:description" content="一般通过默认方式安装的linux系统显示的都是UTC时间，这样导致一些依赖时间的程序就会出现时差问题。下面介绍在Ubuntu和Alpine系统下如何更改UTC时区为CST时区。">
+<meta property="og:updated_time" content="2017-03-13T14:16:12.745Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu系统下安装终极Shell-zsh">
-<meta name="twitter:description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
+<meta name="twitter:title" content="Linux下修改时区">
+<meta name="twitter:description" content="一般通过默认方式安装的linux系统显示的都是UTC时间，这样导致一些依赖时间的程序就会出现时差问题。下面介绍在Ubuntu和Alpine系统下如何更改UTC时区为CST时区。">
 
 
 
@@ -114,9 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/05/ubuntu-install-zsh/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/02/23/modify-timezone/"/>
 
-  <title> Ubuntu系统下安装终极Shell-zsh | IT范儿 </title>
+  <title> Linux下修改时区 | IT范儿 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -265,7 +265,7 @@
             
             
               
-                Ubuntu系统下安装终极Shell-zsh
+                Linux下修改时区
               
             
           </h1>
@@ -277,8 +277,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-05T10:39:10+08:00" content="2016-10-05">
-              2016-10-05
+            <time itemprop="dateCreated" datetime="2017-02-23T14:57:58+08:00" content="2017-02-23">
+              2017-02-23
             </time>
           </span>
 
@@ -288,8 +288,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/10/05/ubuntu-install-zsh/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/05/ubuntu-install-zsh/" itemprop="commentsCount"></span>
+                <a href="/2017/02/23/modify-timezone/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/23/modify-timezone/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -312,48 +312,22 @@
       
 
       
-        <h4 id="查看系统-shell"><a href="#查看系统-shell" class="headerlink" title="查看系统 shell"></a>查看系统 shell</h4><p>终端输入 <code>echo $SHELL</code> ，可以输出当前使用的shell。</p>
-<p>终端输入 <code>cat /etc/shells</code> ，可以输出当前系统已经安装的shell。</p>
-<hr>
-<h4 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h4><p>安装 <code>zsh</code> 需要 <code>git</code> 环境支持，请先确保已安装 <code>git</code> 环境：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install git</div></pre></td></tr></table></figure>
-<h5 id="安装-zsh-1"><a href="#安装-zsh-1" class="headerlink" title="安装 zsh"></a>安装 zsh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install zsh</div></pre></td></tr></table></figure>
-<h5 id="安装增强插件-oh-my-zsh"><a href="#安装增强插件-oh-my-zsh" class="headerlink" title="安装增强插件 oh-my-zsh"></a>安装增强插件 oh-my-zsh</h5><p>可以通过 <code>wget</code> 或者 <code>curl</code> 来安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// wget</div><div class="line">$ wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// curl</div><div class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh</div></pre></td></tr></table></figure>
-<hr>
-<h5 id="安装-oh-my-zsh-2017-1-13-Update"><a href="#安装-oh-my-zsh-2017-1-13-Update" class="headerlink" title="安装 oh-my-zsh (2017-1-13 Update)"></a>安装 oh-my-zsh (2017-1-13 Update)</h5><p>上面的命令仍然可以执行。<br>下面的命令是在 <a href="http://ohmyz.sh/" target="_blank" rel="external">Oh My Zsh</a> 官网中查看到的最新安装命令，建议用官网中的推荐安装方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// wget</div><div class="line">$ sh -c &quot;$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// curl</div><div class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</div></pre></td></tr></table></figure>
-<hr>
-<p>执行完上面的命令后，如果提示如下信息，直接忽略即可，继续执行下面的步骤。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Looking for an existing zsh config...</div><div class="line">Using the Oh My Zsh template file and adding it to ~/.zshrc</div><div class="line">Time to change your default shell to zsh!</div><div class="line">Password: chsh: PAM: Authentication failure</div></pre></td></tr></table></figure>
-<hr>
-<h5 id="将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效"><a href="#将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效" class="headerlink" title="将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效"></a>将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ chsh -s /bin/zsh</div><div class="line">//或:</div><div class="line">$ chsh -s `which zsh`</div><div class="line"></div><div class="line"></div><div class="line">$ sudo reboot</div></pre></td></tr></table></figure>
-<hr>
-<h4 id="zsh-主题"><a href="#zsh-主题" class="headerlink" title="zsh 主题"></a>zsh 主题</h4><p>zsh的默认配置项都在 <code>~/.zshrc</code> 文件中，例如里面的<code>ZSH_THEME=&quot;robbyrussell&quot;</code> 表示当前zsh的主题为<code>robbyrussell</code>.</p>
-<p>配置完之后，我们需要重启终端或打开新的标签，或者用以下命令刷新配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure></p>
-<p><code>oh-my-zsh</code> 提供了数十种主题，我们可以在目录 <code>~/.oh-my-zsh/themes</code> 中看到他们：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~/.oh-my-zsh/themes</div></pre></td></tr></table></figure>
-<p>如果你不知道选哪个好，我们可以设置成随机项：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZSH_THEME=&quot;random&quot;</div></pre></td></tr></table></figure>
-<p>oh-my-zsh官方提供的主题如下：<br><a href="https://github.com/robbyrussell/oh-my-zsh/wiki/themes" target="_blank" rel="external">Themes · robbyrussell/oh-my-zsh Wiki · GitHub</a></p>
-<hr>
-<h4 id="zsh-下的后台程序"><a href="#zsh-下的后台程序" class="headerlink" title="zsh 下的后台程序"></a>zsh 下的后台程序</h4><p>在 <code>zsh</code> 下，如果有后台运行的程序，此时执行 <code>exit</code> 会提示如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜  ~ exit</div><div class="line">zsh: you have running jobs.</div></pre></td></tr></table></figure>
-<p>在一般的 <code>Bash</code> 下，我们设置后台运行程序用 <code>&amp;</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python cnblog.py &amp;</div></pre></td></tr></table></figure>
-<p>而在 <code>zsh</code> 下，我们设置后台运行程序则需要用 <code>&amp;!</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python cnblog.py &amp;!</div></pre></td></tr></table></figure>
-<p>StackOverflow上的提示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Start the program with—</div><div class="line">dolphin &amp;!</div><div class="line">The &amp;! (or equivalently, &amp;|) is a zsh-specific shortcut to both background and disown the process, such that exiting the shell will leave it running.</div></pre></td></tr></table></figure>
-<p>详见：<a href="http://stackoverflow.com/questions/19302913/exit-zsh-but-leave-running-jobs-open" target="_blank" rel="external">bash - Exit zsh, but leave running jobs open? - Stack Overflow</a></p>
+        <p>一般通过默认方式安装的linux系统显示的都是UTC时间，这样导致一些依赖时间的程序就会出现时差问题。下面介绍在Ubuntu和Alpine系统下如何更改UTC时区为CST时区。</p>
+<h4 id="Alpine"><a href="#Alpine" class="headerlink" title="Alpine"></a>Alpine</h4><h5 id="alpine-下修改UTC时间为CST时间-测试通过"><a href="#alpine-下修改UTC时间为CST时间-测试通过" class="headerlink" title="alpine 下修改UTC时间为CST时间 (测试通过)"></a>alpine 下修改UTC时间为CST时间 (测试通过)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ apk add tzdata </div><div class="line">$ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime </div><div class="line">$ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone</div></pre></td></tr></table></figure>
+<h5 id="Docker-Alpine-下修改utc时间为cst时间"><a href="#Docker-Alpine-下修改utc时间为cst时间" class="headerlink" title="Docker + Alpine 下修改utc时间为cst时间"></a>Docker + Alpine 下修改utc时间为cst时间</h5><p>Dockerfile :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">RUN apk update &amp;&amp; apk add ca-certificates &amp;&amp; \</div><div class="line">    apk add tzdata &amp;&amp; \</div><div class="line">    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &amp;&amp; \</div><div class="line">    echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone</div></pre></td></tr></table></figure>
+<h4 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h4><h5 id="Ubuntu-下手动修改配置-图形化界面"><a href="#Ubuntu-下手动修改配置-图形化界面" class="headerlink" title="Ubuntu 下手动修改配置 (图形化界面)"></a>Ubuntu 下手动修改配置 (图形化界面)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo dpkg-reconfigure tzdata</div></pre></td></tr></table></figure>
+<p>或：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo tzselect</div></pre></td></tr></table></figure>
+<h5 id="Ubuntu下通过命令更改（已测试）"><a href="#Ubuntu下通过命令更改（已测试）" class="headerlink" title="Ubuntu下通过命令更改（已测试）"></a>Ubuntu下通过命令更改（已测试）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo ln -sf /usr/share/zoneinfo/Asia/ShangHai /etc/localtime</div><div class="line">$ sudo echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone</div><div class="line">$ sudo dpkg-reconfigure -f noninteractive tzdata</div></pre></td></tr></table></figure>
+<p><strong>经测试，如果不加第一行，系统重启后又恢复UTC时间了</strong> </p>
+<h5 id="Docker-Ubuntu-下修改UTC时间为CST时间"><a href="#Docker-Ubuntu-下修改UTC时间为CST时间" class="headerlink" title="Docker + Ubuntu 下修改UTC时间为CST时间"></a>Docker + Ubuntu 下修改UTC时间为CST时间</h5><p>Dockerfile:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Setting timezone</div><div class="line">RUN ln -sf /usr/share/zoneinfo/Asia/ShangHai /etc/localtime &amp;&amp; \</div><div class="line">	echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone &amp;&amp; \</div><div class="line">	dpkg-reconfigure -f noninteractive tzdata</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
-<li><a href="http://logicmd.net/2012/11/installing-zsh-on-ubuntu/" target="_blank" rel="external">在Ubuntu上安装zsh</a></li>
-<li><a href="https://ldsink.com/archives/install-zsh-on-ubuntu.html" target="_blank" rel="external">Ubuntu 上安装 zsh</a></li>
-<li><a href="https://segmentfault.com/a/1190000003019439" target="_blank" rel="external">[Linux] ubuntu安装zsh - TangShangWen - SegmentFault</a></li>
-<li><a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="external">oh-my-zsh</a></li>
+<li><a href="https://lengzzz.com/note/timezone-in-docker" target="_blank" rel="external">docker 中设置时区 | 水能载舟 亦可赛艇</a></li>
+<li><a href="https://lesca.me/archives/set-timezone-with-command-line-on-ubuntu.html" target="_blank" rel="external">Ubuntu: 以命令行方式修改时区</a></li>
+<li><a href="https://www.zybuluo.com/zwh8800/note/337111" target="_blank" rel="external">docker 中设置时区 - 作业部落 Cmd Markdown 编辑阅读器</a></li>
 </ul>
 
       
@@ -393,7 +367,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/zsh/" rel="tag">#zsh</a>
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
           
         </div>
       
@@ -402,16 +378,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/10/04/supervisor-process-management/" rel="next" title="Linux下进程管理Supervisor">
-                <i class="fa fa-chevron-left"></i> Linux下进程管理Supervisor
+              <a href="/2017/02/21/installation-rabbitmq-on-ubuntu/" rel="next" title="Ubuntu16.04配置RabbitMQ运行环境">
+                <i class="fa fa-chevron-left"></i> Ubuntu16.04配置RabbitMQ运行环境
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/10/06/ubuntu-install-mysql-db/" rel="prev" title="Ubuntu下安装及配置MySql数据库">
-                Ubuntu下安装及配置MySql数据库 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/03/using-ssh-key-connection-github-in-linux/" rel="prev" title="Linux下使用SSH密钥连接Github">
+                Linux下使用SSH密钥连接Github <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -438,8 +414,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/10/05/ubuntu-install-zsh/"
-           data-title="Ubuntu系统下安装终极Shell-zsh" data-url="http://yoursite.com/2016/10/05/ubuntu-install-zsh/">
+      <div class="ds-thread" data-thread-key="2017/02/23/modify-timezone/"
+           data-title="Linux下修改时区" data-url="http://yoursite.com/2017/02/23/modify-timezone/">
       </div>
     
   </div>
@@ -550,7 +526,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统-shell"><span class="nav-number">1.</span> <span class="nav-text">查看系统 shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-zsh"><span class="nav-number">2.</span> <span class="nav-text">安装 zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-zsh-1"><span class="nav-number">2.1.</span> <span class="nav-text">安装 zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装增强插件-oh-my-zsh"><span class="nav-number">2.2.</span> <span class="nav-text">安装增强插件 oh-my-zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-oh-my-zsh-2017-1-13-Update"><span class="nav-number">2.3.</span> <span class="nav-text">安装 oh-my-zsh (2017-1-13 Update)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效"><span class="nav-number">2.4.</span> <span class="nav-text">将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-主题"><span class="nav-number">3.</span> <span class="nav-text">zsh 主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-下的后台程序"><span class="nav-number">4.</span> <span class="nav-text">zsh 下的后台程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Alpine"><span class="nav-number">1.</span> <span class="nav-text">Alpine</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#alpine-下修改UTC时间为CST时间-测试通过"><span class="nav-number">1.1.</span> <span class="nav-text">alpine 下修改UTC时间为CST时间 (测试通过)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Alpine-下修改utc时间为cst时间"><span class="nav-number">1.2.</span> <span class="nav-text">Docker + Alpine 下修改utc时间为cst时间</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubuntu"><span class="nav-number">2.</span> <span class="nav-text">Ubuntu</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Ubuntu-下手动修改配置-图形化界面"><span class="nav-number">2.1.</span> <span class="nav-text">Ubuntu 下手动修改配置 (图形化界面)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Ubuntu下通过命令更改（已测试）"><span class="nav-number">2.2.</span> <span class="nav-text">Ubuntu下通过命令更改（已测试）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-Ubuntu-下修改UTC时间为CST时间"><span class="nav-number">2.3.</span> <span class="nav-text">Docker + Ubuntu 下修改UTC时间为CST时间</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">3.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
             
           </div>
         </section>
