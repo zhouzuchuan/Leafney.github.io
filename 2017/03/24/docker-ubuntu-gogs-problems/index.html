@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Gogs,Docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Ubuntu-Gogs部署及配置时遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2017/03/24/docker-ubuntu-gogs-problems/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。">
+<meta property="og:updated_time" content="2017-03-27T12:48:19.361Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker-Ubuntu-Gogs部署及配置时遇到的问题">
+<meta name="twitter:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/24/docker-ubuntu-gogs-problems/"/>
+
+  <title> Docker-Ubuntu-Gogs部署及配置时遇到的问题 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Docker-Ubuntu-Gogs部署及配置时遇到的问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-24T14:19:37+08:00" content="2017-03-24">
+              2017-03-24
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/24/docker-ubuntu-gogs-problems/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/24/docker-ubuntu-gogs-problems/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。</p>
+<p>这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。</p>
+<h4 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h4><ol>
+<li>Install页面中的注意问题</li>
+<li><code>Connection timed out</code> 问题</li>
+<li><code>hooks/update: No such file or directory</code></li>
+<li>添加 <code>SSH key</code> 时显示报错页面 <code>500</code></li>
+<li>要求输入git账户密码</li>
+<li><code>SSH Connection refused</code> 问题</li>
+<li><code>Git SSH</code> 使用非默认22端口时，如何隐藏端口号</li>
+<li><code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</code></li>
+<li>echo 输出</li>
+<li>Docker Gogs 使用 <code>HTTPS</code></li>
+</ol>
+<h4 id="Install页面中的注意问题"><a href="#Install页面中的注意问题" class="headerlink" title="Install页面中的注意问题"></a>Install页面中的注意问题</h4><ul>
+<li>domain: ensure that is the IP address of your docker host</li>
+<li>SSH port: that is the forwarded ssh port. So if you forward 22 to 10022, it’s 10022.</li>
+<li>HTTP port: my error, here, you must enter the HTTP in the container. So it’s 3000. Even if you forward it to 10080 ;)</li>
+<li>Application URL: this is a combination of domain + forwarded HTTP port (I got this one wrong too). So, if you’re forwarding 3000 to 10080, then it’s <code>http://domain:10080</code>.</li>
+<li>ssh端口使用外部端口，而http端口使用的是容器内部端口.</li>
+</ul>
+<p>着重需要说明的是：</p>
+<ul>
+<li><code>Domain</code> 填写Docker宿主机的物理IP地址，或者域名地址,注意这里是不带 <code>http</code>的 如： <code>192.168.137.140</code> 或 <code>git.mydomain.com</code></li>
+<li><code>SSH port</code> 假如Docker映射的端口是 <code>10022:22</code> 那么这里就填写宿主机开放的端口 <code>10022</code></li>
+<li><code>HTTP port</code> 假如Docker映射的端口是 <code>10080:3000</code> 这里要填容器内的监听端口 <code>3000</code></li>
+<li><p><code>Application URL</code> 这里要填写的格式为 <code>http(s):// + Domain + HTTP port</code> ，比如：<code>http://git.mydomain.com/10080</code> 。还需要注意的一点是，如果你用了nginx来映射宿主机的 <code>10080</code> 端口，这里要去掉后面的端口，即 <code>http://git.mydomain.com/</code>，说白了就是你在外部浏览器上访问的地址。</p>
+</li>
+<li><p><a href="https://github.com/gogits/gogs/issues/3039" target="_blank" rel="external">Docker gogs web/ssh does not restart after reboot · Issue #3039 · gogits/gogs · GitHub</a></p>
+</li>
+</ul>
+<hr>
+<h4 id="Connection-timed-out-问题"><a href="#Connection-timed-out-问题" class="headerlink" title="Connection timed out 问题"></a><code>Connection timed out</code> 问题</h4><h5 id="使用HTTP方式-Push-代码时报错？"><a href="#使用HTTP方式-Push-代码时报错？" class="headerlink" title="使用HTTP方式 Push 代码时报错？"></a>使用HTTP方式 Push 代码时报错？</h5><p>使用HTTP方式获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git clone http://gogit.itfanr.cc/xueer/HelloWorld.git</div><div class="line">Cloning into &apos;HelloWorld&apos;...</div><div class="line">remote: Counting objects: 8, done.</div><div class="line">remote: Compressing objects: 100% (6/6), done.</div><div class="line">remote: Total 8 (delta 1), reused 0 (delta 0)</div><div class="line">Unpacking objects: 100% (8/8), done.</div><div class="line">Checking connectivity... done.</div></pre></td></tr></table></figure>
+<p>使用HTTP方式提交：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ git push</div><div class="line">Counting objects: 3, done.</div><div class="line">Writing objects: 100% (3/3), 379 bytes | 0 bytes/s, done.</div><div class="line">Total 3 (delta 0), reused 0 (delta 0)</div><div class="line">error: RPC failed; HTTP 504 curl 22 The requested URL returned error: 504 Gateway Time-out</div><div class="line">fatal: The remote end hung up unexpectedly</div><div class="line">fatal: The remote end hung up unexpectedly</div><div class="line">Everything up-to-date</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="使用SSH方式获取代码时报错？"><a href="#使用SSH方式获取代码时报错？" class="headerlink" title="使用SSH方式获取代码时报错？"></a>使用SSH方式获取代码时报错？</h5><p>使用SSH方式获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git@gogit.itfanr.cc:10022/xueer/HelloWorld.git</div><div class="line">Cloning into &apos;HelloWorld&apos;...</div><div class="line">ssh: connect to host gogit.itfanr.cc port 10022: Connection timed out</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure>
+<p>对于 <code>Connection timed out</code> 的问题，可能是使用的端口已经被其他程序占用导致，也可能是缓存文件导致。</p>
+<p>最后的解决方法是将 <code>data/sessions</code> 中的 <code>session</code> 文件删除，然后更换了其他端口后再次运行则能够提交数据了。</p>
+<hr>
+<h4 id="报错-hooks-update-No-such-file-or-directory"><a href="#报错-hooks-update-No-such-file-or-directory" class="headerlink" title="报错 hooks/update: No such file or directory"></a>报错 <code>hooks/update: No such file or directory</code></h4><p>将旧的配置和数据库拷贝到新的Gogs项目下（我这里是从v0.8.25.0129版本迁移到v0.10.18.0313版本），提交代码时会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div><div class="line">Counting objects: 3, done.</div><div class="line">Writing objects: 100% (3/3), 432 bytes | 0 bytes/s, done.</div><div class="line">Total 3 (delta 0), reused 0 (delta 0)</div><div class="line">remote: hooks/update: line 2: /home/git/gogs/goapp/gogs/gogs: No such file or directory</div><div class="line">remote: error: hook declined to update refs/heads/master</div><div class="line">To http://gogit.itfanr.cc/xueer/HelloWorld.git</div><div class="line"> ! [remote rejected] master -&gt; master (hook declined)</div><div class="line">error: failed to push some refs to &apos;http://gogit.itfanr.cc/xueer/HelloWorld.git&apos;</div></pre></td></tr></table></figure>
+<hr>
+<p>解决方法：</p>
+<p>根据Gogs官网中的<code>故障排查</code>的说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Update 钩子指向错误的二进制路径</div><div class="line"></div><div class="line">可能原因：您升级 `Gogs` 后将其移动到了和之前安装位置不同的目录</div><div class="line">解决方案：到管理员控制面板（`/admin`）执行以下操作：</div><div class="line">重新生成 &apos;.ssh/authorized_keys&apos; 文件</div><div class="line">重新同步所有仓库的 `pre-receive`、`update` 和 `post-receive` 钩子</div></pre></td></tr></table></figure>
+<p>所以直接使用管理员账户在管理后台中操作即可解决。</p>
+<p>详见：<a href="https://gogs.io/docs/intro/troubleshooting#update-%E9%92%A9%E5%AD%90%E6%8C%87%E5%90%91%E9%94%99%E8%AF%AF%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%B7%AF%E5%BE%84" target="_blank" rel="external">故障排查</a></p>
+<hr>
+<p>之前的解决方法：</p>
+<p>在新的Gogs位置执行 <code>gogs fix location &lt;old Gogs path&gt;</code></p>
+<p>经测试，该方法似乎已过时，执行时会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/home/git/gogs# ./gogs fix location /home/git/gogs/goapp/gogs</div><div class="line">No help topic for &apos;fix&apos;</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="https://github.com/gogits/gogs/issues/659" target="_blank" rel="external">remote: hooks/update: line 2: /path/to/dir: No such file or directory · Issue #659 · gogits/gogs · GitHub</a></li>
+<li><a href="https://github.com/gogits/gogs/issues/654" target="_blank" rel="external">Question: How do I move servers? · Issue #654 · gogits/gogs · GitHub</a></li>
+</ul>
+<hr>
+<h4 id="添加-SSH-key-时显示报错页面-error-500"><a href="#添加-SSH-key-时显示报错页面-error-500" class="headerlink" title="添加 SSH key 时显示报错页面 error 500"></a>添加 SSH key 时显示报错页面 <code>error 500</code></h4><p>查看日志，找到如下错误信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">AddPublicKey: addKey: open /home/git/.ssh/authorized_keys: permission denied</div></pre></td></tr></table></figure>
+<p>按照如下说法操作成功：</p>
+<blockquote>
+<p>So I changed the .ssh/ folder to 0700 and .ssh/authorize_keys to 0600. It works.</p>
+</blockquote>
+<p>详细来源见：<a href="https://github.com/gogits/gogs/issues/545" target="_blank" rel="external">ssh 的链接地址不可以使用</a></p>
+<p>修改 <code>/home/git/.ssh</code> 的权限为 <code>700</code><br>修改 <code>/home/git/.ssh/authorized_keys</code> 的权限为 <code>600</code>   </p>
+<p>我的操作：</p>
+<ol>
+<li>登陆Gogs站点管理员账户，访问 <code>/admin</code> 页面，选择 <code>Rewrite &#39;.ssh/authorized_keys&#39; file (caution: non-Gogs keys will be lost)</code> 项 ，点击 <code>Run</code> 报错：<code>open /home/git/.ssh/authorized_keys.tmp: permission denied</code> 。</li>
+<li>查看日志 <code>gogs.log</code> 文件，发现错误信息：<code>AddPublicKey: addKey: open /home/git/.ssh/authorized_keys: permission denied</code> 。</li>
+<li>进入容器内部：<code>docker exec -it gogs /bin/bash</code> ,切换至git用户：<code>su git</code>,然后进入 <code>/home/git/</code> 目录，更改 <code>.ssh</code> 目录权限：<code>chmod 0700 .ssh</code> 。（此时，该 .ssh 目录内为空）</li>
+<li>然后再次访问 <code>/admin</code> 页面，再次执行 <code>Run</code> 操作，提示“所有公钥重新生成成功！”信息。查看容器内的 <code>.ssh/</code> 目录下生成了一个 <code>authorized_keys</code> 文件。然后更改该文件权限：<code>chmod 0600 authorized_keys</code> 。</li>
+<li>然后重启该容器。</li>
+</ol>
+<p>重启容器后该问题解决。</p>
+<hr>
+<h4 id="要求输入git账户密码"><a href="#要求输入git账户密码" class="headerlink" title="要求输入git账户密码"></a>要求输入git账户密码</h4><p>添加成功SSH密钥后，<code>git clone</code> 项目会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git@gogit.itfanr.cc:10022/xueer/HelloWorld.git</div><div class="line">Cloning into &apos;Hello&apos;...</div><div class="line">The authenticity of host &apos;[gogit.itfanr.cc]:10022 ([gogit.itfanr.cc]:10022)&apos; can&apos;t be established.</div><div class="line">ECDSA key fingerprint is SHA256:+LHU3V00S0g9kNnpByc9ysAM5n6DWutT51YOldIcf88.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added &apos;[gogit.itfanr.cc]:10022&apos; (ECDSA) to the list of known hosts.</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">Permission denied, please try again.</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure>
+<p>一种可能的解决方式是 <code>Check if /home/git/.ssh/.authorized_keys&#39;s permission is 600.</code></p>
+<p>这个问题还是关于 <code>.ssh/authorize_keys</code> 的权限问题。</p>
+<p>我的解决方法：</p>
+<ol>
+<li>登陆Gogs站点管理员账户，访问 <code>/admin</code> 页面，选择 <code>Rewrite &#39;.ssh/authorized_keys&#39; file (caution: non-Gogs keys will be lost)</code> 项 ，点击 <code>Run</code> ，会提示更新成功。</li>
+<li>重启该容器即可。</li>
+</ol>
+<ul>
+<li><a href="https://github.com/gogits/gogs/issues/2409" target="_blank" rel="external">SSH prompts for password in Docker · Issue #2409 · gogits/gogs · GitHub</a></li>
+<li><a href="https://github.com/gogits/gogs/issues/1893" target="_blank" rel="external">How troubleshoot SSHd on Docker ?</a></li>
+</ul>
+<hr>
+<h4 id="SSH-Connection-refused-问题"><a href="#SSH-Connection-refused-问题" class="headerlink" title="SSH Connection refused 问题"></a><code>SSH Connection refused</code> 问题</h4><p>添加成功SSH密钥后，<code>git clone</code> 项目会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git@192.168.137.140:10022/xueer/HelloWorld.git</div><div class="line">Cloning into &apos;HelloWorld&apos;...</div><div class="line">ssh: connect to host 192.168.137.140 port 10022: Connection refused</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure>
+<p>我的探索：</p>
+<p>进入容器内部：<code>docker exec -it gogs /bin/bash</code></p>
+<p>查看ssh连接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@b48dfa9583f9:/home/git/gogs# ssh localhost</div><div class="line">ssh: connect to host localhost port 22: Connection refused</div></pre></td></tr></table></figure>
+<p>那现在这个问题就是在ubuntu下配置ssh链接的问题了。  </p>
+<p>发现问题的原因是安装 <code>openssh</code> 后，并没有启动 <code>SSH</code> 服务。执行如下命令启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/ssh start</div><div class="line"><span class="comment"># 或</span></div><div class="line">service ssh start</div><div class="line">service ssh status</div></pre></td></tr></table></figure>
+<p>通过如下命令查看ssh服务是否启动：<code>ps -e |grep ssh</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">root@b48dfa9583f9:/home/git/gogs# ps -e |grep ssh</div><div class="line">   81 ?        00:00:00 sshd</div></pre></td></tr></table></figure>
+<p>然后使用 <code>ssh localhost</code> 命令查看是否能够连接本地：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">root@b48dfa9583f9:/home/git/gogs# ssh localhost</div><div class="line">The authenticity of host &apos;localhost (::1)&apos; can&apos;t be established.</div><div class="line">ECDSA key fingerprint is SHA256:eKk78mnEXpwvFhbzC6BgM70jZx3be4Fz8okyagHA6QA.</div><div class="line">Are you sure you want to continue connecting (yes/no)? no</div><div class="line">Host key verification failed.</div></pre></td></tr></table></figure>
+<p>可以看到SSH服务已经正常运行了。</p>
+<p>然后在回到宿主机下，再次执行 <code>git clone</code> 命令，测试是否能够连通。</p>
+<hr>
+<p>这里我整理了两种连接方法：</p>
+<p>连接方法一：</p>
+<p><code>git clone ssh://git@192.168.137.140:10022/qqq/Xweixin.git</code>   Pull and Push Test Ok.</p>
+<p>连接方法二：</p>
+<p>如果嫌上面带有端口号的链接太不极客范儿，可以在客户端电脑上当前用户主目录的 <code>.ssh</code> 目录下创建一个没有扩展名的 <code>config</code> 文件（注意文件格式为 <code>UTF-8</code> 且行结束标识为 <code>Unix(LF)</code>），填写如下内容：</p>
+<p><code>~/.ssh/config</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Host 192.168.137.140</div><div class="line">HostName 192.168.137.140</div><div class="line">Port 10022</div><div class="line">User git</div></pre></td></tr></table></figure>
+<p>这里，</p>
+<ul>
+<li><code>Host</code> 是远程git仓库所在宿主机的IP地址或域名；</li>
+<li><code>HostName</code> 不太重要，仅起到标识的作用；</li>
+<li><code>Port</code> 表示远程git仓库使用的端口号；</li>
+<li><code>User</code> 表示远程git仓库的默认用户，这里填写默认的 <code>git</code> 即可。</li>
+</ul>
+<p>然后就可以直接请求不带端口号的ssh仓库地址了：</p>
+<p><code>git clone ssh://git@192.168.137.140/qqq/Xweixin.git</code> Pull and Push Test Ok.</p>
+<p>相关参考</p>
+<ul>
+<li><a href="http://blog.csdn.net/jszhangyili/article/details/8881807" target="_blank" rel="external">ssh: connect to host localhost port 22: Connection refused 问题</a></li>
+<li><a href="http://os.51cto.com/art/201109/291634.htm" target="_blank" rel="external">ubuntu下如何安装使用SSH？</a></li>
+<li><a href="http://ubuntuhandbook.org/index.php/2016/04/enable-ssh-ubuntu-16-04-lts/" target="_blank" rel="external">How to Enable SSH in Ubuntu 16.04 LTS | UbuntuHandbook</a></li>
+<li><a href="https://github.com/gogits/gogs/issues/1788" target="_blank" rel="external">SSH doesn’t work on ports other than 22 in dockerized gogs</a></li>
+</ul>
+<hr>
+<h4 id="Git-SSH-使用非默认22端口时，如何隐藏端口号"><a href="#Git-SSH-使用非默认22端口时，如何隐藏端口号" class="headerlink" title="Git SSH 使用非默认22端口时，如何隐藏端口号"></a>Git SSH 使用非默认22端口时，如何隐藏端口号</h4><p>Note that you can also add an entry to your <code>~/.ssh/config</code> file:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Host git.example.com</div><div class="line">Port 2222</div><div class="line">User git</div></pre></td></tr></table></figure>
+<p>and then use the normal git clone <code>git@git.example.com:myuser/myproject.git</code> command.</p>
+<p>相关参考</p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/1558719/using-a-remote-repository-with-non-standard-port" target="_blank" rel="external">git - Using a remote repository with non-standard port - Stack Overflow</a></li>
+<li><a href="https://prestongarrison.com/change-port-git-is-using-for-ssh/" target="_blank" rel="external">Change port git is using for ssh</a></li>
+<li><a href="http://serverfault.com/questions/218256/specify-ssh-port-for-git" target="_blank" rel="external">Specify SSH Port for Git - Server Fault</a></li>
+</ul>
+<hr>
+<h4 id="报错-WARNING-REMOTE-HOST-IDENTIFICATION-HAS-CHANGED"><a href="#报错-WARNING-REMOTE-HOST-IDENTIFICATION-HAS-CHANGED" class="headerlink" title="报错 WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"></a>报错 <code>WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</code></h4><p>使用 SSH 获取时报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git@192.168.137.140:10022/xueer/HelloWorld.git</div><div class="line">Cloning into &apos;HelloWorld&apos;...</div><div class="line">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</div><div class="line">@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @</div><div class="line">@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</div><div class="line">IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!</div><div class="line">Someone could be eavesdropping on you right now (man-in-the-middle attack)!</div><div class="line">It is also possible that a host key has just been changed.</div><div class="line">The fingerprint for the ECDSA key sent by the remote host is</div><div class="line">SHA256:+LHU3V00S0g9kNnpByc9ysAM5n6DWutT51YOldIcf88.</div><div class="line">Please contact your system administrator.</div><div class="line">Add correct host key in /c/Users/Yx/.ssh/known_hosts to get rid of this message.</div><div class="line">Offending ECDSA key in /c/Users/Yx/.ssh/known_hosts:5</div><div class="line">ECDSA host key for [192.168.137.140]:10022 has changed and you have requested strict checking.</div><div class="line">Host key verification failed.</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure>
+<p>该问题是由于客户端电脑上的 <code>.ssh/known_hosts</code> 文件中记录了重复或冲突的ssh信息，删除该文件重新设置ssh连接即解决。</p>
+<hr>
+<h4 id="echo-输出"><a href="#echo-输出" class="headerlink" title="echo 输出"></a>echo 输出</h4><p>下面两行命令的输出结果是不一样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ab=$(service ssh status);echo $ab;</div><div class="line"></div><div class="line">ab=$(service ssh status);echo &quot;$ab&quot;;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">you can get output of third solution in good way:</div><div class="line"></div><div class="line">echo &quot;$var&quot;</div><div class="line">and also in nasty way:</div><div class="line"></div><div class="line">echo $var</div></pre></td></tr></table></figure>
+<p>当 <code>echo</code> 后面的内容带有引号时，只会输出变量值的内容。当没有引号时，如果当前所在目录下有其他文件，这些文件的文件名也会被输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ab=$(service ssh status);echo $ab;</div><div class="line">LICENSE README.md README_ZH.md custom data gogs log public scripts templates sshd is running</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="http://stackoverflow.com/questions/4651437/how-to-set-a-variable-to-the-output-from-a-command-in-bash" target="_blank" rel="external">linux - How to set a variable to the output from a command in Bash? - Stack Overflow</a></li>
+</ul>
+<hr>
+<h4 id="Gogs-使用-HTTPS"><a href="#Gogs-使用-HTTPS" class="headerlink" title="Gogs 使用 HTTPS"></a>Gogs 使用 HTTPS</h4><p>待完善。</p>
+<ul>
+<li><a href="https://github.com/Unknwon/wuwen.org/issues/12" target="_blank" rel="external">使用 HTTPS 部署 Gogs · Issue #12 · Unknwon/wuwen.org · GitHub</a></li>
+<li><a href="https://github.com/richardskumat/gogsi/blob/master/gogs-nginx-ssl.conf" target="_blank" rel="external">gogsi/gogs-nginx-ssl.conf at master · richardskumat/gogsi · GitHub</a></li>
+</ul>
+<hr>
+<h4 id="One-More-Thing…"><a href="#One-More-Thing…" class="headerlink" title="One More Thing…"></a>One More Thing…</h4><p>根据以上遇到的问题，这里主要提一点：</p>
+<p>但凡是SSH相关的问题，就是要保证目录 <code>/home/git/.ssh</code> 具有 <code>0700</code> 的权限，目录 <code>/home/git/.ssh/</code> 下的文件具有 <code>0600</code> 的权限。</p>
+<p>或者直接尝试如下操作:</p>
+<ol>
+<li>登陆Gogs站点管理员账户，访问 <code>/admin</code> 页面，选择 <code>Rewrite &#39;.ssh/authorized_keys&#39; file (caution: non-Gogs keys will be lost)</code> 项 ，点击 <code>Run</code> 按钮，如果报错：<code>open /home/git/.ssh/authorized_keys.tmp: permission denied</code> 。否则直接跳至步骤5。</li>
+<li>查看日志 <code>gogs.log</code> 文件，发现错误信息：<code>AddPublicKey: addKey: open /home/git/.ssh/authorized_keys: permission denied</code> 。</li>
+<li>进入容器内部：<code>docker exec -it gogs /bin/bash</code> ,切换至git用户：<code>su git</code>,然后进入 <code>/home/git/</code> 目录，更改 <code>.ssh</code> 目录权限：<code>chmod 0700 .ssh</code> 。（此时，该 .ssh 目录内为空）</li>
+<li>然后再次访问 <code>/admin</code> 页面，再次执行 <code>Run</code> 操作，提示“所有公钥重新生成成功！”信息。查看容器内的 <code>.ssh/</code> 目录下生成了一个 <code>authorized_keys</code> 文件。然后更改该文件权限：<code>chmod 0600 authorized_keys</code> 。</li>
+<li>最后重启该容器。</li>
+</ol>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gogs/" rel="tag">#Gogs</a>
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/23/docker-ubuntu-gogs-deploy/" rel="next" title="Docker-Ubuntu-Gogs部署gogs容器过程记录">
+                <i class="fa fa-chevron-left"></i> Docker-Ubuntu-Gogs部署gogs容器过程记录
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/27/docker-ubuntu-gogs-custom/" rel="prev" title="Docker-Ubuntu-Gogs个性化设置">
+                Docker-Ubuntu-Gogs个性化设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/24/docker-ubuntu-gogs-problems/"
+           data-title="Docker-Ubuntu-Gogs部署及配置时遇到的问题" data-url="http://yoursite.com/2017/03/24/docker-ubuntu-gogs-problems/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Install页面中的注意问题"><span class="nav-number">2.</span> <span class="nav-text">Install页面中的注意问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Connection-timed-out-问题"><span class="nav-number">3.</span> <span class="nav-text">Connection timed out 问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用HTTP方式-Push-代码时报错？"><span class="nav-number">3.1.</span> <span class="nav-text">使用HTTP方式 Push 代码时报错？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用SSH方式获取代码时报错？"><span class="nav-number">3.2.</span> <span class="nav-text">使用SSH方式获取代码时报错？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错-hooks-update-No-such-file-or-directory"><span class="nav-number">4.</span> <span class="nav-text">报错 hooks/update: No such file or directory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加-SSH-key-时显示报错页面-error-500"><span class="nav-number">5.</span> <span class="nav-text">添加 SSH key 时显示报错页面 error 500</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#要求输入git账户密码"><span class="nav-number">6.</span> <span class="nav-text">要求输入git账户密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSH-Connection-refused-问题"><span class="nav-number">7.</span> <span class="nav-text">SSH Connection refused 问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-SSH-使用非默认22端口时，如何隐藏端口号"><span class="nav-number">8.</span> <span class="nav-text">Git SSH 使用非默认22端口时，如何隐藏端口号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#报错-WARNING-REMOTE-HOST-IDENTIFICATION-HAS-CHANGED"><span class="nav-number">9.</span> <span class="nav-text">报错 WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#echo-输出"><span class="nav-number">10.</span> <span class="nav-text">echo 输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gogs-使用-HTTPS"><span class="nav-number">11.</span> <span class="nav-text">Gogs 使用 HTTPS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#One-More-Thing…"><span class="nav-number">12.</span> <span class="nav-text">One More Thing…</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

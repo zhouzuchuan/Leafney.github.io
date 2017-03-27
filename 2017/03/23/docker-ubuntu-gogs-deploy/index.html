@@ -1,0 +1,716 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Gogs,Docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 Docker-Ubuntu-Gogs 系列文章主要记录我在Docker下部署Gogs代码管理项目的过程。系列文章包括Gogs容器的部署过程，部署时遇到的问题及解决方法，个性化配置等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Ubuntu-Gogs部署gogs容器过程记录">
+<meta property="og:url" content="http://yoursite.com/2017/03/23/docker-ubuntu-gogs-deploy/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 Docker-Ubuntu-Gogs 系列文章主要记录我在Docker下部署Gogs代码管理项目的过程。系列文章包括Gogs容器的部署过程，部署时遇到的问题及解决方法，个性化配置等。">
+<meta property="og:updated_time" content="2017-03-27T12:48:19.361Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker-Ubuntu-Gogs部署gogs容器过程记录">
+<meta name="twitter:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 Docker-Ubuntu-Gogs 系列文章主要记录我在Docker下部署Gogs代码管理项目的过程。系列文章包括Gogs容器的部署过程，部署时遇到的问题及解决方法，个性化配置等。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/23/docker-ubuntu-gogs-deploy/"/>
+
+  <title> Docker-Ubuntu-Gogs部署gogs容器过程记录 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Docker-Ubuntu-Gogs部署gogs容器过程记录
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-23T10:40:40+08:00" content="2017-03-23">
+              2017-03-23
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/23/docker-ubuntu-gogs-deploy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/23/docker-ubuntu-gogs-deploy/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。</p>
+<p><code>Docker-Ubuntu-Gogs</code> 系列文章主要记录我在Docker下部署Gogs代码管理项目的过程。系列文章包括Gogs容器的部署过程，部署时遇到的问题及解决方法，个性化配置等。</p>
+<p>这里底层系统选择了 <code>Ubuntu16.04</code> 版本，之前也曾尝试在 <code>Alpine</code> 系统下来部署Gogs，但安装完成后会报 <code>./gogs web is not found</code> 之类的错误，暂未找到解决方法。遂最后决定采用Ubuntu来部署。</p>
+<p>对于 <code>Alpine</code> 系统下的部署方法，待后期再来完善。</p>
+<p>另外，Gogs作者在Github中发布的Gogs容器版本是用Alpine系统来做的，如果比较在意容器的大小，可以直接用之。</p>
+<hr>
+<h4 id="测试操作步骤"><a href="#测试操作步骤" class="headerlink" title="测试操作步骤"></a>测试操作步骤</h4><p>操作记录：<code>Ubuntu16.04</code> 系统</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">docker run -it --name ugg1 -p 3000:3000 -p 8080:22 ubuntu /bin/bash</div><div class="line"></div><div class="line"></div><div class="line">RUN <span class="built_in">echo</span> <span class="string">"deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse"</span> &gt;&gt; /etc/apt/sources.list</div><div class="line"></div><div class="line"></div><div class="line">apt-get update</div><div class="line"></div><div class="line">apt-get install -y git wget openssh-server</div><div class="line"></div><div class="line">adduser git  (and <span class="built_in">set</span> <span class="built_in">pwd</span> git)</div><div class="line"></div><div class="line"><span class="comment"># 拷贝本地的gogs项目zip包到容器中</span></div><div class="line">docker cp linux_amd64.zip ugg1:/home/git/gogs.zip</div><div class="line"></div><div class="line">unzip gogs.zip</div><div class="line"></div><div class="line"><span class="comment">#***************</span></div><div class="line"></div><div class="line"><span class="built_in">cd</span> gogs</div><div class="line">mkdir -p custom/conf</div><div class="line">mkdir -p <span class="built_in">log</span></div><div class="line"></div><div class="line">chmod -R 777 custom</div><div class="line">chmod -R 777 <span class="built_in">log</span></div><div class="line"></div><div class="line"><span class="built_in">cd</span> ..</div><div class="line">chown -R git:git gogs</div><div class="line"></div><div class="line"><span class="comment">#*******************</span></div><div class="line"></div><div class="line"><span class="comment"># gosu</span></div><div class="line">docker cp gosu-amd64 ugg1:/usr/<span class="built_in">local</span>/bin/gosu</div><div class="line">chmod +x /usr/<span class="built_in">local</span>/bin/gosu</div><div class="line"></div><div class="line"><span class="comment"># 启动项目</span></div><div class="line"><span class="built_in">cd</span> gogs</div><div class="line">./gogs web</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 启动ssh服务（之前测试时把这项丢了，所以ssh功能一直无法使用）</span></div><div class="line">service ssh start </div><div class="line">service ssh restart</div><div class="line"></div><div class="line"></div><div class="line">gosu git /home/git/gogs/gogs web</div><div class="line"></div><div class="line"><span class="comment"># 项目文件目录</span></div><div class="line">/app</div><div class="line">	gogs-repositories</div><div class="line">	gogs</div><div class="line">		<span class="built_in">log</span></div><div class="line">		ssh</div><div class="line">		conf</div><div class="line">		data</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 创建数据文件</span></div><div class="line">mkdir -p /app/gogs-repositories /app/gogs/<span class="built_in">log</span> /app/gogs/ssh /app/gogs/data /app/gogs/conf</div><div class="line">chown -R git:git /app</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">ln -sf /home/git/gogs/custom/conf/app.ini  /app/gogs/conf/app.ini</div><div class="line">chown -R git:git /app</div><div class="line"></div><div class="line"></div><div class="line">$ docker run --name ugg1 <span class="_">-d</span> -p 3002:3000 -p 8090:22 -v /home/tiger/xdk/dfile:/app gg1</div></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Link volumed data with app data</div><div class="line">ln -sf /data/gogs/log  ./log</div><div class="line">ln -sf /data/gogs/data ./data</div></pre></td></tr></table></figure>
+<p>参考自gogs官方github中的dockerfile，使用gosu调用git用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export USER=git</div><div class="line">exec gosu $USER /app/gogs/gogs web</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="问题一：不能使用-gosu-调用-git-用户来启动"><a href="#问题一：不能使用-gosu-调用-git-用户来启动" class="headerlink" title="问题一：不能使用 gosu 调用 git 用户来启动"></a>问题一：不能使用 <code>gosu</code> 调用 <code>git</code> 用户来启动</h4><p>发现不能使用 <code>gosu</code> 调用 <code>git</code> 用户来启动，<code>gosu git /home/git/gogs/gogs web</code> 会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gogs 运行系统用户非当前用户：git &gt;</div></pre></td></tr></table></figure>
+<p>不推荐的解决方法是： 切换到git账户下执行：<code>su - git</code>  <code>$ ./gogs web</code></p>
+<p>通过测试，可以采用如下的方式来使用 <code>gosu</code> 调用 <code>git</code> 用户（参考自gogs官方github中的dockerfile）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">export USER=git</div><div class="line">exec gosu $USER /app/gogs/gogs web</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="问题二：Fail-to-start-SSH-server-listen-tcp-0-0-0-0-22-bind-permission-denied"><a href="#问题二：Fail-to-start-SSH-server-listen-tcp-0-0-0-0-22-bind-permission-denied" class="headerlink" title="问题二：Fail to start SSH server: listen tcp 0.0.0.0:22: bind: permission denied"></a>问题二：<code>Fail to start SSH server: listen tcp 0.0.0.0:22: bind: permission denied</code></h4><p>启用内置SSH服务器会报该错误，暂未找到解决方法。</p>
+<p>通过测试，将默认的 <code>22</code> 端口改成其他端口即可。</p>
+<p>但是 <strong>gogs官方的docker配置中建议不要在Docker容器中使用内置的SSH服务器</strong>。</p>
+<hr>
+<h4 id="问题三：PANIC-session-start-mkdir-data-permission-denied"><a href="#问题三：PANIC-session-start-mkdir-data-permission-denied" class="headerlink" title="问题三：PANIC: session(start): mkdir data: permission denied"></a>问题三：<code>PANIC: session(start): mkdir data: permission denied</code></h4><p>详细错误信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[Macaron] 2017-03-21 06:05:40: Started GET / for 192.168.137.1</div><div class="line">[Macaron] PANIC: session(start): mkdir data: permission denied</div><div class="line">/usr/local/go/src/runtime/panic.go:489 (0x4340bf)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/github.com/go-macaron/session/session.go:156 (0x8f478e)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/gopkg.in/macaron.v1/context.go:79 (0x89ba01)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/github.com/go-macaron/inject/inject.go:157 (0x87dc92)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/github.com/go-macaron/inject/inject.go:135 (0x87da8b)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/gopkg.in/macaron.v1/context.go:121 (0x89bc62)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/gopkg.in/macaron.v1/context.go:112 (0x89bb86)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/gopkg.in/macaron.v1/recovery.go:161 (0x8af50b)</div><div class="line">/home/vagrant/gopath/src/github.com/gogits/gogs/vendor/gopkg.in/macaron.v1/logger.go:40 (0x89f118)</div></pre></td></tr></table></figure>
+<p>该问题导致的原因是，当 <code>git</code> 用户运行 <code>./gogs web</code> 时，会在 <code>gogs</code> 项目的主目录下 ( 这里是 <code>/home/git/gogs</code>）创建一个 <code>data</code> 目录用于存放session缓存等临时文件。如果当前工作的主目录不是在 <code>/home/git/gogs</code> 目录，则git账户就没有权限来创建目录，从而导致权限错误。<br>解决方法是在Dockerfile中指定工作目录 <code>WORKDIR /home/git/gogs</code> 即可。 </p>
+<p>后经查证，在 <code>Gogs</code> 项目目录下的 <code>custom</code> <code>data</code> 和 <code>log</code> 三个目录是用来存放项目运行期间产生的日志、配置文件、数据等信息的。当Gogs项目需要升级时，直接拷贝这三个目录到新项目目录下即可。<br>这里的 <code>data</code> 目录需要提前创建好。</p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://amazingw.github.io/2016/03/22/ubuntu-with-gogs.html" target="_blank" rel="external">在ubuntu上安装gogs</a></li>
+<li><a href="https://libhappy.com/2016/01/build-gogs-service/" target="_blank" rel="external">用Gogs搭建自己的Git服务器 - LibHappy</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-gogs-on-ubuntu-14-04" target="_blank" rel="external">How To Set Up Gogs on Ubuntu 14.04 | DigitalOcean</a></li>
+<li><a href="http://www.cnblogs.com/sipher/articles/2429772.html" target="_blank" rel="external">chmod 777 修改权限 - 日光之下无新事 - 博客园</a></li>
+<li><a href="https://segmentfault.com/q/1010000004608054" target="_blank" rel="external">linux - 安装gogs时报错：运行系统用户非当前用户：git -&gt; root。 不知道是什么意思 - SegmentFault</a></li>
+</ul>
+<hr>
+<h4 id="Install时注意事项"><a href="#Install时注意事项" class="headerlink" title="Install时注意事项"></a>Install时注意事项</h4><ul>
+<li><code>Database Type</code> 选择 <code>SQLite3</code> （目前仅测试了sqlite3数据库）</li>
+<li><code>Sqlite Database Path</code> 使用固定路径 <code>/app/gogs/data/gogs.db</code> （后期改成默认目录也可以，详见Github）</li>
+<li><code>Repository Root Path</code> 使用固定路径 <code>/app/gogs-repositories</code></li>
+<li><code>Run User</code> 使用默认的 <code>git</code></li>
+<li><code>Domain</code> 填写Docker宿主机的主机名或物理地址 类似于 <code>192.168.137.140</code></li>
+<li><code>SSH Port</code> 不要勾选使用内置SSH服务器（Don’t user <code>Use Builtin SSH Server</code>） 如果你映射Docker外部端口如 <code>10022:22</code> 那么这里填写 <code>10022</code></li>
+<li><code>HTTP Port</code> 如果映射外部端口 <code>10080:3000</code> 这里仍然使用 <code>3000</code></li>
+<li><code>Application URL</code> 使用域和公开的HTTP端口值的组合 如 <code>http://192.168.137.140:10080</code></li>
+<li><code>Log Path</code> 填写固定路径 <code>/app/gogs/log</code>  （后期改成默认目录也可以，详见Github）</li>
+</ul>
+<p><strong>注意：</strong></p>
+<p>Dockerfile中必需添加 <code>WORKDIR /home/git/gogs</code> 即必需指定当前工作目录为 <code>gogs</code> 目录下，因为gogs在install完成后会在当前目录下创建一个 <code>data</code> 目录保存 <code>sessions</code> 信息。如果当前目录不是这里，则会报 <code>[Macaron] PANIC: session(start): mkdir data: permission denied</code> 的错误。</p>
+<hr>
+<h4 id="成果"><a href="#成果" class="headerlink" title="成果"></a>成果</h4><p>最终项目见：<a href="https://github.com/Leafney/ubuntu-gogs" target="_blank" rel="external">GitHub - Leafney/ubuntu-gogs: Docker + Ubuntu + Gogs</a></p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gogs/" rel="tag">#Gogs</a>
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/22/elasticsearch-container-in-alpine/" rel="next" title="Docker下配置Elasticsearch容器过程记录">
+                <i class="fa fa-chevron-left"></i> Docker下配置Elasticsearch容器过程记录
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/24/docker-ubuntu-gogs-problems/" rel="prev" title="Docker-Ubuntu-Gogs部署及配置时遇到的问题">
+                Docker-Ubuntu-Gogs部署及配置时遇到的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/23/docker-ubuntu-gogs-deploy/"
+           data-title="Docker-Ubuntu-Gogs部署gogs容器过程记录" data-url="http://yoursite.com/2017/03/23/docker-ubuntu-gogs-deploy/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://work.itfanr.cc" target="_blank" title="ItFanr">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ItFanr
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试操作步骤"><span class="nav-number">1.</span> <span class="nav-text">测试操作步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题一：不能使用-gosu-调用-git-用户来启动"><span class="nav-number">2.</span> <span class="nav-text">问题一：不能使用 gosu 调用 git 用户来启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题二：Fail-to-start-SSH-server-listen-tcp-0-0-0-0-22-bind-permission-denied"><span class="nav-number">3.</span> <span class="nav-text">问题二：Fail to start SSH server: listen tcp 0.0.0.0:22: bind: permission denied</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题三：PANIC-session-start-mkdir-data-permission-denied"><span class="nav-number">4.</span> <span class="nav-text">问题三：PANIC: session(start): mkdir data: permission denied</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Install时注意事项"><span class="nav-number">6.</span> <span class="nav-text">Install时注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#成果"><span class="nav-number">7.</span> <span class="nav-text">成果</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"itfanrcc"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
