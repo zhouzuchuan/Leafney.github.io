@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Golang,爬虫," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="主要探究 1. 使用代理请求 2. 跳过https不安全验证 3. 自定义请求头User-Agent的实现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang实现http请求及代理设置">
+<meta property="og:url" content="http://yoursite.com/2017/06/15/Golang-implements-HTTP-request-and-proxy-settings/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="主要探究 1. 使用代理请求 2. 跳过https不安全验证 3. 自定义请求头User-Agent的实现">
+<meta property="og:updated_time" content="2017-06-22T14:27:12.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Golang实现http请求及代理设置">
+<meta name="twitter:description" content="主要探究 1. 使用代理请求 2. 跳过https不安全验证 3. 自定义请求头User-Agent的实现">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/15/Golang-implements-HTTP-request-and-proxy-settings/"/>
+
+  <title> Golang实现http请求及代理设置 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Golang实现http请求及代理设置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-15T16:03:26+08:00" content="2017-06-15">
+              2017-06-15
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>主要探究 1. 使用代理请求 2. 跳过https不安全验证 3. 自定义请求头User-Agent的实现</p>
+<h4 id="主要研究的技术点"><a href="#主要研究的技术点" class="headerlink" title="主要研究的技术点"></a>主要研究的技术点</h4><ul>
+<li>使用代理请求</li>
+<li>跳过https不安全验证</li>
+<li>自定义请求头 User-Agent</li>
+</ul>
+<hr>
+<h4 id="静态数据请求并设置代理"><a href="#静态数据请求并设置代理" class="headerlink" title="静态数据请求并设置代理"></a>静态数据请求并设置代理</h4><h5 id="实例代码"><a href="#实例代码" class="headerlink" title="实例代码"></a>实例代码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">	&quot;crypto/tls&quot;</div><div class="line">	&quot;fmt&quot;</div><div class="line">	&quot;io/ioutil&quot;</div><div class="line">	&quot;net/http&quot;</div><div class="line">	&quot;net/url&quot;</div><div class="line">	&quot;time&quot;</div><div class="line">)</div><div class="line"></div><div class="line">func First() &#123;</div><div class="line">	/*</div><div class="line">		1. 普通请求</div><div class="line">	*/</div><div class="line"></div><div class="line">	webUrl := &quot;http://ip.gs/&quot;</div><div class="line">	resp, err := http.Get(webUrl)</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(err)</div><div class="line">		return</div><div class="line">	&#125;</div><div class="line">	// if resp.StatusCode == http.StatusOK &#123;</div><div class="line">	// 	fmt.Println(resp.StatusCode)</div><div class="line">	// &#125;</div><div class="line"></div><div class="line">	time.Sleep(time.Second * 3)</div><div class="line"></div><div class="line">	defer resp.Body.Close()</div><div class="line">	body, _ := ioutil.ReadAll(resp.Body)</div><div class="line">	fmt.Println(string(body))</div><div class="line">&#125;</div><div class="line"></div><div class="line">func Second(webUrl, proxyUrl string) &#123;</div><div class="line">	/*</div><div class="line">		1. 代理请求</div><div class="line">		2. 跳过https不安全验证</div><div class="line">	*/</div><div class="line">	// webUrl := &quot;http://ip.gs/&quot;</div><div class="line">	// proxyUrl := &quot;http://115.215.71.12:808&quot;</div><div class="line"></div><div class="line">	proxy, _ := url.Parse(proxyUrl)</div><div class="line">	tr := &amp;http.Transport&#123;</div><div class="line">		Proxy:           http.ProxyURL(proxy),</div><div class="line">		TLSClientConfig: &amp;tls.Config&#123;InsecureSkipVerify: true&#125;,</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	client := &amp;http.Client&#123;</div><div class="line">		Transport: tr,</div><div class="line">		Timeout:   time.Second * 5, //超时时间</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	resp, err := client.Get(webUrl)</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(&quot;出错了&quot;, err)</div><div class="line">		return</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	defer resp.Body.Close()</div><div class="line">	body, _ := ioutil.ReadAll(resp.Body)</div><div class="line">	fmt.Println(string(body))</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">func Third(webUrl, proxyUrl string) &#123;</div><div class="line">	/*</div><div class="line">		1. 代理请求</div><div class="line">		2. 跳过https不安全验证</div><div class="line">		3. 自定义请求头 User-Agent</div><div class="line"></div><div class="line">	*/</div><div class="line">	// webUrl := &quot;http://ip.gs/&quot;</div><div class="line">	// proxyUrl := &quot;http://171.215.227.125:9000&quot;</div><div class="line"></div><div class="line">	request, _ := http.NewRequest(&quot;GET&quot;, webUrl, nil)</div><div class="line">	request.Header.Set(&quot;Connection&quot;, &quot;keep-alive&quot;)</div><div class="line">	request.Header.Set(&quot;User-Agent&quot;, &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36&quot;)</div><div class="line"></div><div class="line">	proxy, _ := url.Parse(proxyUrl)</div><div class="line">	tr := &amp;http.Transport&#123;</div><div class="line">		Proxy:           http.ProxyURL(proxy),</div><div class="line">		TLSClientConfig: &amp;tls.Config&#123;InsecureSkipVerify: true&#125;,</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	client := &amp;http.Client&#123;</div><div class="line">		Transport: tr,</div><div class="line">		Timeout:   time.Second * 5, //超时时间</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	resp, err := client.Do(request)</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(&quot;出错了&quot;, err)</div><div class="line">		return</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	defer resp.Body.Close()</div><div class="line">	body, _ := ioutil.ReadAll(resp.Body)</div><div class="line">	fmt.Println(string(body))</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">	webUrl := &quot;http://httpbin.org/user-agent&quot; //&quot;http://ip.gs/&quot;</div><div class="line">	proxyUrl := &quot;http://119.5.0.75:808&quot;</div><div class="line"></div><div class="line">	Second(webUrl, proxyUrl)</div><div class="line">	// Third(webUrl, proxyUrl)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="http://oinume.hatenablog.com/entry/mocking-http-access-in-golang" target="_blank" rel="external">Mocking a HTTP access with http.Transport in Golang - oinume journal</a></li>
+<li><a href="http://www.cnblogs.com/damir/archive/2012/05/06/2486663.html" target="_blank" rel="external">Go http访问使用代理</a></li>
+<li><a href="https://www.haiyun.me/archives/1051.html" target="_blank" rel="external">GO HTTP client客户端使用 - 海运的博客</a></li>
+<li><a href="http://www.devdungeon.com/content/making-tor-http-requests-go" target="_blank" rel="external">Making Tor HTTP Requests with Go | DevDungeon</a></li>
+<li><a href="https://stackoverflow.com/questions/42662369/golang-how-to-do-a-https-request-with-proxy" target="_blank" rel="external">go - golang: How to do a https request with proxy - Stack Overflow</a></li>
+<li><a href="https://stackoverflow.com/questions/13263492/set-useragent-in-http-request" target="_blank" rel="external">go - Set UserAgent in http request - Stack Overflow</a></li>
+</ul>
+<hr>
+<h4 id="动态数据请求并设置代理"><a href="#动态数据请求并设置代理" class="headerlink" title="动态数据请求并设置代理"></a>动态数据请求并设置代理</h4><p>动态数据请求使用golang调用phantomjs来请求网页数据内容实现。</p>
+<p>通过命令参数方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">phantomjs [options] somescript.js [arg1 [arg2 [...]]]</div></pre></td></tr></table></figure>
+<p>代理相关的配置参数：</p>
+<ul>
+<li><code>--load-images=[true|false]</code>  (default is <code>true</code>)</li>
+<li><code>--proxy=address:port</code>  (eg <code>--proxy=192.168.1.42:8080</code>)</li>
+<li><code>--proxy-type=[http|socks5|none]</code>  (default is <code>http</code>)</li>
+<li><code>--proxy-auth</code> (eg <code>--proxy-auth=username:password</code>)</li>
+</ul>
+<p>其他常用配置参数：</p>
+<ul>
+<li><code>--load-images=[yes|no]</code>             Load all inlined images (default is ‘yes’).</li>
+<li><code>--load-plugins=[yes|no]</code>            Load all plugins (i.e. ‘Flash’, ‘Silverlight’, …) (default is ‘no’).</li>
+<li><code>--proxy=address:port</code>               Set the network proxy.</li>
+<li><code>--disk-cache=[yes|no]</code>              Enable disk cache (at desktop services cache storage location, default is ‘no’).</li>
+<li><code>--ignore-ssl-errors=[yes|no]</code>       Ignore SSL errors (i.e. expired or self-signed certificate errors).</li>
+</ul>
+<p>也可以通过配置文件方式来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">phantomjs --config=/path/to/config.json somescript.js [arg1 [...]]</div></pre></td></tr></table></figure>
+<h5 id="常用配置相关参考"><a href="#常用配置相关参考" class="headerlink" title="常用配置相关参考"></a>常用配置相关参考</h5><ul>
+<li><a href="http://phantomjs.org/api/command-line.html" target="_blank" rel="external">Command Line Interface | PhantomJS</a></li>
+<li><a href="http://www.dblooman.com/network/2014/05/27/Proxy-Auth-in-phantomjs/" target="_blank" rel="external">Proxy Auth In Phantomjs &middot; David Blooman</a></li>
+</ul>
+<hr>
+<h5 id="实例代码-1"><a href="#实例代码-1" class="headerlink" title="实例代码"></a>实例代码</h5><ul>
+<li>经过测试，发现： <code>phantomjs --proxy=address:port somescript.js [args]</code> 这种方式无法执行成功。</li>
+<li>经过测试，发现：在 <code>somescript.js</code> 中设置 <code>page.setProxy(&quot;http://119.5.0.75:808/&quot;);</code> 这种方式也无效。</li>
+<li>经过测试，发现：在 <code>somescript.js</code> 中设置 <code>phantom.setProxy(&quot;139.224.237.33&quot;, &quot;8888&quot;, &#39;manual&#39;, &#39;&#39;, &#39;&#39;);</code> 这种方式可行。</li>
+</ul>
+<h6 id="不使用代理的动态数据请求"><a href="#不使用代理的动态数据请求" class="headerlink" title="不使用代理的动态数据请求"></a>不使用代理的动态数据请求</h6><p><code>dynamicproxy.go</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">	&quot;fmt&quot;</div><div class="line">	&quot;io/ioutil&quot;</div><div class="line">	&quot;os/exec&quot;</div><div class="line">)</div><div class="line"></div><div class="line">func First(webUrl, jsFileName string) &#123;</div><div class="line">	cmd := exec.Command(&quot;phantomjs.exe&quot;, jsFileName, webUrl)</div><div class="line">	out, err := cmd.Output()</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(err)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(string(out))</div><div class="line">&#125;</div><div class="line"></div><div class="line">func Second(webUrl, jsFileName string) &#123;</div><div class="line">	// cmd := exec.Command(&quot;phantomjs.exe&quot;, &quot;test.js&quot;, &quot;https://www.cnblogs.com/&quot;)</div><div class="line">	cmd := exec.Command(&quot;phantomjs.exe&quot;, jsFileName, webUrl)</div><div class="line">	stdout, err := cmd.StdoutPipe()</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(err)</div><div class="line">	&#125;</div><div class="line">	cmd.Start()</div><div class="line">	content, err := ioutil.ReadAll(stdout)</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(err)</div><div class="line">	&#125;</div><div class="line">	fmt.Println(string(content))</div><div class="line">&#125;</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">	webUrl := &quot;http://httpbin.org/ip&quot; //&quot;http://httpbin.org/ip&quot; // &quot;http://ip.gs/&quot; // &quot;http://httpbin.org/user-agent&quot;</div><div class="line">	jsfileName := &quot;somescript.js&quot;</div><div class="line">	First(webUrl, jsfileName)</div><div class="line">	// Second(webUrl, jsfileName)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>somescript.js</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var page =require(&apos;webpage&apos;).create();</div><div class="line">system=require(&apos;system&apos;);</div><div class="line">url=system.args[1];</div><div class="line"></div><div class="line">page.settings.userAgent = &apos;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36&apos;;</div><div class="line">page.open(url,function(status)&#123;</div><div class="line">	console.log(&apos;Loading &apos;+system.args[1]);</div><div class="line">	if (status==&quot;success&quot;) &#123;</div><div class="line">		// page.render(&apos;a.png&apos;); //网页截屏</div><div class="line">		system.stdout.writeLine(page.content); // 获取网页内容</div><div class="line">		// system.stdout.writeLine(page.title);</div><div class="line">		// console.log(page.plainText); // 文本内容</div><div class="line">		// console.log(page.title); // 网页标题</div><div class="line">	&#125;else&#123;</div><div class="line">		system.stdout.writeLine(&quot;request error&quot;);</div><div class="line">	&#125;;</div><div class="line">	phantom.exit();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<hr>
+<h6 id="使用http代理的动态数据请求"><a href="#使用http代理的动态数据请求" class="headerlink" title="使用http代理的动态数据请求"></a>使用http代理的动态数据请求</h6><p><code>dynamicproxy.go</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">	&quot;fmt&quot;</div><div class="line">	&quot;io/ioutil&quot;</div><div class="line">	&quot;os/exec&quot;</div><div class="line">)</div><div class="line"></div><div class="line">func Third(webUrl, jsFileName,proxyHost,proxyPort string) &#123;</div><div class="line">	// cmd := exec.Command(&quot;phantomjs.exe&quot;, jsFileName, webUrl)</div><div class="line">	cmd := exec.Command(&quot;phantomjs.exe&quot;, jsFileName,proxyHost,proxyPort, webUrl)</div><div class="line">	out, err := cmd.Output()</div><div class="line">	if err != nil &#123;</div><div class="line">		fmt.Println(err)</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	fmt.Println(string(out))</div><div class="line">&#125;</div><div class="line">func main() &#123;</div><div class="line">	webUrl := &quot;http://httpbin.org/ip&quot; //&quot;http://httpbin.org/ip&quot; // &quot;http://ip.gs/&quot; // &quot;http://httpbin.org/user-agent&quot;</div><div class="line">	jsfileName := &quot;somescript.js&quot;</div><div class="line">	Third(webUrl, jsfileName,&quot;139.224.237.33&quot;, &quot;8888&quot;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>somescript.js</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">var page =require(&apos;webpage&apos;).create();</div><div class="line">system=require(&apos;system&apos;);</div><div class="line"></div><div class="line">if (system.args.length&lt;4) &#123;</div><div class="line">	system.stdout.writeLine(&quot;somescript.js &lt;proxyHost&gt; &lt;proxyPort&gt; &lt;URL&gt;&quot;);</div><div class="line">	phantom.exit(1);</div><div class="line">&#125;else&#123;</div><div class="line">	host=system.args[1];</div><div class="line">	port=system.args[2];</div><div class="line">	url = system.args[3];</div><div class="line"></div><div class="line">// page.setProxy(&quot;http://119.5.0.75:808/&quot;);//这样设置请求失败</div><div class="line"></div><div class="line">// phantom.setProxy(&quot;139.224.237.33&quot;, &quot;8888&quot;, &apos;manual&apos;, &apos;&apos;, &apos;&apos;);//这样设置可以</div><div class="line">phantom.setProxy(host, port, &apos;manual&apos;, &apos;&apos;, &apos;&apos;);</div><div class="line">page.settings.userAgent = &apos;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36&apos;;</div><div class="line"></div><div class="line">page.open(url,function(status)&#123;</div><div class="line">	if (status==&quot;success&quot;) &#123;</div><div class="line">		system.stdout.writeLine(page.content); // 获取网页内容</div><div class="line">	&#125;else&#123;</div><div class="line">		console.log(status);</div><div class="line">		system.stdout.writeLine(&quot;error&quot;);</div><div class="line">	&#125;;</div><div class="line">	phantom.exit();</div><div class="line">&#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>说明：<code>phantom.setProxy(&quot;139.224.237.33&quot;, &quot;8888&quot;, &#39;manual&#39;, &#39;&#39;, &#39;&#39;);</code>  参数1为代理host;参数2为代理port;参数3可以保持默认定值<code>manual</code>,参数4为代理类型http socket5等可为空;参数5不知道为空。</p>
+<hr>
+<h6 id="忽略https安全验证的动态数据请求"><a href="#忽略https安全验证的动态数据请求" class="headerlink" title="忽略https安全验证的动态数据请求"></a>忽略https安全验证的动态数据请求</h6><ul>
+<li>暂时只找到一种方法，直接请求https网址不使用代理能够请求成功。</li>
+<li>即忽略https安全验证，又使用代理经测试请求失败。</li>
+<li>直接在命令窗口中执行可以，通过golang调用请求失败。</li>
+</ul>
+<p>使用参数：<code>--ignore-ssl-errors=true --ssl-protocol=any</code> 设置。</p>
+<p>如下方式执行成功，示例代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">phantomjs.exe --ignore-ssl-errors=true --ssl-protocol=any test.js https://kyfw.12306.cn/otn/</div></pre></td></tr></table></figure>
+<p><code>test.js</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">var page =require(&apos;webpage&apos;).create();</div><div class="line">system=require(&apos;system&apos;);</div><div class="line">url=system.args[1];</div><div class="line"></div><div class="line">page.settings.userAgent = &apos;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.120 Safari/537.36&apos;;</div><div class="line">page.open(url,function(status)&#123;</div><div class="line">	console.log(&apos;Loading &apos;+system.args[1]);</div><div class="line">	if (status==&quot;success&quot;) &#123;</div><div class="line">		system.stdout.writeLine(page.content); // 获取网页内容</div><div class="line">	&#125;else&#123;</div><div class="line">		console.log(&quot;request error&quot;);</div><div class="line">	&#125;;</div><div class="line">	phantom.exit();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="相关参考-1"><a href="#相关参考-1" class="headerlink" title="相关参考"></a>相关参考</h5><ul>
+<li><a href="https://github.com/ariya/phantomjs/issues/12181" target="_blank" rel="external">–ignore-ssl-errors not working · Issue #12181 · ariya/phantomjs · GitHub</a></li>
+<li><a href="https://github.com/ariya/phantomjs/blob/master/examples/openurlwithproxy.js" target="_blank" rel="external">phantomjs · GitHub</a></li>
+<li><a href="https://github.com/ariya/phantomjs/tree/master/examples" target="_blank" rel="external">phantomjs/examples at master · ariya/phantomjs · GitHub</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag">#Golang</a>
+          
+            <a href="/tags/爬虫/" rel="tag">#爬虫</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/31/learning-golang/" rel="next" title="Go语言学习资料整理">
+                <i class="fa fa-chevron-left"></i> Go语言学习资料整理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/22/foreign-car-to-beijing/" rel="prev" title="进京证办理">
+                进京证办理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#主要研究的技术点"><span class="nav-number">1.</span> <span class="nav-text">主要研究的技术点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态数据请求并设置代理"><span class="nav-number">2.</span> <span class="nav-text">静态数据请求并设置代理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#实例代码"><span class="nav-number">2.1.</span> <span class="nav-text">实例代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考"><span class="nav-number">2.2.</span> <span class="nav-text">相关参考</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态数据请求并设置代理"><span class="nav-number">3.</span> <span class="nav-text">动态数据请求并设置代理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常用配置相关参考"><span class="nav-number">3.1.</span> <span class="nav-text">常用配置相关参考</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实例代码-1"><span class="nav-number">3.2.</span> <span class="nav-text">实例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#不使用代理的动态数据请求"><span class="nav-number">3.2.1.</span> <span class="nav-text">不使用代理的动态数据请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用http代理的动态数据请求"><span class="nav-number">3.2.2.</span> <span class="nav-text">使用http代理的动态数据请求</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#忽略https安全验证的动态数据请求"><span class="nav-number">3.2.3.</span> <span class="nav-text">忽略https安全验证的动态数据请求</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相关参考-1"><span class="nav-number">3.3.</span> <span class="nav-text">相关参考</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
