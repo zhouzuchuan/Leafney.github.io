@@ -1,0 +1,684 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Golang,MongoDB," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="目前go支持MongoDB最好的驱动就是mgo。">
+<meta name="keywords" content="Golang,MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang连接MongoDB数据库">
+<meta property="og:url" content="http://yoursite.com/2017/06/28/golang-connect-to-mongodb/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="目前go支持MongoDB最好的驱动就是mgo。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-07T07:28:17.284Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Golang连接MongoDB数据库">
+<meta name="twitter:description" content="目前go支持MongoDB最好的驱动就是mgo。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/28/golang-connect-to-mongodb/"/>
+
+  <title> Golang连接MongoDB数据库 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Golang连接MongoDB数据库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-28T17:28:24+00:00" content="2017-06-28">
+              2017-06-28
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>目前go支持MongoDB最好的驱动就是mgo。</p>
+<h4 id="下载与引用"><a href="#下载与引用" class="headerlink" title="下载与引用"></a>下载与引用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">go get gopkg.in/mgo.v2</div><div class="line"></div><div class="line">import &quot;gopkg.in/mgo.v2&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">go get labix.org/v2/mgo</div><div class="line"></div><div class="line">import &quot;labix.org/v2/mgo&quot;</div></pre></td></tr></table></figure>
+<p>安装时发现，地址 <code>labix.org/v2/mgo</code> 中的mgo版本中有些方法不全，而地址 <code>gopkg.in/mgo.v2</code>中的方法是全的，但是该地址下载超时而失败，必须翻墙才可以访问。<br>如 <code>labix.org/v2/mgo</code> 中就没有 <code>mongo, err := mgo.ParseURL(MongoDBUrl)</code> 的 <code>ParseURL()</code> 方法。</p>
+<p>如果无法翻墙，还可以从 github 下载：</p>
+<p>因为我们要使用 mgo 的 <code>v2</code> 版本，所以需要迁出 <code>branch:v2</code> 分支，不能直接使用 <code>master</code> 分支。</p>
+<p>在 <code>go get</code> 命令后添加 <code>-d</code> 参数可以只下载而不会执行安装命令。</p>
+<p>操作步骤为：</p>
+<ol>
+<li>执行命令 <code>go get -d github.com/go-mgo/mgo</code></li>
+<li>找到上面 <code>clone</code> 的目录，迁出分支 <code>v2</code></li>
+<li>再次运行 <code>go get</code> 命令，这时会在迁出的分支上执行命令</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">go get -d github.com/go-mgo/mgo</div><div class="line"></div><div class="line">git checkout v2</div><div class="line"></div><div class="line">go get github.com/go-mgo/mgo</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="http://labix.org/mgo" target="_blank" rel="external">mgo - Rich MongoDB driver for Go</a></li>
+<li><a href="http://gopkg.in/mgo.v2" target="_blank" rel="external">mgo.v2 - gopkg.in/mgo.v2</a></li>
+<li><a href="https://stackoverflow.com/questions/30188499/how-to-do-go-get-on-a-specific-tag-of-a-github-repository" target="_blank" rel="external">git - How to do &quot;go get&quot; on a specific tag of a github repository - Stack Overflow</a></li>
+</ul>
+<hr>
+<h4 id="安装bzr工具"><a href="#安装bzr工具" class="headerlink" title="安装bzr工具"></a>安装bzr工具</h4><p>Bazaar是一款开源的分布式版本控制工具。</p>
+<p>安装mgo之前，需要先安装 bzr 工具，否则直接执行或报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt; go get labix.org/v2/mgo</div><div class="line">go: missing Bazaar command. See https://golang.org/s/gogetcmd</div><div class="line">package labix.org/v2/mgo: exec: &quot;bzr&quot;: executable file not found in %PATH%</div></pre></td></tr></table></figure>
+<h5 id="Win"><a href="#Win" class="headerlink" title="Win"></a>Win</h5><p>从网址 <code>http://bazaar.canonical.com/en/</code> 下载安装包，选择 <code>Standalone</code>版本或其他版本。</p>
+<h5 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h5><blockquote>
+<p>sudo apt-get install bzr</p>
+</blockquote>
+<ul>
+<li><a href="http://fpliu-blog.chinacloudsites.cn/it/software/Bazaar" target="_blank" rel="external">多平台系统下如何安装Bazzar工具</a></li>
+</ul>
+<hr>
+<h4 id="连接字符串"><a href="#连接字符串" class="headerlink" title="连接字符串"></a>连接字符串</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">MONGODB_URL=&quot;mongodb://user:pass@server.compose.io/db_name&quot;</div><div class="line"></div><div class="line">mongodb://localhost:27017/articles_demo_dev</div><div class="line">mongodb://myuser:mypass@localhost:40001,otherhost:40001/mydb</div></pre></td></tr></table></figure>
+<p>或者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">session, err := mgo.Dial(&quot;&quot;) </div><div class="line">session, err := mgo.Dial(&quot;localhost&quot;) </div><div class="line">session, err := mgo.Dial(&quot;127.0.0.1&quot;) </div><div class="line">session, err := mgo.Dial(&quot;localhost:27017&quot;)</div><div class="line">session, err := mgo.Dial(&quot;127.0.0.1:27017&quot;)</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="创建连接"><a href="#创建连接" class="headerlink" title="创建连接"></a>创建连接</h4><p>通过Session.DB()来切换相应的数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">db := session.DB(&quot;xtest&quot;)   //数据库名称</div></pre></td></tr></table></figure>
+<p>通过Database.C()方法切换集合（Collection）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">collection := db.C(&quot;xtest&quot;) // 集合名称</div></pre></td></tr></table></figure>
+<p>或直接一步：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">c := session.DB(&quot;xtest&quot;).C(&quot;xtest&quot;)</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h4><p>通过func (c <em>Collection) Find(query interface{}) </em>Query来进行查询<br>通过Query.All()可以获得所有结果<br>通过Query.One()可以获得一个结果<br>条件用 <code>bson.M{key: value}</code> ，注意key必须用MongoDB中的字段名，而不是struct的字段名。</p>
+<hr>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line"></div><div class="line">import (</div><div class="line">	&quot;fmt&quot;</div><div class="line">	&quot;labix.org/v2/mgo&quot;</div><div class="line">	&quot;labix.org/v2/mgo/bson&quot;</div><div class="line">)</div><div class="line"></div><div class="line">const (</div><div class="line">	MONGODB_URL = &quot;127.0.0.1:27017&quot;</div><div class="line">)</div><div class="line"></div><div class="line">func main() &#123;</div><div class="line">	//创建连接</div><div class="line">	session, err := mgo.Dial(MONGODB_URL)</div><div class="line">	if err != nil &#123;</div><div class="line">		panic(err)</div><div class="line">	&#125;</div><div class="line">	defer session.Close()</div><div class="line"></div><div class="line">	session.SetMode(mgo.Monotonic, true)</div><div class="line">	// db := session.DB(&quot;xtest&quot;)   //数据库名称</div><div class="line">	// collection := db.C(&quot;xtest&quot;) // 集合名称</div><div class="line">	c := session.DB(&quot;xtest&quot;).C(&quot;xtest&quot;)</div><div class="line"></div><div class="line">	// //插入数据</div><div class="line">	// err = c.Insert(&amp;Person&#123;&quot;Tommy&quot;, &quot;123456&quot;&#125;, &amp;Person&#123;&quot;Hanleilei&quot;, &quot;98765&quot;&#125;,</div><div class="line">	// 	&amp;Person&#123;&quot;喜洋洋&quot;, &quot;98765&quot;&#125;, &amp;Person&#123;&quot;灰太狼&quot;, &quot;46577&quot;&#125;,</div><div class="line">	// )</div><div class="line">	// if err != nil &#123;</div><div class="line">	// 	panic(err)</div><div class="line">	// &#125;</div><div class="line"></div><div class="line">	// //查询并赋值 Find().One()</div><div class="line">	// result := Person&#123;&#125;</div><div class="line">	// err = c.Find(bson.M&#123;&quot;name&quot;: &quot;Tommy&quot;&#125;).One(&amp;result)</div><div class="line">	// if err != nil &#123;</div><div class="line">	// 	panic(err)</div><div class="line">	// &#125;</div><div class="line">	// //输出</div><div class="line">	// fmt.Println(&quot;Phone &quot;, result.Phone)</div><div class="line"></div><div class="line">	// //集合中元素数量 Count()</div><div class="line">	// countNum, err := c.Count()</div><div class="line">	// fmt.Println(&quot;obj numbers &quot;, countNum)</div><div class="line"></div><div class="line">	// //查询多条数据 Find().Iter()</div><div class="line">	// var onep = Person&#123;&#125;</div><div class="line">	// iter := c.Find(nil).Iter()</div><div class="line">	// for iter.Next(&amp;onep) &#123;</div><div class="line">	// 	fmt.Println(&quot;姓名 &quot;, onep.Name)</div><div class="line">	// &#125;</div><div class="line"></div><div class="line">	// //查询多条数据 Find().All()</div><div class="line">	// var personAll []Person</div><div class="line">	// err = c.Find(nil).All(&amp;personAll)</div><div class="line">	// for i := 0; i &lt; len(personAll); i++ &#123;</div><div class="line">	// 	fmt.Println(&quot;Person &quot;, personAll[i].Name, personAll[i].Phone)</div><div class="line">	// &#125;</div><div class="line"></div><div class="line">	// //更新数据 Update()</div><div class="line">	// abc := Person&#123;&#125;</div><div class="line">	// err = c.Find(bson.M&#123;&quot;name&quot;: &quot;Tommy&quot;&#125;).One(&amp;abc)</div><div class="line">	// fmt.Println(&quot;Tommy phone is &quot;, abc.Phone)</div><div class="line"></div><div class="line">	// err = c.Update(bson.M&#123;&quot;name&quot;: &quot;Tommy&quot;&#125;, bson.M&#123;&quot;$set&quot;: bson.M&#123;&quot;phone&quot;: &quot;10086&quot;&#125;&#125;)</div><div class="line">	// err = c.Find(bson.M&#123;&quot;name&quot;: &quot;Tommy&quot;&#125;).One(&amp;abc)</div><div class="line">	// fmt.Println(&quot;Tommy phone is &quot;, abc.Phone)</div><div class="line"></div><div class="line">	// //删除数据 Remove()</div><div class="line">	// fmt.Println(c.Count())</div><div class="line">	// err = c.Remove(bson.M&#123;&quot;phone&quot;: &quot;46577&quot;&#125;)</div><div class="line">	// fmt.Println(c.Count())</div><div class="line"></div><div class="line">	fmt.Println(&quot;end&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">type Person struct &#123;</div><div class="line">	Name  string `bson:&quot;name&quot;`</div><div class="line">	Phone string `bson:&quot;phone&quot;`</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h4><ul>
+<li><a href="https://github.com/go-mgo/mgo" target="_blank" rel="external">GitHub - go-mgo/mgo: The MongoDB driver for Go. See http://labix.org/mgo for details.</a></li>
+<li><a href="http://www.it165.net/database/html/201403/5661.html" target="_blank" rel="external">golang使用mgo连接MongoDB</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag">#Golang</a>
+          
+            <a href="/tags/MongoDB/" rel="tag">#MongoDB</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/22/foreign-car-to-beijing/" rel="next" title="进京证办理">
+                <i class="fa fa-chevron-left"></i> 进京证办理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/21/docker-ubuntu-gogs-ssh/" rel="prev" title="Docker-Ubuntu-Gogs关于使用SSH">
+                Docker-Ubuntu-Gogs关于使用SSH <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载与引用"><span class="nav-number">1.</span> <span class="nav-text">下载与引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装bzr工具"><span class="nav-number">2.</span> <span class="nav-text">安装bzr工具</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Win"><span class="nav-number">2.1.</span> <span class="nav-text">Win</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Ubuntu"><span class="nav-number">2.2.</span> <span class="nav-text">Ubuntu</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接字符串"><span class="nav-number">3.</span> <span class="nav-text">连接字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建连接"><span class="nav-number">4.</span> <span class="nav-text">创建连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询"><span class="nav-number">5.</span> <span class="nav-text">查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例"><span class="nav-number">6.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关"><span class="nav-number">7.</span> <span class="nav-text">相关</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

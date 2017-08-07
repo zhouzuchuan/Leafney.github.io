@@ -1,0 +1,659 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Golang,Gin," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在调试Gin项目时，每次更改了文件内容后都需要重新运行 [go run main.go] 命令才能看到更改。项目 [codegangsta/gin] 和 [pilu/fresh] 是通过采用热更新的方式来调试Gin项目推荐度较高的两个，且看哪个在操作上更加的方便。">
+<meta name="keywords" content="Golang,Gin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="reload-changed-without-restart-for-golang-web-gin">
+<meta property="og:url" content="http://yoursite.com/2017/08/01/reload-changed-without-restart-for-golang-web-gin/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="在调试Gin项目时，每次更改了文件内容后都需要重新运行 [go run main.go] 命令才能看到更改。项目 [codegangsta/gin] 和 [pilu/fresh] 是通过采用热更新的方式来调试Gin项目推荐度较高的两个，且看哪个在操作上更加的方便。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-07T07:28:17.284Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="reload-changed-without-restart-for-golang-web-gin">
+<meta name="twitter:description" content="在调试Gin项目时，每次更改了文件内容后都需要重新运行 [go run main.go] 命令才能看到更改。项目 [codegangsta/gin] 和 [pilu/fresh] 是通过采用热更新的方式来调试Gin项目推荐度较高的两个，且看哪个在操作上更加的方便。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/01/reload-changed-without-restart-for-golang-web-gin/"/>
+
+  <title> reload-changed-without-restart-for-golang-web-gin | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                reload-changed-without-restart-for-golang-web-gin
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-01T15:07:37+00:00" content="2017-08-01">
+              2017-08-01
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Gin is a HTTP web framework written in Go (Golang)。但是在调试Gin项目时，每次更改了文件内容后都需要重新运行 <code>go run main.go</code> 命令才能看到更改。项目 <code>codegangsta/gin</code> 和 <code>pilu/fresh</code> 是通过采用热更新的方式来调试Gin项目推荐度较高的两个，且看哪个在操作上更加的方便。</p>
+<h4 id="gin"><a href="#gin" class="headerlink" title="gin"></a>gin</h4><h5 id="github-地址"><a href="#github-地址" class="headerlink" title="github 地址"></a>github 地址</h5><p><a href="https://github.com/codegangsta/gin" target="_blank" rel="external">GitHub - codegangsta/gin: Live reload utility for Go web servers</a></p>
+<h5 id="下载并安装"><a href="#下载并安装" class="headerlink" title="下载并安装"></a>下载并安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go get github.com/codegangsta/gin</div></pre></td></tr></table></figure>
+<p>将 <code>GOPATH/bin</code> 目录添加到系统的 <code>PATH</code> 中。</p>
+<h5 id="项目测试"><a href="#项目测试" class="headerlink" title="项目测试"></a>项目测试</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line">import &quot;github.com/gin-gonic/gin&quot;</div><div class="line">func main() &#123;</div><div class="line">        r := gin.Default()</div><div class="line">        r.GET(&quot;/&quot;, func(c *gin.Context) &#123;</div><div class="line">                c.String(200, &quot;hello world\n&quot;)</div><div class="line">        &#125;)</div><div class="line">        r.Run(&quot;:3001&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 运行</div><div class="line">&gt; gin run main.go</div><div class="line"></div><div class="line"># 浏览器访问</div><div class="line">http://localhost:3000</div></pre></td></tr></table></figure>
+<h5 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h5><blockquote>
+<p>因为项目 <code>codegangsta/gin</code> 和 <code>gin-gonic/gin</code> 重名，所以这里我用 <code>Reload gin</code> 代指 <code>codegangsta/gin</code>;用 <code>Web gin</code> 代指 <code>gin-gonic/gin</code>。</p>
+</blockquote>
+<p>默认情况下，<code>Reload gin</code>的默认监听端口为 <code>3000</code>,内部导向的go web项目端口为 <code>3001</code>。如果采用 <code>Reload gin</code> 的默认端口，则需要将 <code>Web gin</code> 的监听端口改为 <code>3001</code>,即：<code>r.Run(&quot;:3001&quot;)</code> 。</p>
+<p>如果需要自定义端口，通过 <code>gin -h</code> 可以看到 <code>Reload gin</code> 的常用配置项。其中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">--port value, -p value        port for the proxy server (default: 3000)</div><div class="line">--appPort value, -a value     port for the Go web server (default: 3001)</div></pre></td></tr></table></figure>
+<p>可以分别指定监听端口和映射端口。</p>
+<p>不过，经过测试，自定义端口时报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">λ gin run -p 8082 -a 8080 main.go</div><div class="line">Incorrect Usage: flag provided but not defined: -p</div><div class="line"></div><div class="line">NAME:</div><div class="line">   gin run - Run the gin proxy in the current working directory</div><div class="line"></div><div class="line">USAGE:</div><div class="line">   gin run [arguments...]</div></pre></td></tr></table></figure>
+<p>好像目前只能使用默认的 <code>3000</code> 和 <code>3001</code> 端口。</p>
+<hr>
+<h4 id="fresh"><a href="#fresh" class="headerlink" title="fresh"></a>fresh</h4><h5 id="github地址"><a href="#github地址" class="headerlink" title="github地址"></a>github地址</h5><p><a href="https://github.com/pilu/fresh" target="_blank" rel="external">GitHub - pilu/fresh: Build and (re)start go web apps after saving/creating/deleting source files.</a></p>
+<h5 id="下载及安装"><a href="#下载及安装" class="headerlink" title="下载及安装"></a>下载及安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">go get github.com/pilu/fresh</div></pre></td></tr></table></figure>
+<p>将 <code>GOPATH/bin</code> 目录添加到系统的 <code>PATH</code> 中。</p>
+<h5 id="项目测试-1"><a href="#项目测试-1" class="headerlink" title="项目测试"></a>项目测试</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">package main</div><div class="line">import &quot;github.com/gin-gonic/gin&quot;</div><div class="line">func main() &#123;</div><div class="line">        r := gin.Default()</div><div class="line">        r.GET(&quot;/&quot;, func(c *gin.Context) &#123;</div><div class="line">                c.String(200, &quot;hello world\n&quot;)</div><div class="line">        &#125;)</div><div class="line">        r.Run(&quot;:8080&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 进入项目所在目录</div><div class="line">&gt; cd /path/to/myapp</div><div class="line"></div><div class="line"># 运行</div><div class="line">&gt; fresh</div><div class="line"></div><div class="line"># 浏览器访问</div><div class="line">http://localhost:8080</div></pre></td></tr></table></figure>
+<h5 id="扩展-1"><a href="#扩展-1" class="headerlink" title="扩展"></a>扩展</h5><p>原项目不需要做任何改动，只需要在原项目的目录下执行命令 <code>fresh</code> 即可。</p>
+<hr>
+<p>经以上测试，推荐使用 <code>fresh</code> 来运行 <code>Gin</code> 项目。</p>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><ul>
+<li><a href="https://github.com/codegangsta/gin" target="_blank" rel="external">GitHub - codegangsta/gin: Live reload utility for Go web servers</a></li>
+<li><a href="https://github.com/pilu/fresh" target="_blank" rel="external">GitHub - pilu/fresh: Build and (re)start go web apps after saving/creating/deleting source files.</a></li>
+<li><a href="https://github.com/gin-gonic/gin" target="_blank" rel="external">GitHub - gin-gonic/gin: Gin is a HTTP web framework written in Go (Golang). It features a Martini-like API with much better performance – up to 40 times faster. If you need smashing performance, get yourself some Gin.</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag">#Golang</a>
+          
+            <a href="/tags/Gin/" rel="tag">#Gin</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/21/docker-ubuntu-gogs-ssh/" rel="next" title="Docker-Ubuntu-Gogs关于使用SSH">
+                <i class="fa fa-chevron-left"></i> Docker-Ubuntu-Gogs关于使用SSH
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#gin"><span class="nav-number">1.</span> <span class="nav-text">gin</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#github-地址"><span class="nav-number">1.1.</span> <span class="nav-text">github 地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下载并安装"><span class="nav-number">1.2.</span> <span class="nav-text">下载并安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#项目测试"><span class="nav-number">1.3.</span> <span class="nav-text">项目测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展"><span class="nav-number">1.4.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fresh"><span class="nav-number">2.</span> <span class="nav-text">fresh</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#github地址"><span class="nav-number">2.1.</span> <span class="nav-text">github地址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下载及安装"><span class="nav-number">2.2.</span> <span class="nav-text">下载及安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#项目测试-1"><span class="nav-number">2.3.</span> <span class="nav-text">项目测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#扩展-1"><span class="nav-number">2.4.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">3.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

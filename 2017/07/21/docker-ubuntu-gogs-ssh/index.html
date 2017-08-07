@@ -1,0 +1,672 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker,Gogs," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在Docker容器中运行Gogs时，使用SSH操作遇到的git密码问题">
+<meta name="keywords" content="Docker,Gogs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Ubuntu-Gogs关于使用SSH">
+<meta property="og:url" content="http://yoursite.com/2017/07/21/docker-ubuntu-gogs-ssh/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="在Docker容器中运行Gogs时，使用SSH操作遇到的git密码问题">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-07T07:28:17.284Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker-Ubuntu-Gogs关于使用SSH">
+<meta name="twitter:description" content="在Docker容器中运行Gogs时，使用SSH操作遇到的git密码问题">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/21/docker-ubuntu-gogs-ssh/"/>
+
+  <title> Docker-Ubuntu-Gogs关于使用SSH | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Docker-Ubuntu-Gogs关于使用SSH
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-21T16:02:33+00:00" content="2017-07-21">
+              2017-07-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>记录在Docker容器中运行Gogs时，使用SSH操作遇到的git密码问题。</p>
+<h4 id="SSH-key-passphrases"><a href="#SSH-key-passphrases" class="headerlink" title="SSH key passphrases"></a>SSH key passphrases</h4><p>在本地电脑上(我这里是Windows系统)创建 <code>SSH key</code> 时，会要求你为key设置一个密码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">λ ssh-keygen -t rsa -C &quot;xxxxx@qq.com&quot;</div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file in which to save the key (/c/Users/You/.ssh/id_rsa):</div><div class="line">Enter passphrase (empty for no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved in /c/Users/You/.ssh/id_rsa.</div><div class="line">Your public key has been saved in /c/Users/You/.ssh/id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>即其中的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Enter passphrase (empty for no passphrase):</div><div class="line">Enter same passphrase again:</div></pre></td></tr></table></figure>
+<p>一般情况下我们可以选择直接回车即不设置密码。</p>
+<p>如果没有设置key的密码，我们在通过SSH提交代码时，可以直接操作。如果设置了key的密码，那我们在每次 <code>pull</code> 或 <code>push</code> 时都会要求你输入key的密码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git pull</div><div class="line">Enter passphrase for key &apos;/c/Users/You/.ssh/id_rsa&apos;:</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="Docker-Ubuntu-Gogs容器使用SSH提交时要求输入git密码"><a href="#Docker-Ubuntu-Gogs容器使用SSH提交时要求输入git密码" class="headerlink" title="Docker-Ubuntu-Gogs容器使用SSH提交时要求输入git密码"></a>Docker-Ubuntu-Gogs容器使用SSH提交时要求输入git密码</h4><p>在使用SSH获取或提交代码时，偶尔会遇到要求输入 <code>git</code> 密码的情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ git clone ssh://git@gogit.itfanr.cc/haha/wohaha.git</div><div class="line">Cloning into &apos;wohaha&apos;...</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">Permission denied, please try again.</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">Permission denied, please try again.</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">Permission denied (publickey,password).</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure>
+<p>或者：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git pull</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">Permission denied, please try again.</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">Permission denied, please try again.</div><div class="line">git@gogit.itfanr.cc&apos;s password:</div><div class="line">fatal: Could not read from remote repository.</div><div class="line"></div><div class="line">Please make sure you have the correct access rights</div><div class="line">and the repository exists.</div></pre></td></tr></table></figure>
+<p>但是我们通过Docker创建的gogs容器中，并没有为git账户设置密码，所以这里无论输入什么都是错误的。</p>
+<p>通过查看 <a href="https://github.com/gogits/gogs/issues" target="_blank" rel="external">Issues · gogits/gogs · GitHub</a> 中相关的 <code>issues</code> 可以了解到，但凡是要求输入git密码的问题，十有八九是 <strong>关于 <code>.ssh/authorize_keys</code> 文件的权限</strong> 问题。</p>
+<p>gogs的文档中要求：</p>
+<ul>
+<li><code>.ssh/</code> 目录权限为 <code>0700</code></li>
+<li><code>.ssh/authorize_keys</code> 文件的权限为 <code>0600</code></li>
+</ul>
+<p>相关的操作命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ chmod 0700 /home/git/.ssh</div><div class="line">$ chmod 0600 /home/git/.ssh/*</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h5><p>登陆gogs站点的管理员账户，选择 <code>管理面板</code> 访问 <code>/admin</code> 页面。在 <code>管理员操作</code> 区域选择 <code>重新生成 &#39;.ssh/authorized_keys&#39; 文件（警告：不是 Gogs 的密钥也会被删除）</code> 点击 <code>执行</code> 按钮。</p>
+<p>然后再次尝试看是否能够成功操作。</p>
+<h5 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h5><p>如果 <code>方法一</code> 的操作无效，那么我们需要登陆该gogs容器所在的服务器来进入如下操作：</p>
+<ol>
+<li>进入该gogs容器，然后删除 <code>.ssh/authorized_keys</code> 文件 。</li>
+<li>重复方法一的操作：登陆管理员账户，选择 <code>管理面板</code> – <code>管理员操作</code> – 点击 <code>重新生成 &#39;.ssh/authorized_keys&#39; 文件（警告：不是 Gogs 的密钥也会被删除）</code> 后的 <code>执行</code> 按钮。</li>
+</ol>
+<p>然后再次尝试看是否能够成功操作。</p>
+<p>我的操作记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ docker exec -it gogs /bin/bash</div><div class="line">root@564c5628c7e9:/home/git/gogs# cd ..</div><div class="line">root@564c5628c7e9:/home/git# cd .ssh/</div><div class="line">root@564c5628c7e9:/home/git/.ssh# ls</div><div class="line">authorized_keys</div><div class="line">root@564c5628c7e9:/home/git/.ssh# rm authorized_keys </div><div class="line">root@564c5628c7e9:/home/git/.ssh# ls</div><div class="line"></div><div class="line"># 此时在管理后台重新生成 authorized_keys</div><div class="line">root@564c5628c7e9:/home/git/.ssh# ls</div><div class="line">authorized_keys</div><div class="line">root@564c5628c7e9:/home/git/.ssh# ls -al</div><div class="line">total 12</div><div class="line">drwx------ 2 git git 4096 Jul 21 14:20 .</div><div class="line">drwxr-xr-x 6 git git 4096 Jul 21 11:32 ..</div><div class="line">-rw------- 1 git git  549 Jul 21 14:20 authorized_keys</div></pre></td></tr></table></figure>
+<hr>
+<p>我在 <code>git push</code> 时遇到要求输入git密码的问题时，先将 <code>authorized_keys</code> 文件删除，然后重新生成，这样操作后就能正常获取和提交了。</p>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="https://github.com/gogits/gogs/issues/545" target="_blank" rel="external">ssh 的链接地址不可以使用 · Issue #545 · gogits/gogs · GitHub</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+            <a href="/tags/Gogs/" rel="tag">#Gogs</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/28/golang-connect-to-mongodb/" rel="next" title="Golang连接MongoDB数据库">
+                <i class="fa fa-chevron-left"></i> Golang连接MongoDB数据库
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/01/reload-changed-without-restart-for-golang-web-gin/" rel="prev" title="reload-changed-without-restart-for-golang-web-gin">
+                reload-changed-without-restart-for-golang-web-gin <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#SSH-key-passphrases"><span class="nav-number">1.</span> <span class="nav-text">SSH key passphrases</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-Ubuntu-Gogs容器使用SSH提交时要求输入git密码"><span class="nav-number">2.</span> <span class="nav-text">Docker-Ubuntu-Gogs容器使用SSH提交时要求输入git密码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#方法一"><span class="nav-number">2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#方法二"><span class="nav-number">2.2.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">3.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

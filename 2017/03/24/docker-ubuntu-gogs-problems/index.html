@@ -85,12 +85,14 @@
 
 
 <meta name="description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。">
+<meta name="keywords" content="Docker,Gogs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker-Ubuntu-Gogs部署及配置时遇到的问题">
 <meta property="og:url" content="http://yoursite.com/2017/03/24/docker-ubuntu-gogs-problems/index.html">
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。">
-<meta property="og:updated_time" content="2017-03-27T12:48:19.361Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-07T07:28:17.284Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker-Ubuntu-Gogs部署及配置时遇到的问题">
 <meta name="twitter:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 这里主要记录在Docker下部署Gogs项目过程中遇到的问题及解决方法。">
@@ -277,7 +279,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-24T14:19:37+08:00" content="2017-03-24">
+            <time itemprop="dateCreated" datetime="2017-03-24T14:19:37+00:00" content="2017-03-24">
               2017-03-24
             </time>
           </span>
@@ -392,7 +394,11 @@
 <li>登陆Gogs站点管理员账户，访问 <code>/admin</code> 页面，选择 <code>Rewrite &#39;.ssh/authorized_keys&#39; file (caution: non-Gogs keys will be lost)</code> 项 ，点击 <code>Run</code> ，会提示更新成功。</li>
 <li>重启该容器即可。</li>
 </ol>
+<p>2017-7-21 add:</p>
+<p>如果以上方法无效，可以进入容器后将 <code>authorize_keys</code> 文件删除，然后在管理员操作页面中重新生成。这样应该能解决。</p>
+<hr>
 <ul>
+<li><a href="https://github.com/gogits/gogs/issues/545" target="_blank" rel="external">ssh 的链接地址不可以使用 · Issue #545 · gogits/gogs · GitHub</a></li>
 <li><a href="https://github.com/gogits/gogs/issues/2409" target="_blank" rel="external">SSH prompts for password in Docker · Issue #2409 · gogits/gogs · GitHub</a></li>
 <li><a href="https://github.com/gogits/gogs/issues/1893" target="_blank" rel="external">How troubleshoot SSHd on Docker ?</a></li>
 </ul>
@@ -604,7 +610,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -621,7 +627,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

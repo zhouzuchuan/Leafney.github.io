@@ -85,12 +85,14 @@
 
 
 <meta name="description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 个性化的配置 Docker Gogs 首页样式。">
+<meta name="keywords" content="Docker,Gogs">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker-Ubuntu-Gogs个性化设置">
 <meta property="og:url" content="http://yoursite.com/2017/03/27/docker-ubuntu-gogs-custom/index.html">
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 个性化的配置 Docker Gogs 首页样式。">
-<meta property="og:updated_time" content="2017-03-27T12:48:19.360Z">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-08-07T07:28:17.284Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker-Ubuntu-Gogs个性化设置">
 <meta name="twitter:description" content="Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 个性化的配置 Docker Gogs 首页样式。">
@@ -277,7 +279,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-27T17:19:49+08:00" content="2017-03-27">
+            <time itemprop="dateCreated" datetime="2017-03-27T17:19:49+00:00" content="2017-03-27">
               2017-03-27
             </time>
           </span>
@@ -343,7 +345,7 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;&#123;else&#125;&#125;</div><div class="line">	...</div><div class="line">	...</div><div class="line">&#123;&#123;end&#125;&#125;</div></pre></td></tr></table></figure>
 <p>将这两部分的内容删除或用 <code>&lt;!-- --&gt;</code> 隐藏。</p>
 <p>更改完成后，保存，并更新回容器中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker cp ./home.tmpl &lt;ConName&gt;:/home/git/gogs/templates/home.tmpl</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> docker cp ./home.tmpl &lt;ConName&gt;:/home/git/gogs/templates/home.tmpl</span></div></pre></td></tr></table></figure>
 <hr>
 <h4 id="去除未登录用户左上角显示的“帮助”按钮及更换背景图案"><a href="#去除未登录用户左上角显示的“帮助”按钮及更换背景图案" class="headerlink" title="去除未登录用户左上角显示的“帮助”按钮及更换背景图案"></a>去除未登录用户左上角显示的“帮助”按钮及更换背景图案</h4><p>头部导航 – <code>head.tmpl</code> – 去除未登录用户左上角显示的“帮助”按钮</p>
 <p>先从容器中获取该文件：</p>
@@ -519,7 +521,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">34</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -536,7 +538,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
