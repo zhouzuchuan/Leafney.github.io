@@ -15,7 +15,7 @@ Hexo博客
 ##### 重新部署
 
 ```
-> npm install -g hexo-cli
+> npm install hexo-cli -g
 
 # 建站
 > hexo init <folder>
