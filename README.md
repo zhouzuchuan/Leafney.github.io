@@ -1,5 +1,7 @@
 Hexo博客
 
+[![Build Status](https://travis-ci.org/Leafney/Leafney.github.io.svg?branch=hexo)](https://travis-ci.org/Leafney/Leafney.github.io)
+
 #### 部署
 
 ##### 直接部署
