@@ -24,4 +24,4 @@ branches:
 
 env:
     global:
-        - GH_REF: https://github.com/Leafney/Leafney.github.io.git #设置GH_REF，注意更改成自己的仓库地址
+        - GH_REF: github.com/Leafney/Leafney.github.io.git #设置GH_REF，注意更改成自己的仓库地址，还要注意这里开头没有https
