@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="重新安装Ubuntu系统后的一些必要设置：1. 升级软件库及系统内核；2. 新增账户及权限设置；3. 修改系统时区；4. SSH能连接而SFTP不能连接；">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-14T08:04:56.416Z">
+<meta property="og:updated_time" content="2017-08-23T02:21:02.195Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重新安装Ubuntu系统后的必要设置">
 <meta name="twitter:description" content="重新安装Ubuntu系统后的一些必要设置：1. 升级软件库及系统内核；2. 新增账户及权限设置；3. 修改系统时区；4. SSH能连接而SFTP不能连接；">
@@ -360,13 +360,13 @@
 <p>执行下面的操作：</p>
 <p>先切换回 <code>root</code> 账户下(注意 <code>su -</code> 后面的 <code>-</code> 和后面的账户名之间有一个空格)：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tiger@MyServer:~$ su - root</div></pre></td></tr></table></figure>
-<p>为文件 <code>/etc/sudoers</code> 添加写权限，默认情况下该文件为只读属性。执行命令：<code>$ chmod u+w /etc/sudoers</code> 。</p>
+<p>为文件 <code>/etc/sudoers</code> 添加写权限，默认情况下该文件为只读属性。执行命令：<code># chmod u+w /etc/sudoers</code> 。</p>
 <p>然后编辑该文件，找到这一行 :  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">root  ALL=(ALL:ALL)  ALL</div></pre></td></tr></table></figure>
 <p>在下面按照同样的格式添加:  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">xxx  ALL=(ALL:ALL)  ALL</div></pre></td></tr></table></figure>
 <p>(这里的xxx是你要设置的用户名)，然后保存退出。</p>
-<p>撤销文件的写权限，执行命令：<code>$ chmod u-w /etc/sudoers</code> 。</p>
+<p>撤销文件的写权限，执行命令：<code># chmod u-w /etc/sudoers</code> 。</p>
 <p>完整的命令如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">root@MyCloudServer:/home/tiger# chmod u+w /etc/sudoers</div><div class="line">root@MyCloudServer:/home/tiger# vim /etc/sudoers</div><div class="line">root@MyCloudServer:/home/tiger# ls -al /etc/sudoers </div><div class="line">-rw-r----- 1 root root 770 Sep 28 02:15 /etc/sudoers</div><div class="line">root@MyCloudServer:/home/tiger# chmod u-w /etc/sudoers</div><div class="line">root@MyCloudServer:/home/tiger# su - tiger</div><div class="line">tiger@MyCloudServer:~$ apt-get update</div><div class="line"></div><div class="line">E: Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)</div><div class="line">E: Unable to lock directory /var/lib/apt/lists/</div><div class="line">E: Could not open lock file /var/lib/dpkg/lock - open (13: Permission denied)</div><div class="line">E: Unable to lock the administration directory (/var/lib/dpkg/), are you root?</div><div class="line">tiger@MyCloudServer:~$ sudo apt-get update</div><div class="line"></div><div class="line">Get:1 http://security.ubuntu.com trusty-security InRelease [65.9 kB]</div><div class="line">Ign http://us.archive.ubuntu.com trusty InRelease          </div><div class="line">Get:2 http://us.archive.ubuntu.com trusty-updates InRelease [65.9 kB]</div><div class="line">Get:3 http://security.ubuntu.com trusty-security/main Sources [120 kB] </div><div class="line">Get:4 http://us.archive.ubuntu.com trusty-backports InRelease [65.9 kB]        </div><div class="line">Get:5 http://security.ubuntu.com trusty-security/restricted Sources [4,064 B]  </div><div class="line">Hit http://us.archive.ubuntu.com trusty Release.gpg        </div><div class="line">Get:6 http://security.ubuntu.com trusty-security/universe Sources [42.5 kB]</div><div class="line">Get:7 http://us.archive.ubuntu.com trusty-updates/main Sources [383 kB]</div><div class="line">Get:8 http://security.ubuntu.com trusty-security/multiverse Sources [2,749 B]</div><div class="line">...</div><div class="line">...</div></pre></td></tr></table></figure>
 <p>这样，我们就为新创建的账户 <code>tiger</code> 设置了管理员权限，执行命令时就可以通过 <code>sudo</code> 来提权了。</p>
@@ -383,6 +383,8 @@
 <p>编辑 <code>/etc/hosts</code> 文件中：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1	localhost</div><div class="line"></div><div class="line">127.0.1.1	ubuntu</div></pre></td></tr></table></figure>
 <p>更改 <code>ubuntu</code> 为你的 <code>hostname</code> 的名称。</p>
+<p>结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">127.0.0.1       localhost</div><div class="line">127.0.1.1       myhostname</div><div class="line"></div><div class="line"># The following lines are desirable for IPv6 capable hosts</div><div class="line">::1     localhost ip6-localhost ip6-loopback</div><div class="line">ff02::1 ip6-allnodes</div><div class="line">ff02::2 ip6-allrouters</div></pre></td></tr></table></figure>
 <p>然后重启系统。<code>sudo reboot</code> 。必需重启之后才有效。</p>
 <ul>
 <li><a href="http://blog.csdn.net/wzb56_earl/article/details/6289988" target="_blank" rel="external">ubuntu 下修复使用sudo命令后出现主机名字不能解析的错误：Fix Ubuntu sudo Error:unable to resolve host - wzb56的资料库        - 博客频道 - CSDN.NET</a></li>
@@ -546,7 +548,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">37</span>
+              <span class="site-state-item-count">38</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
