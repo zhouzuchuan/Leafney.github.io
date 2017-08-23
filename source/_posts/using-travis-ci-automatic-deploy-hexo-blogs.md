@@ -421,6 +421,7 @@ git push --force --quiet "https://${TravisCIToken}@${GH_REF}" master:master
 
 * [Customizing the Build - Travis CI](https://docs.travis-ci.com/user/customizing-the-build/)
 * [travis ci - Permission denied for build.sh file - Stack Overflow](https://stackoverflow.com/questions/42154912/permission-denied-for-build-sh-file)
+* [Shell中date命令用法 | Hom](http://gohom.win/2015/06/07/bash-date-usage/)
 
 ***
 
@@ -487,6 +488,14 @@ deploy:
 # 获取远程指定分支
 > git pull origin blog
 ```
+
+***
+
+##### 问题七：博客仓库源码
+
+如果没有耐心按照上面的步骤一步步操作的话，可以直接查看我的博客仓库源码：
+
+* [GitHub - Leafney/Leafney.github.io: blog](https://github.com/Leafney/Leafney.github.io)
 
 ***
 
