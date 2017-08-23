@@ -404,6 +404,7 @@ $ ./publish-to-gh-pages.sh
 ```
 
 * [Customizing the Build - Travis CI](https://docs.travis-ci.com/user/customizing-the-build/)
+* [travis ci - Permission denied for build.sh file - Stack Overflow](https://stackoverflow.com/questions/42154912/permission-denied-for-build-sh-file)
 
 ***
 

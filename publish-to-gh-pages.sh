@@ -1,6 +1,12 @@
 #!/bin/bash
 set -ev
 
+# modify time zone
+ln -sf /usr/share/zoneinfo/Asia/ShangHai /etc/localtime
+echo "Asia/Shanghai" > /etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
+
+# get clone master
 git clone https://${GH_REF} .deploy_git
 cd .deploy_git
 git checkout master
