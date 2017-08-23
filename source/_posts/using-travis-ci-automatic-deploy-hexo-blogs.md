@@ -321,7 +321,7 @@ Site updated: 2017-03-27 20:54:40
 
 通过查看 `travis.yml` 的文档，并没有找到如何直接获取当前时间或者和 `date` 有关的方法，但是 `script` 命令下是可以执行 `shell` 命令的，所以对 `travis.yml` 文件进行了修改。
 
-另外在 `shell` 中获取当前的时间戳，可以这样：
+在 `shell` 中获取当前的时间戳，可以这样：
 
 ```
 #/bin/bash
@@ -344,6 +344,7 @@ cache:
 
 before_install:
     - npm install hexo-cli -g
+    - chmod +x ./publish-to-gh-pages.sh
 
 install:
     - npm install # 安装hexo及插件
@@ -392,6 +393,17 @@ git push --force --quiet "https://${TravisCIToken}@${GH_REF}" master:master
 ```
 
 **注意上面配置文件中的某些参数改为自己的。**
+
+需要注意的是：命令中要为 `publish-to-gh-pages.sh` 文件赋予可执行权限，否则会报无权限错误：
+
+```
+# travis-ci log
+
+$ ./publish-to-gh-pages.sh
+/home/travis/.travis/job_stages: line 57: ./publish-to-gh-pages.sh: Permission denied
+```
+
+* [Customizing the Build - Travis CI](https://docs.travis-ci.com/user/customizing-the-build/)
 
 ***
 
@@ -467,6 +479,7 @@ deploy:
 * [使用 Travis CI 自动部署 Hexo - 简书](http://www.jianshu.com/p/5e74046e7a0f)
 * [使用 Travis-CI 来自动化部署 Hexo · ZHOU](http://zhzhou.me/2017/02/20/auto-deploy-hexo-on-travis-ci/)
 * [用TravisCI来做持续集成 | 进击的马斯特](http://pinkyjie.com/2016/02/27/continuous-integration-with-travis-ci/)
+* [Customizing the Build - Travis CI](https://docs.travis-ci.com/user/customizing-the-build/)
 
 ***
 

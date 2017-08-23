@@ -9,6 +9,7 @@ cache:
 
 before_install:
     - npm install hexo-cli -g
+    - chmod +x ./publish-to-gh-pages.sh
 
 install:
     - npm install
