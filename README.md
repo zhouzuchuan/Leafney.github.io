@@ -85,3 +85,64 @@ Hexo博客
 
 ***
 
+#### Git分支操作
+
+##### 查看本地所有分支(分之名称前面带*表示当前分支)
+
+```
+> git branch
+```
+
+##### 查看远程所有分支
+
+```
+> git branch -r
+```
+
+##### 创建分支 blog
+
+```
+> git branch blog
+```
+
+##### 切换到 blog 分支
+
+```
+> git checkout blog
+```
+
+##### 创建并切换到新分支
+
+```
+> git checkout -b blog
+```
+
+##### 删除分支
+
+```
+> git branch -d blog
+```
+
+##### 提交本地test分支作为远程的test分支
+
+```
+> git push origin test:test
+```
+
+##### merge合并分支(将名称为[blog]的分支与当前分支[master]合并)
+
+```
+> git branch
+* master
+  blog
+
+> git merge blog
+```
+
+##### 获取远程指定分支
+
+```
+> git pull origin blog
+```
+
+***
