@@ -166,7 +166,7 @@ tiger@MyServer:~$
 tiger@MyServer:~$ su - root
 ```
 
-为文件 `/etc/sudoers` 添加写权限，默认情况下该文件为只读属性。执行命令：`$ chmod u+w /etc/sudoers` 。
+为文件 `/etc/sudoers` 添加写权限，默认情况下该文件为只读属性。执行命令：`# chmod u+w /etc/sudoers` 。
 
 然后编辑该文件，找到这一行 :  
 
@@ -184,7 +184,7 @@ xxx  ALL=(ALL:ALL)  ALL
 
 (这里的xxx是你要设置的用户名)，然后保存退出。
 
-撤销文件的写权限，执行命令：`$ chmod u-w /etc/sudoers` 。
+撤销文件的写权限，执行命令：`# chmod u-w /etc/sudoers` 。
 
 完整的命令如下：
 
@@ -250,6 +250,19 @@ Ubuntu sudo Error:unable to resolve host
 ```
 
 更改 `ubuntu` 为你的 `hostname` 的名称。
+
+结果为：
+
+```
+127.0.0.1       localhost
+127.0.1.1       myhostname
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+
 
 然后重启系统。`sudo reboot` 。必需重启之后才有效。
 
