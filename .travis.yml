@@ -18,17 +18,7 @@ script:
     - hexo g
 
 after_script:
-    - git clone https://${GH_REF} .deploy_git
-    - cd .deploy_git
-    - git checkout master
-    - cd ../
-    - mv .deploy_git/.git/ ./public/
-    - cd ./public
-    - git config user.name "Leafney"
-    - git config user.email "babycoolzx@126.com"
-    - git add .
-    - git commit -m "Travis CI Auto Builder"
-    - git push --force --quiet "https://${TravisCIToken}@${GH_REF}" master:master
+    - ./publish-to-gh-pages.sh
 
 branches:
     only:

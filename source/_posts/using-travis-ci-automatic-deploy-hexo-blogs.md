@@ -270,7 +270,7 @@ after_script:
     - cd ../
     - mv .deploy_git/.git/ ./public/
     - cd ./public
-    - git config user.name "yourname"
+    - git config user.name "your name"
     - git config user.email "your email"
     - git add .
     - git commit -m "Travis CI Auto Builder"
@@ -289,7 +289,113 @@ env:
 
 ***
 
-##### 问题四：使用 x-oauth-basic
+##### 问题四：添加 commit 时间戳
+
+> 2017-8-23 11:25:34 Update:
+
+按照上面的方法配置 `travis.yml` 的内容，我在一段时间后发现在 `master` 分支下的提交记录是这样的：
+
+```
+Travis CI Auto Builder
+
+Travis CI Auto Builder
+
+Travis CI Auto Builder
+
+....
+```
+
+而之前在使用 `hexo d` 直接部署的时候的提交记录是这样的：
+
+```
+Site updated: 2017-06-22 22:29:10
+
+Site updated: 2017-04-19 08:13:36
+
+Site updated: 2017-03-27 20:54:40
+
+...
+```
+
+看到每次的提交记录中没有提交的时间戳，感觉似乎缺少了些什么，所以考虑着要把 `commit` 的时间戳给加上。
+
+通过查看 `travis.yml` 的文档，并没有找到如何直接获取当前时间或者和 `date` 有关的方法，但是 `script` 命令下是可以执行 `shell` 命令的，所以对 `travis.yml` 文件进行了修改。
+
+另外在 `shell` 中获取当前的时间戳，可以这样：
+
+```
+#/bin/bash
+
+> date +"%Y-%m-%d %H:%M"
+2017-08-23 11:07
+```
+
+修改后的 `travis.yml` 内容：
+
+```
+language: node_js # 设置语言
+
+node_js: stable # 设置相应版本
+
+cache:
+    apt: true
+    directories:
+        - node_modules # 缓存不经常更改的内容
+
+before_install:
+    - npm install hexo-cli -g
+
+install:
+    - npm install # 安装hexo及插件
+
+script:
+    - hexo clean # 清除
+    - hexo g # 生成
+
+after_script:
+    - ./publish-to-gh-pages.sh
+
+branches:
+    only:
+        - hexo # 只监测hexo分支
+
+env:
+    global:
+        - GH_REF: github.com/yourname/yourname.github.io.git #设置GH_REF，注意更改成自己的仓库地址
+```
+
+将 `after_script` 端中的命令移到了单独的shell文件中：
+
+文件 `publish-to-gh-pages.sh` 内容：
+
+```
+#!/bin/bash
+set -ev
+
+git clone https://${GH_REF} .deploy_git
+cd .deploy_git
+git checkout master
+
+cd ../
+mv .deploy_git/.git/ ./public/
+
+cd ./public
+
+git config user.name  "your name"
+git config user.email "your email"
+
+# add commit timestamp
+git add .
+git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
+
+git push --force --quiet "https://${TravisCIToken}@${GH_REF}" master:master
+```
+
+**注意上面配置文件中的某些参数改为自己的。**
+
+***
+
+##### 问题五：使用 x-oauth-basic
 
 在网上看到一位网友解决 “`master commit` 树被清空” 的问题时采用了另外一种方法，即在 `after_script` 部分调用执行 `hexo d` 命令来发布。这样的方式遇到的问题是需要设置 `SSH Key` 或者必须获得权限才能进行 `push` 操作。
 
@@ -322,7 +428,7 @@ deploy:
 
 ***
 
-##### 问题五：`git branch` 分支操作相关命令
+##### 问题六：`git branch` 分支操作相关命令
 
 ```
 # 查看本地所有分支(分之名称前面带*表示当前分支)
@@ -360,6 +466,7 @@ deploy:
 * [手把手教你使用Travis CI自动部署你的Hexo博客到Github上 - 简书](http://www.jianshu.com/p/e22c13d85659)
 * [使用 Travis CI 自动部署 Hexo - 简书](http://www.jianshu.com/p/5e74046e7a0f)
 * [使用 Travis-CI 来自动化部署 Hexo · ZHOU](http://zhzhou.me/2017/02/20/auto-deploy-hexo-on-travis-ci/)
+* [用TravisCI来做持续集成 | 进击的马斯特](http://pinkyjie.com/2016/02/27/continuous-integration-with-travis-ci/)
 
 ***
 
