@@ -330,7 +330,31 @@ Site updated: 2017-03-27 20:54:40
 2017-08-23 11:07
 ```
 
-修改后的 `travis.yml` 内容：
+***
+
+需要注意的是：命令中要为 `publish-to-gh-pages.sh` 文件赋予**可执行**权限，否则会报无权限错误：
+
+```
+# travis-ci log
+
+$ ./publish-to-gh-pages.sh
+/home/travis/.travis/job_stages: line 57: ./publish-to-gh-pages.sh: Permission denied
+```
+
+***
+
+另外，通过在测试中发现，Travis CI 中使用的linux系统在编译生成时使用的是UTC时间，这样我们在github中的提交列表中看到的提交时间就会晚8小时。我们需要在执行时将时区改为东八区。
+
+这里通过在 `.travis.yml` 文件中添加如下代码解决：
+
+```
+before_install:
+    - export TZ='Asia/Shanghai'
+```
+
+***
+
+修改后的 `.travis.yml` 内容：
 
 ```
 language: node_js # 设置语言
@@ -343,8 +367,9 @@ cache:
         - node_modules # 缓存不经常更改的内容
 
 before_install:
+    - export TZ='Asia/Shanghai' # 更改时区
     - npm install hexo-cli -g
-    - chmod +x ./publish-to-gh-pages.sh
+    - chmod +x ./publish-to-gh-pages.sh  # 为shell文件添加可执行权限
 
 install:
     - npm install # 安装hexo及插件
@@ -365,7 +390,7 @@ env:
         - GH_REF: github.com/yourname/yourname.github.io.git #设置GH_REF，注意更改成自己的仓库地址
 ```
 
-将 `after_script` 端中的命令移到了单独的shell文件中：
+将 `after_script` 段中的命令移到了单独的shell文件中：
 
 文件 `publish-to-gh-pages.sh` 内容：
 
@@ -393,15 +418,6 @@ git push --force --quiet "https://${TravisCIToken}@${GH_REF}" master:master
 ```
 
 **注意上面配置文件中的某些参数改为自己的。**
-
-需要注意的是：命令中要为 `publish-to-gh-pages.sh` 文件赋予可执行权限，否则会报无权限错误：
-
-```
-# travis-ci log
-
-$ ./publish-to-gh-pages.sh
-/home/travis/.travis/job_stages: line 57: ./publish-to-gh-pages.sh: Permission denied
-```
 
 * [Customizing the Build - Travis CI](https://docs.travis-ci.com/user/customizing-the-build/)
 * [travis ci - Permission denied for build.sh file - Stack Overflow](https://stackoverflow.com/questions/42154912/permission-denied-for-build-sh-file)
