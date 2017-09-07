@@ -3,6 +3,8 @@ title: Go语言学习资料整理
 date: 2017-03-31 10:06:57
 tags:
 	- Golang
+categories: 
+    - Golang
 description: 整理网上找到的Golang语言学习资料
 ---
 整理网上找到的Golang语言学习资料

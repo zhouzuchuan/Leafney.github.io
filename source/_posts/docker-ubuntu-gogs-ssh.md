@@ -4,6 +4,8 @@ date: 2017-07-21 16:02:33
 tags:
     - Gogs
     - Docker
+categories: 
+    - Ubuntu-Gogs
 description: 在Docker容器中运行Gogs时，使用SSH操作遇到的git密码问题
 ---
 记录在Docker容器中运行Gogs时，使用SSH操作遇到的git密码问题。

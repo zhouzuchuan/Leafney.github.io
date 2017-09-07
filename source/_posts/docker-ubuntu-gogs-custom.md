@@ -4,6 +4,8 @@ date: 2017-03-27 17:19:49
 tags: 
     - Gogs
     - Docker
+categories: 
+    - Ubuntu-Gogs
 description: Docker Gogs 用更简单的方式部署、升级或迁移Gogs容器服务。 个性化的配置 Docker Gogs 首页样式。
 ---
 

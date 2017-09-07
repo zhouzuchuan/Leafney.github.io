@@ -4,6 +4,8 @@ date: 2017-06-28 17:28:24
 tags:
 	- Golang
 	- MongoDB
+categories: 
+    - Golang
 description: 目前go支持MongoDB最好的驱动就是mgo。
 ---
 

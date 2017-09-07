@@ -4,6 +4,8 @@ date: 2017-06-15 16:03:26
 tags:
     - Golang
     - 爬虫
+categories: 
+    - Golang
 description: 主要探究 1. 使用代理请求 2. 跳过https不安全验证 3. 自定义请求头User-Agent的实现
 ---
 主要探究 1. 使用代理请求 2. 跳过https不安全验证 3. 自定义请求头User-Agent的实现

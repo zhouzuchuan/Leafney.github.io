@@ -4,6 +4,8 @@ date: 2017-07-30 14:05:28
 tags:
 	- Golang
 	- Gin
+categories: 
+    - Golang
 description: Gin is a web framework written in Golang.
 ---
 
