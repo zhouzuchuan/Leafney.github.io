@@ -1,0 +1,734 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ubuntu,Docker," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在2017年3月份，Docker公司宣布Docker企业版（Enterprise Edition, EE），并将开源版本重命名为Docker社区版（Community Edition, CE）；同时公布了产品迭代计划，这会为企业客户提供透明的生命周期支持计划、并对Docker技术的稳定性和可维护性提升带来了帮助。">
+<meta name="keywords" content="Ubuntu,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu16.04下安装Docker-CE社区版">
+<meta property="og:url" content="http://yoursite.com/2017/08/25/ubuntu-install-docker-ce-and-configure-mirror-accelerator/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="在2017年3月份，Docker公司宣布Docker企业版（Enterprise Edition, EE），并将开源版本重命名为Docker社区版（Community Edition, CE）；同时公布了产品迭代计划，这会为企业客户提供透明的生命周期支持计划、并对Docker技术的稳定性和可维护性提升带来了帮助。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-07T04:06:53.479Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu16.04下安装Docker-CE社区版">
+<meta name="twitter:description" content="在2017年3月份，Docker公司宣布Docker企业版（Enterprise Edition, EE），并将开源版本重命名为Docker社区版（Community Edition, CE）；同时公布了产品迭代计划，这会为企业客户提供透明的生命周期支持计划、并对Docker技术的稳定性和可维护性提升带来了帮助。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/25/ubuntu-install-docker-ce-and-configure-mirror-accelerator/"/>
+
+  <title> Ubuntu16.04下安装Docker-CE社区版 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ubuntu16.04下安装Docker-CE社区版
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-25T23:03:33+08:00" content="2017-08-25">
+              2017-08-25
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在2017年3月份，Docker公司宣布Docker企业版（Enterprise Edition, EE），并将开源版本重命名为Docker社区版（Community Edition, CE）；同时公布了产品迭代计划，这会为企业客户提供透明的生命周期支持计划、并对Docker技术的稳定性和可维护性提升带来了帮助。</p>
+<p>注：文章写于 <code>2017年8月</code> ,文中所讲方法可能会过时，请查看Docker官方最新安装文档 <a href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/" target="_blank" rel="external">Get Docker CE for Ubuntu | Docker Documentation</a>，本文仅供参考。</p>
+<h4 id="Docker-CE-还是-Docker-EE"><a href="#Docker-CE-还是-Docker-EE" class="headerlink" title="Docker CE 还是 Docker EE"></a>Docker CE 还是 Docker EE</h4><h5 id="Docker-CE"><a href="#Docker-CE" class="headerlink" title="Docker CE"></a>Docker CE</h5><p>Docker CE表示社区版，是免费的Docker产品的新名称，Docker CE包含了完整的Docker平台，非常适合开发人员和运维团队构建容器APP。</p>
+<h5 id="Docker-EE"><a href="#Docker-EE" class="headerlink" title="Docker EE"></a>Docker EE</h5><p>Docker EE表示企业版，由公司支持，可在经过认证的操作系统和云提供商中使用，并可运行来自Docker Store的、经过认证的容器和插件。</p>
+<p>Docker EE提供三个服务层次：</p>
+<table>
+<thead>
+<tr>
+<th>服务层级</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basic</td>
+<td>1. 包含用于认证基础设施的Docker平台<br> 2. Docker公司的支持<br> 3. 经过认证的、来自Docker Store的容器与插件</td>
+</tr>
+<tr>
+<td>Standard</td>
+<td>1. 添加高级镜像与容器管理<br> 2. LDAP/AD用户集成<br> 3. 基于角色的访问控制(Docker Datacenter)</td>
+</tr>
+<tr>
+<td>Advanced</td>
+<td>1. 添加Docker安全扫描<br> 2. 连续漏洞监控</td>
+</tr>
+</tbody>
+</table>
+<h5 id="版本迭代"><a href="#版本迭代" class="headerlink" title="版本迭代"></a>版本迭代</h5><p>Docker从17.03开始，转向基于时间的 <code>YY.MM</code> 形式的版本控制方案，类似于Canonical为Ubuntu所使用的版本控制方案。</p>
+<p>Docker CE有两种版本：</p>
+<ul>
+<li>edge版本每月发布一次，主要面向那些喜欢尝试新功能的用户。</li>
+<li>stable版本每季度发布一次，适用于希望更加容易维护的用户（稳定版）。</li>
+</ul>
+<p>edge版本只能在当前月份获得安全和错误修复。而stable版本在初始发布后四个月内接收关键错误修复和安全问题的修补程序。这样，Docker CE用户就有一个月的窗口期来切换版本到更新的版本。</p>
+<p>Docker EE和stable版本的版本号保持一致，每个Docker EE版本都享受为期一年的支持与维护期，在此期间接受安全与关键修正。</p>
+<hr>
+<h4 id="官方安装方法"><a href="#官方安装方法" class="headerlink" title="官方安装方法"></a>官方安装方法</h4><h5 id="系统要求"><a href="#系统要求" class="headerlink" title="系统要求"></a>系统要求</h5><p>安装Docker CE,需要64位的Ubuntu系统：</p>
+<ul>
+<li>Zesty 17.04</li>
+<li>Xenial 16.04 (LTS)</li>
+<li>Trusty 14.04 (LTS)</li>
+</ul>
+<p>我的系统是 <code>Ubuntu 16.04.2 LTS</code> 版本，通过命令 <code>lsb_release -a</code> 我们可以查看到:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ sudo lsb_release -a</div><div class="line">[sudo] password for tiger: </div><div class="line">LSB Version:	core-9.20160110ubuntu0.2-amd64</div><div class="line">Distributor ID:	Ubuntu</div><div class="line">Description:	Ubuntu 16.04.2 LTS</div><div class="line">Release:	16.04</div><div class="line">Codename:	xenial</div></pre></td></tr></table></figure>
+<p>通过 <code>uname -r</code> 来查看内核信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ uname -r</div><div class="line">4.4.0-85-generic</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="卸载旧版本Docker"><a href="#卸载旧版本Docker" class="headerlink" title="卸载旧版本Docker"></a>卸载旧版本Docker</h5><p>旧版本的docker被称为 <code>docker</code> 或者 <code>docker-engine</code>，而现在最新的Docker CE包被称为 <code>docker-ce</code>。在安装之前，需要先卸载旧版本(如果之前有安装)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get remove docker docker-engine docker.io</div></pre></td></tr></table></figure>
+<p>另外原来 <code>/var/lib/docker/</code> 目录下的镜像，容器，数据卷，网络等都会保留，新安装的docker任然可以使用这些内容。</p>
+<h5 id="14-04-Trusty-需要安装额外包"><a href="#14-04-Trusty-需要安装额外包" class="headerlink" title="14.04 Trusty 需要安装额外包"></a>14.04 Trusty 需要安装额外包</h5><p>在 14.04 系统版本下，需要安装 <code>linux-image-extra-*</code> 包以允许Docker使用 <code>aufs</code> 存储驱动程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line"></div><div class="line">$ sudo apt-get install \</div><div class="line">    linux-image-extra-$(uname -r) \</div><div class="line">    linux-image-extra-virtual</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="安装-Docker-CE"><a href="#安装-Docker-CE" class="headerlink" title="安装 Docker CE"></a>安装 Docker CE</h4><h5 id="更新源"><a href="#更新源" class="headerlink" title="更新源"></a>更新源</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div></pre></td></tr></table></figure>
+<h5 id="允许通过HTTPS使用存储库"><a href="#允许通过HTTPS使用存储库" class="headerlink" title="允许通过HTTPS使用存储库"></a>允许通过HTTPS使用存储库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install \</div><div class="line">    apt-transport-https \</div><div class="line">    ca-certificates \</div><div class="line">    curl \</div><div class="line">    software-properties-common</div></pre></td></tr></table></figure>
+<h5 id="导入官方-GPG-密钥"><a href="#导入官方-GPG-密钥" class="headerlink" title="导入官方 GPG 密钥"></a>导入官方 GPG 密钥</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div></pre></td></tr></table></figure>
+<p>验证密钥指纹是否正确 <code>9DC8 5822 9FC7 DD38 854A E2D8 8D81 803C 0EBF CD88</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-key fingerprint 0EBFCD88</div></pre></td></tr></table></figure>
+<p>操作记录如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</div><div class="line">OK</div><div class="line">$ sudo apt-key fingerprint 0EBFCD88</div><div class="line">pub   4096R/0EBFCD88 2017-02-22</div><div class="line">      Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88</div><div class="line">uid                  Docker Release (CE deb) &lt;docker@docker.com&gt;</div><div class="line">sub   4096R/F273FCD8 2017-02-22</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="选择稳定版本"><a href="#选择稳定版本" class="headerlink" title="选择稳定版本"></a>选择稳定版本</h5><p>使用如下命令安装稳定版本的docker-ce,64位系统： <code>amd64</code> or <code>x86_64</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo add-apt-repository \</div><div class="line">   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \</div><div class="line">   $(lsb_release -cs) \</div><div class="line">   stable&quot;</div></pre></td></tr></table></figure>
+<h5 id="更新源列表"><a href="#更新源列表" class="headerlink" title="更新源列表"></a>更新源列表</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div></pre></td></tr></table></figure>
+<h5 id="安装最新版本的Docker-CE"><a href="#安装最新版本的Docker-CE" class="headerlink" title="安装最新版本的Docker CE"></a>安装最新版本的Docker CE</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install docker-ce</div></pre></td></tr></table></figure>
+<h5 id="安装特定版本的Docker-CE"><a href="#安装特定版本的Docker-CE" class="headerlink" title="安装特定版本的Docker CE"></a>安装特定版本的Docker CE</h5><p>使用命令 <code>$ apt-cache madison docker-ce</code> 查看可安装的版本列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ apt-cache madison docker-ce</div><div class="line"> docker-ce | 17.06.1~ce-0~ubuntu | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages</div><div class="line"> docker-ce | 17.06.0~ce-0~ubuntu | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages</div><div class="line"> docker-ce | 17.03.2~ce-0~ubuntu-xenial | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages</div><div class="line"> docker-ce | 17.03.1~ce-0~ubuntu-xenial | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages</div><div class="line"> docker-ce | 17.03.0~ce-0~ubuntu-xenial | https://download.docker.com/linux/ubuntu xenial/stable amd64 Packages</div></pre></td></tr></table></figure>
+<p>中间一项为版本名称，执行命令选择安装指定版本 <code>$ sudo apt-get install docker-ce=&lt;VERSION&gt;</code> ,比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install docker-ce=17.06.1~ce-0~ubuntu</div><div class="line">[sudo] password for tiger: </div><div class="line">Reading package lists... Done</div><div class="line">Building dependency tree       </div><div class="line">Reading state information... Done</div><div class="line">docker-ce is already the newest version (17.06.1~ce-0~ubuntu).</div><div class="line">0 upgraded, 0 newly installed, 0 to remove and 34 not upgraded.</div></pre></td></tr></table></figure>
+<hr>
+<p>安装完成后docker守护进程会自动启动。</p>
+<hr>
+<h5 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h5><p>执行命令 <code>docker</code> 查看安装是否成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line">$ docker </div><div class="line"></div><div class="line">Usage:	docker COMMAND</div><div class="line"></div><div class="line">A self-sufficient runtime for containers</div><div class="line"></div><div class="line">Options:</div><div class="line">      --config string      Location of client config files (default &quot;/home/tiger/.docker&quot;)</div><div class="line">  -D, --debug              Enable debug mode</div><div class="line">      --help               Print usage</div><div class="line">  -H, --host list          Daemon socket(s) to connect to</div><div class="line">  -l, --log-level string   Set the logging level (&quot;debug&quot;|&quot;info&quot;|&quot;warn&quot;|&quot;error&quot;|&quot;fatal&quot;) (default &quot;info&quot;)</div><div class="line">      --tls                Use TLS; implied by --tlsverify</div><div class="line">      --tlscacert string   Trust certs signed only by this CA (default &quot;/home/tiger/.docker/ca.pem&quot;)</div><div class="line">      --tlscert string     Path to TLS certificate file (default &quot;/home/tiger/.docker/cert.pem&quot;)</div><div class="line">      --tlskey string      Path to TLS key file (default &quot;/home/tiger/.docker/key.pem&quot;)</div><div class="line">      --tlsverify          Use TLS and verify the remote</div><div class="line">  -v, --version            Print version information and quit</div><div class="line"></div><div class="line">Management Commands:</div><div class="line">  config      Manage Docker configs</div><div class="line">  container   Manage containers</div><div class="line">  image       Manage images</div><div class="line">  network     Manage networks</div><div class="line">  node        Manage Swarm nodes</div><div class="line">  plugin      Manage plugins</div><div class="line">  secret      Manage Docker secrets</div><div class="line">  service     Manage services</div><div class="line">  stack       Manage Docker stacks</div><div class="line">  swarm       Manage Swarm</div><div class="line">  system      Manage Docker</div><div class="line">  volume      Manage volumes</div><div class="line"></div><div class="line">Commands:</div><div class="line">  attach      Attach local standard input, output, and error streams to a running container</div><div class="line">  build       Build an image from a Dockerfile</div><div class="line">  commit      Create a new image from a container&apos;s changes</div><div class="line">  cp          Copy files/folders between a container and the local filesystem</div><div class="line">  create      Create a new container</div><div class="line">  diff        Inspect changes to files or directories on a container&apos;s filesystem</div><div class="line">  events      Get real time events from the server</div><div class="line">  exec        Run a command in a running container</div><div class="line">  export      Export a container&apos;s filesystem as a tar archive</div><div class="line">  history     Show the history of an image</div><div class="line">  images      List images</div><div class="line">  import      Import the contents from a tarball to create a filesystem image</div><div class="line">  info        Display system-wide information</div><div class="line">  inspect     Return low-level information on Docker objects</div><div class="line">  kill        Kill one or more running containers</div><div class="line">  load        Load an image from a tar archive or STDIN</div><div class="line">  login       Log in to a Docker registry</div><div class="line">  logout      Log out from a Docker registry</div><div class="line">  logs        Fetch the logs of a container</div><div class="line">  pause       Pause all processes within one or more containers</div><div class="line">  port        List port mappings or a specific mapping for the container</div><div class="line">  ps          List containers</div><div class="line">  pull        Pull an image or a repository from a registry</div><div class="line">  push        Push an image or a repository to a registry</div><div class="line">  rename      Rename a container</div><div class="line">  restart     Restart one or more containers</div><div class="line">  rm          Remove one or more containers</div><div class="line">  rmi         Remove one or more images</div><div class="line">  run         Run a command in a new container</div><div class="line">  save        Save one or more images to a tar archive (streamed to STDOUT by default)</div><div class="line">  search      Search the Docker Hub for images</div><div class="line">  start       Start one or more stopped containers</div><div class="line">  stats       Display a live stream of container(s) resource usage statistics</div><div class="line">  stop        Stop one or more running containers</div><div class="line">  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE</div><div class="line">  top         Display the running processes of a container</div><div class="line">  unpause     Unpause all processes within one or more containers</div><div class="line">  update      Update configuration of one or more containers</div><div class="line">  version     Show the Docker version information</div><div class="line">  wait        Block until one or more containers stop, then print their exit codes</div><div class="line"></div><div class="line">Run &apos;docker COMMAND --help&apos; for more information on a command.</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="为当前用户添加管理员权限"><a href="#为当前用户添加管理员权限" class="headerlink" title="为当前用户添加管理员权限"></a>为当前用户添加管理员权限</h4><p>Docker进程启动后，执行docker命令都必须带上 <code>sudo</code> 才行，否则会报 <code>permission denied</code> 的错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ docker info</div><div class="line">Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get http://%2Fvar%2Frun%2Fdocker.sock/v1.30/info: dial unix /var/run/docker.sock: connect: permission denied</div></pre></td></tr></table></figure>
+<p>解决方法是将当前用户加入到 <code>docker</code> 用户分组下。</p>
+<hr>
+<h5 id="将当前用户添加到-docker-分组下"><a href="#将当前用户添加到-docker-分组下" class="headerlink" title="将当前用户添加到 docker 分组下"></a>将当前用户添加到 <code>docker</code> 分组下</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo usermod -aG docker &lt;your-user&gt;</div></pre></td></tr></table></figure>
+<p>或者直接用 <code>$USER</code> 表示当前用户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo usermod -aG docker $USER</div></pre></td></tr></table></figure>
+<p>然后重启系统：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo reboot</div></pre></td></tr></table></figure>
+<p>再执行时就不会报错了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$ docker info</div><div class="line">Containers: 0</div><div class="line"> Running: 0</div><div class="line"> Paused: 0</div><div class="line"> Stopped: 0</div><div class="line">Images: 0</div><div class="line">Server Version: 17.06.1-ce</div><div class="line">Storage Driver: aufs</div><div class="line"> Root Dir: /var/lib/docker/aufs</div><div class="line"> Backing Filesystem: extfs</div><div class="line"> Dirs: 0</div><div class="line"> Dirperm1 Supported: true</div><div class="line">Logging Driver: json-file</div><div class="line">Cgroup Driver: cgroupfs</div><div class="line">Plugins: </div><div class="line"> Volume: local</div><div class="line"> Network: bridge host macvlan null overlay</div><div class="line"> Log: awslogs fluentd gcplogs gelf journald json-file logentries splunk syslog</div><div class="line">Swarm: inactive</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="使用阿里云Docker-CE镜像源安装"><a href="#使用阿里云Docker-CE镜像源安装" class="headerlink" title="使用阿里云Docker CE镜像源安装"></a>使用阿里云Docker CE镜像源安装</h4><h5 id="Ubuntu-14-04-16-04-使用apt-get进行安装"><a href="#Ubuntu-14-04-16-04-使用apt-get进行安装" class="headerlink" title="Ubuntu 14.04 16.04 (使用apt-get进行安装)"></a>Ubuntu 14.04 16.04 (使用apt-get进行安装)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"># step 1: 安装必要的一些系统工具</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common</div><div class="line"># step 2: 安装GPG证书</div><div class="line">curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -</div><div class="line"># Step 3: 写入软件源信息</div><div class="line">sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;</div><div class="line"># Step 4: 更新并安装 Docker-CE</div><div class="line">sudo apt-get -y update</div><div class="line">sudo apt-get -y install docker-ce</div><div class="line"></div><div class="line"></div><div class="line"># 安装指定版本的Docker-CE:</div><div class="line"># Step 1: 查找Docker-CE的版本:</div><div class="line"># apt-cache madison docker-ce</div><div class="line">#   docker-ce | 17.03.1~ce-0~ubuntu-xenial | http://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages</div><div class="line">#   docker-ce | 17.03.0~ce-0~ubuntu-xenial | http://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages</div><div class="line"># Step 2: 安装指定版本的Docker-CE: (VERSION 例如上面的 17.03.1~ce-0~ubuntu-xenial)</div><div class="line"># sudo apt-get -y install docker-ce=[VERSION]</div></pre></td></tr></table></figure>
+<h5 id="CentOS-7-使用yum进行安装"><a href="#CentOS-7-使用yum进行安装" class="headerlink" title="CentOS 7 (使用yum进行安装)"></a>CentOS 7 (使用yum进行安装)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># step 1: 安装必要的一些系统工具</div><div class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</div><div class="line"># Step 2: 添加软件源信息</div><div class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</div><div class="line"># Step 3: 更新并安装 Docker-CE</div><div class="line">sudo yum makecache fast</div><div class="line">sudo yum -y install docker-ce</div><div class="line"># Step 4: 开启Docker服务</div><div class="line">sudo service docker start</div><div class="line"></div><div class="line"></div><div class="line"># 安装指定版本的Docker-CE:</div><div class="line"># Step 1: 查找Docker-CE的版本:</div><div class="line"># yum list docker-ce.x86_64 --showduplicates | sort -r</div><div class="line">#   Loading mirror speeds from cached hostfile</div><div class="line">#   Loaded plugins: branch, fastestmirror, langpacks</div><div class="line">#   docker-ce.x86_64            17.03.1.ce-1.el7.centos            docker-ce-stable</div><div class="line">#   docker-ce.x86_64            17.03.1.ce-1.el7.centos            @docker-ce-stable</div><div class="line">#   docker-ce.x86_64            17.03.0.ce-1.el7.centos            docker-ce-stable</div><div class="line">#   Available Packages</div><div class="line"># Step2 : 安装指定版本的Docker-CE: (VERSION 例如上面的 17.03.0.ce.1-1.el7.centos)</div><div class="line"># sudo yum -y install docker-ce-[VERSION]</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="配置阿里云Docker镜像加速器"><a href="#配置阿里云Docker镜像加速器" class="headerlink" title="配置阿里云Docker镜像加速器"></a>配置阿里云Docker镜像加速器</h4><p>打开阿里云 <a href="https://dev.aliyun.com/" target="_blank" rel="external">开发者平台</a> - <code>管理中心</code> - <code>Docker Hub 镜像站点</code>。可以看到 <code>您的专属加速器地址 https://xxxxx.mirror.aliyuncs.com</code></p>
+<h5 id="配置Docker加速器"><a href="#配置Docker加速器" class="headerlink" title="配置Docker加速器"></a>配置Docker加速器</h5><p>通过修改daemon配置文件 <code>/etc/docker/daemon.json</code> (没有时新建该文件) 来使用加速器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sudo mkdir -p /etc/docker</div><div class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;</div><div class="line">&#123;</div><div class="line">  &quot;registry-mirrors&quot;: [&quot;https://xxxxx.mirror.aliyuncs.com&quot;]</div><div class="line">&#125;</div><div class="line">EOF</div><div class="line">sudo systemctl daemon-reload</div><div class="line">sudo systemctl restart docker</div></pre></td></tr></table></figure>
+<p>注意：<strong>上文代码段中给出的镜像加速器地址中的 <code>xxxxx</code> 为阿里云在你注册账户后分配的指定地址名称，切记要修改为自己账户的给定地址。</strong></p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/" target="_blank" rel="external">Get Docker CE for Ubuntu | Docker Documentation</a></li>
+<li><a href="http://www.itmuch.com/docker/docker-1/" target="_blank" rel="external">Docker 17.03系列教程（一）Docker EE/Docker CE简介与版本规划 | 周立|Spring Cloud</a></li>
+<li><a href="https://yq.aliyun.com/articles/110806" target="_blank" rel="external">Docker CE 镜像源站-博客-云栖社区-阿里云</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ubuntu/" rel="tag">#Ubuntu</a>
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/22/mongodb-mongodump-and-mongorestore/" rel="next" title="MongoDB备份与恢复">
+                <i class="fa fa-chevron-left"></i> MongoDB备份与恢复
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/07/docker-ubuntu-gogs-initialization/" rel="prev" title="Docker-Ubuntu-Gogs数据库及初始化配置">
+                Docker-Ubuntu-Gogs数据库及初始化配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker-CE-还是-Docker-EE"><span class="nav-number">1.</span> <span class="nav-text">Docker CE 还是 Docker EE</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-CE"><span class="nav-number">1.1.</span> <span class="nav-text">Docker CE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Docker-EE"><span class="nav-number">1.2.</span> <span class="nav-text">Docker EE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#版本迭代"><span class="nav-number">1.3.</span> <span class="nav-text">版本迭代</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#官方安装方法"><span class="nav-number">2.</span> <span class="nav-text">官方安装方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#系统要求"><span class="nav-number">2.1.</span> <span class="nav-text">系统要求</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#卸载旧版本Docker"><span class="nav-number">2.2.</span> <span class="nav-text">卸载旧版本Docker</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14-04-Trusty-需要安装额外包"><span class="nav-number">2.3.</span> <span class="nav-text">14.04 Trusty 需要安装额外包</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-Docker-CE"><span class="nav-number">3.</span> <span class="nav-text">安装 Docker CE</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新源"><span class="nav-number">3.1.</span> <span class="nav-text">更新源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#允许通过HTTPS使用存储库"><span class="nav-number">3.2.</span> <span class="nav-text">允许通过HTTPS使用存储库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入官方-GPG-密钥"><span class="nav-number">3.3.</span> <span class="nav-text">导入官方 GPG 密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#选择稳定版本"><span class="nav-number">3.4.</span> <span class="nav-text">选择稳定版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更新源列表"><span class="nav-number">3.5.</span> <span class="nav-text">更新源列表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装最新版本的Docker-CE"><span class="nav-number">3.6.</span> <span class="nav-text">安装最新版本的Docker CE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装特定版本的Docker-CE"><span class="nav-number">3.7.</span> <span class="nav-text">安装特定版本的Docker CE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#验证"><span class="nav-number">3.8.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为当前用户添加管理员权限"><span class="nav-number">4.</span> <span class="nav-text">为当前用户添加管理员权限</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将当前用户添加到-docker-分组下"><span class="nav-number">4.1.</span> <span class="nav-text">将当前用户添加到 docker 分组下</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用阿里云Docker-CE镜像源安装"><span class="nav-number">5.</span> <span class="nav-text">使用阿里云Docker CE镜像源安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Ubuntu-14-04-16-04-使用apt-get进行安装"><span class="nav-number">5.1.</span> <span class="nav-text">Ubuntu 14.04 16.04 (使用apt-get进行安装)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CentOS-7-使用yum进行安装"><span class="nav-number">5.2.</span> <span class="nav-text">CentOS 7 (使用yum进行安装)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置阿里云Docker镜像加速器"><span class="nav-number">6.</span> <span class="nav-text">配置阿里云Docker镜像加速器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#配置Docker加速器"><span class="nav-number">6.1.</span> <span class="nav-text">配置Docker加速器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">7.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

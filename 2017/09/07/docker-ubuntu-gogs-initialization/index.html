@@ -1,0 +1,854 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Docker,Gogs," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Ubuntu-Gogs 首次运行安装程序配置及多数据库配置方法整理。">
+<meta name="keywords" content="Docker,Gogs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Ubuntu-Gogs数据库及初始化配置">
+<meta property="og:url" content="http://yoursite.com/2017/09/07/docker-ubuntu-gogs-initialization/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Ubuntu-Gogs 首次运行安装程序配置及多数据库配置方法整理。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-07T04:06:53.479Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker-Ubuntu-Gogs数据库及初始化配置">
+<meta name="twitter:description" content="Ubuntu-Gogs 首次运行安装程序配置及多数据库配置方法整理。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/07/docker-ubuntu-gogs-initialization/"/>
+
+  <title> Docker-Ubuntu-Gogs数据库及初始化配置 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Docker-Ubuntu-Gogs数据库及初始化配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-07T11:27:54+08:00" content="2017-09-07">
+              2017-09-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Ubuntu-Gogs/" itemprop="url" rel="index">
+                    <span itemprop="name">Ubuntu-Gogs</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Ubuntu-Gogs 首次运行安装程序配置及多数据库配置方法整理。</p>
+<h4 id="app-ini中数据库配置说明"><a href="#app-ini中数据库配置说明" class="headerlink" title="app.ini中数据库配置说明"></a>app.ini中数据库配置说明</h4><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DB_TYPE</td>
+<td>数据库类型，可以是 mysql、postgres、mssql 或 sqlite3</td>
+</tr>
+<tr>
+<td>HOST</td>
+<td>数据库主机地址与端口</td>
+</tr>
+<tr>
+<td>NAME</td>
+<td>数据库名称</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>数据库用户名</td>
+</tr>
+<tr>
+<td>PASSWD</td>
+<td>数据库用户密码</td>
+</tr>
+<tr>
+<td>SSL_MODE</td>
+<td>仅限 PostgreSQL 使用</td>
+</tr>
+<tr>
+<td>PATH</td>
+<td>仅限 SQLite3 使用，数据库文件路径</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="初次启动时数据库设置"><a href="#初次启动时数据库设置" class="headerlink" title="初次启动时数据库设置"></a>初次启动时数据库设置</h4><p>Gogs 要求安装 MySQL、PostgreSQL、SQLite3、MSSQL 或 TiDB。</p>
+<h5 id="SQLite3"><a href="#SQLite3" class="headerlink" title="SQLite3"></a>SQLite3</h5><h6 id="数据库设置"><a href="#数据库设置" class="headerlink" title="数据库设置"></a>数据库设置</h6><ul>
+<li>数据库类型 ：<code>SQLite3</code></li>
+<li>数据库文件路径 ：可使用绝对路径：<code>/app/gogs/data/gogs.db</code> 或者 相对路径：<code>data/gogs.db</code> （推荐使用绝对路径）</li>
+</ul>
+<h6 id="app-ini中配置结果"><a href="#app-ini中配置结果" class="headerlink" title="app.ini中配置结果"></a>app.ini中配置结果</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[database]</div><div class="line">DB_TYPE  = sqlite3</div><div class="line">HOST     = 127.0.0.1:3306</div><div class="line">NAME     = gogs</div><div class="line">USER     = root</div><div class="line">PASSWD   = </div><div class="line">SSL_MODE = disable</div><div class="line">PATH     = /app/gogs/data/gogs.db</div></pre></td></tr></table></figure>
+<h6 id="示例容器"><a href="#示例容器" class="headerlink" title="示例容器"></a>示例容器</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name gogs1 -d -p 10080:3000 -p 10022:22 -v /home/tiger/gogsfile:/app leafney/ubuntu-gogs</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h5><h6 id="数据库设置-1"><a href="#数据库设置-1" class="headerlink" title="数据库设置"></a>数据库设置</h6><ul>
+<li>数据库类型 ：<code>MySQL</code></li>
+<li>数据库主机 ：<code>127.0.0.1:3306</code></li>
+<li>数据库用户 ：<code>root</code></li>
+<li>数据库用户密码 : <code>*******</code></li>
+<li>数据库名称 ：<code>gogs</code></li>
+</ul>
+<h6 id="app-ini中配置结果-1"><a href="#app-ini中配置结果-1" class="headerlink" title="app.ini中配置结果"></a>app.ini中配置结果</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[database]</div><div class="line">DB_TYPE  = mysql</div><div class="line">HOST     = 127.0.0.1:3306</div><div class="line">NAME     = gogs</div><div class="line">USER     = root</div><div class="line">PASSWD   = `123456`</div><div class="line">SSL_MODE = disable</div><div class="line">PATH     = data/gogs.db</div></pre></td></tr></table></figure>
+<h6 id="示例容器-1"><a href="#示例容器-1" class="headerlink" title="示例容器"></a>示例容器</h6><p><strong>第一种方法：创建mysql容器和gogs容器，让gogs容器通过 <code>--link</code> 直接链接mysql容器。</strong></p>
+<p>创建mysql容器，并设置root账户密码：<code>123456</code>；新用户：<code>gogs123</code>；密码：<code>gogs123</code>；新用户数据库：<code>gogs</code> ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name mysqlgogs -v /home/tiger/mysqldb/:/var/lib/mysql -v /home/tiger/mysqldbase/:/home/mysqldbase/ -d -e MYSQL_ROOT_PWD=&quot;123456&quot; -e MYSQL_USER=gogs123 -e MYSQL_USER_PWD=&quot;gogs123&quot; -e MYSQL_USER_DB=&quot;gogs&quot; leafney/docker-alpine-mysql</div></pre></td></tr></table></figure>
+<p>创建gogs容器并链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name gogs2 -d -p 10080:3000 -p 10022:22 --link mysqlgogs:mydb -v /home/tiger/gogsfile:/app leafney/ubuntu-gogs</div></pre></td></tr></table></figure>
+<p>相对应的配置信息如下：</p>
+<ul>
+<li>数据库类型 ：<code>MySQL</code></li>
+<li>数据库主机 ：<code>mydb:3306</code></li>
+<li>数据库用户 ：<code>gogs123</code></li>
+<li>数据库用户密码 : <code>*******</code></li>
+<li>数据库名称 ：<code>gogs</code></li>
+</ul>
+<p><strong>第二种方法：让gogs容器链接已有mysql地址。</strong></p>
+<p>在创建gogs容器之前，先创建mysql数据库：</p>
+<p>在下载的 <code>gogs</code> 压缩包中，我们可以找到一个名为 <code>mysql.sql</code> 的文件，是用来初始化mysql数据库的，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">DROP DATABASE IF EXISTS gogs;</div><div class="line">CREATE DATABASE IF NOT EXISTS gogs CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;</div></pre></td></tr></table></figure>
+<p>使用 <code>root</code> 账户登录，然后执行 <code>mysql -u root -p &lt; mysql.sql</code> （需要输入密码）即可初始化好数据库。</p>
+<p>还要注意：使用 <code>MySQL</code> 数据库时，必须要保证mysql的存储引擎为 <code>INNODB</code> 且 编码格式为 <code>utf8_general_ci</code> 。可以使用如下语句来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">use gogs;</div><div class="line">set global storage_engine=INNODB;</div></pre></td></tr></table></figure>
+<hr>
+<p>或者使用如下命令创建数据库 <code>gogs</code> 及新用户 <code>gogsUser</code>, 并将数据库 <code>gogs</code> 的所有权限都赋予该用户,密码 <code>123456</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mysql -u root -p</div><div class="line">mysql&gt; SET GLOBAL storage_engine = &apos;InnoDB&apos;;</div><div class="line">mysql&gt; CREATE DATABASE gogs CHARACTER SET utf8 COLLATE utf8_bin;</div><div class="line">mysql&gt; GRANT ALL PRIVILEGES ON gogs.* TO &apos;gogsUser&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;123456&apos;;</div><div class="line">mysql&gt; FLUSH PRIVILEGES;</div><div class="line">mysql&gt; QUIT；</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="https://blog.mynook.info/post/host-your-own-git-server-using-gogs/" target="_blank" rel="external">使用 Gogs 搭建自己的 Git 服务器 - My Nook</a></li>
+</ul>
+<hr>
+<h5 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h5><h6 id="数据库设置-2"><a href="#数据库设置-2" class="headerlink" title="数据库设置"></a>数据库设置</h6><ul>
+<li>数据库类型 ：<code>PostgreSQL</code></li>
+<li>数据库主机 ：<code>127.0.0.1:5432</code></li>
+<li>数据库用户 ：<code>gogs</code></li>
+<li>数据库用户密码 : <code>*******</code></li>
+<li>数据库名称 ：<code>gogs</code></li>
+<li>SSL 模式 : <code>Disable</code>  (可选：Disable  Require  Verify Full)</li>
+</ul>
+<h6 id="app-ini中配置结果-2"><a href="#app-ini中配置结果-2" class="headerlink" title="app.ini中配置结果"></a>app.ini中配置结果</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[database]</div><div class="line">DB_TYPE  = postgres</div><div class="line">HOST     = 127.0.0.1:5432</div><div class="line">NAME     = gogs</div><div class="line">USER     = gogs</div><div class="line">PASSWD   = gogs</div><div class="line">SSL_MODE = disable</div><div class="line">PATH     = data/gogs.db</div></pre></td></tr></table></figure>
+<h6 id="示例容器-2"><a href="#示例容器-2" class="headerlink" title="示例容器"></a>示例容器</h6><p><strong>第一种方法：创建postgersql容器和gogs容器</strong></p>
+<p>创建postgresql容器，这里使用容器 <code>docker pull ananthhh/postgress</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --name postgress -p 5432:5432 -e POSTGRES_PASSWORD=gogs -e POSTGRES_USER=gogs -d ananthhh/postgress</div></pre></td></tr></table></figure>
+<p>该postgresql容器创建的用户为：<code>gogs</code>；用户密码：<code>gogs</code>; 数据库：<code>gogs</code> 。</p>
+<p>创建gogs容器并通过 <code>--link</code> 参数链接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name gogs3 -d -p 10080:3000 -p 10022:22 -v /home/tiger/gogsfile:/app --link postgress:psqldb leafney/ubuntu-gogs</div></pre></td></tr></table></figure>
+<p>相对应的配置信息如下：</p>
+<ul>
+<li>数据库类型 ：<code>PostgreSQL</code></li>
+<li>数据库主机 ：<code>psqldb:5432</code></li>
+<li>数据库用户 ：<code>gogs</code></li>
+<li>数据库用户密码 : <code>*******</code></li>
+<li>数据库名称 ：<code>gogs</code></li>
+<li>SSL 模式 : <code>Disable</code> </li>
+</ul>
+<p><strong>第二种方法：让gogs容器链接已有PostgreSQL地址。</strong></p>
+<p>使用指定数据库账户登录PostgreSQL，先创建 <code>gogs</code> 数据库，链接成功后会自动创建所需表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; CREATE DATABASE gogs</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="MSSql"><a href="#MSSql" class="headerlink" title="MSSql"></a>MSSql</h5><h6 id="数据库设置-3"><a href="#数据库设置-3" class="headerlink" title="数据库设置"></a>数据库设置</h6><ul>
+<li>数据库类型 ：<code>MSSQL</code></li>
+<li>数据库主机 ：<code>127.0.0.1, 1433</code></li>
+<li>数据库用户 ：<code>sa</code></li>
+<li>数据库用户密码 : <code>*******</code></li>
+<li>数据库名称 ：<code>gogs</code></li>
+</ul>
+<h6 id="app-ini中配置结果-3"><a href="#app-ini中配置结果-3" class="headerlink" title="app.ini中配置结果"></a>app.ini中配置结果</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[database]</div><div class="line">DB_TYPE  = mssql</div><div class="line">HOST     = 127.0.0.1, 1433</div><div class="line">NAME     = gogs</div><div class="line">USER     = sa</div><div class="line">PASSWD   = 123456</div><div class="line">SSL_MODE = disable</div><div class="line">PATH     = data/gogs.db</div></pre></td></tr></table></figure>
+<h6 id="示例容器-3"><a href="#示例容器-3" class="headerlink" title="示例容器"></a>示例容器</h6><p>创建gogs容器链接已有MSSql地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --name gogs4 -d -p 10080:3000 -p 10022:22 -v /home/tiger/gogsfile:/app leafney/ubuntu-gogs</div></pre></td></tr></table></figure>
+<p>使用指定数据库账户登录MSSql，先创建gogs数据库，链接成功后会自动创建所需表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; CREATE DATABASE gogs</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="应用基本设置"><a href="#应用基本设置" class="headerlink" title="应用基本设置"></a>应用基本设置</h4><p>以如下命令创建容器为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run --name mygogs -d -p 10080:3000 -p 10022:22 -v /home/tiger/gogsfile:/app leafney/ubuntu-gogs</div></pre></td></tr></table></figure>
+<ul>
+<li><code>仓库根目录</code>： 更改为绝对路径  <code>/app/gogs-repositories</code></li>
+<li><code>运行系统用户</code>：  使用默认用户  <code>git</code></li>
+<li><code>域名</code>： 填写Docker宿主机的主机名或物理地址或要使用的域名(不带http/https) 如  <code>192.168.137.140</code></li>
+<li><code>SSH 端口号</code>： 如果你映射Docker外部端口如 <code>10022:22</code> 那么这里就填写 <code>10022</code> ；不要勾选“使用内置SSH服务器”（Don’t tick Use Builtin SSH Server）</li>
+<li><code>HTTP 端口号</code>： 如果映射Docker外部端口如 <code>10080:3000</code> 这里要使用：<code>3000</code></li>
+<li><code>应用 URL</code>： 使用域名和公开的HTTP端口值的组合(带http/https) 如 <code>http://192.168.137.140:10080</code></li>
+<li><code>日志路径</code>： 可使用路径 <code>/app/gogs/log</code>(推荐) 或默认值 <code>/home/git/gogs/log</code></li>
+</ul>
+<hr>
+<h4 id="可选设置"><a href="#可选设置" class="headerlink" title="可选设置"></a>可选设置</h4><p>app.ini中邮件(mailer)配置说明</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENABLED</td>
+<td>启用该选项以激活邮件服务</td>
+</tr>
+<tr>
+<td>DISABLE_HELO</td>
+<td>禁用 HELO 操作</td>
+</tr>
+<tr>
+<td>HELO_HOSTNAME</td>
+<td>HELO 操作的自定义主机名</td>
+</tr>
+<tr>
+<td>HOST</td>
+<td>SMTP 主机地址与端口</td>
+</tr>
+<tr>
+<td>FROM</td>
+<td>邮箱的来自地址，遵循 RFC 5322规范，可以是一个单纯的邮箱地址或者 “名字” <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x65;&#x6d;&#97;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#46;&#x63;&#x6f;&#109;">&#x65;&#x6d;&#97;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#46;&#x63;&#x6f;&#109;</a> 的形式</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>邮箱用户名</td>
+</tr>
+<tr>
+<td>PASSWD</td>
+<td>邮箱密码</td>
+</tr>
+<tr>
+<td>SKIP_VERIFY</td>
+<td>不验证自签发证书的有效性</td>
+</tr>
+<tr>
+<td>USE_PLAIN_TEXT</td>
+<td>使用 <code>text/plain</code> 作为邮件内容格式</td>
+</tr>
+</tbody>
+</table>
+<h5 id="邮件服务设置"><a href="#邮件服务设置" class="headerlink" title="邮件服务设置"></a>邮件服务设置</h5><ul>
+<li><code>SMTP 主机</code>： 以163为例 如 <code>smtp.163.com:25</code></li>
+<li><code>邮件来自</code>： 格式为 <code>&quot;Name&quot; &lt;email@example.com&gt;</code> 如 <code>GitAdmin &lt;xxxxx@163.com&gt;</code></li>
+<li><code>发送邮箱</code>： 邮箱地址 如 <code>xxxxx@163.com</code></li>
+<li><code>发送邮箱密码</code> : 邮箱密码</li>
+</ul>
+<p>app.ini中配置结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[mailer]</div><div class="line">ENABLED = true</div><div class="line">HOST = smtp.163.com:25</div><div class="line">FROM = GitAdmin &lt;xxxxx@163.com&gt;</div><div class="line">USER = xxxxx@163.com</div><div class="line">PASSWD = 123456</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="服务器和其它服务设置"><a href="#服务器和其它服务设置" class="headerlink" title="服务器和其它服务设置"></a>服务器和其它服务设置</h5><ul>
+<li><code>禁止用户自主注册</code>  激活该选项来禁止用户注册功能，只能由管理员创建帐号</li>
+<li><code>启用验证码服务</code>  要求在用户注册时输入预验证码</li>
+<li><code>启用登录访问限制</code>  只有已登录的用户才能够访问页面，否则将只能看到登录或注册页面</li>
+</ul>
+<hr>
+<h5 id="管理员账号设置"><a href="#管理员账号设置" class="headerlink" title="管理员账号设置"></a>管理员账号设置</h5><p>创建管理员帐号并不是必须的，因为 <code>ID=1</code> 的用户将自动获得管理员权限。</p>
+<p>建议在此处直接创建管理员账户。</p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-gogs-on-ubuntu-14-04" target="_blank" rel="external">How To Set Up Gogs on Ubuntu 14.04 | DigitalOcean</a></li>
+<li><a href="https://gogs.io/docs/advanced/configuration_cheat_sheet" target="_blank" rel="external">配置文件手册 - Gogs</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Docker/" rel="tag">#Docker</a>
+          
+            <a href="/tags/Gogs/" rel="tag">#Gogs</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/25/ubuntu-install-docker-ce-and-configure-mirror-accelerator/" rel="next" title="Ubuntu16.04下安装Docker-CE社区版">
+                <i class="fa fa-chevron-left"></i> Ubuntu16.04下安装Docker-CE社区版
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#app-ini中数据库配置说明"><span class="nav-number">1.</span> <span class="nav-text">app.ini中数据库配置说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初次启动时数据库设置"><span class="nav-number">2.</span> <span class="nav-text">初次启动时数据库设置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SQLite3"><span class="nav-number">2.1.</span> <span class="nav-text">SQLite3</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库设置"><span class="nav-number">2.1.1.</span> <span class="nav-text">数据库设置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#app-ini中配置结果"><span class="nav-number">2.1.2.</span> <span class="nav-text">app.ini中配置结果</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#示例容器"><span class="nav-number">2.1.3.</span> <span class="nav-text">示例容器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MySQL"><span class="nav-number">2.2.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库设置-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据库设置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#app-ini中配置结果-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">app.ini中配置结果</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#示例容器-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">示例容器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PostgreSQL"><span class="nav-number">2.3.</span> <span class="nav-text">PostgreSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库设置-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">数据库设置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#app-ini中配置结果-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">app.ini中配置结果</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#示例容器-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">示例容器</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#MSSql"><span class="nav-number">2.4.</span> <span class="nav-text">MSSql</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#数据库设置-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">数据库设置</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#app-ini中配置结果-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">app.ini中配置结果</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#示例容器-3"><span class="nav-number">2.4.3.</span> <span class="nav-text">示例容器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#应用基本设置"><span class="nav-number">3.</span> <span class="nav-text">应用基本设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可选设置"><span class="nav-number">4.</span> <span class="nav-text">可选设置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#邮件服务设置"><span class="nav-number">4.1.</span> <span class="nav-text">邮件服务设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#服务器和其它服务设置"><span class="nav-number">4.2.</span> <span class="nav-text">服务器和其它服务设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管理员账号设置"><span class="nav-number">4.3.</span> <span class="nav-text">管理员账号设置</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
