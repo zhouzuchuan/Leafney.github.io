@@ -79,3 +79,9 @@ avatar: /images/avatar.jpg
 # 多说评论
 # duoshuo_shortname: itfanrcc
 
+# Local Search
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
