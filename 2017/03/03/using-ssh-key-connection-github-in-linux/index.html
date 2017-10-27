@@ -84,18 +84,18 @@
 
 
 
-<meta name="description" content="在 Linux 系统下通过 SSH 密钥来连接 GitHub">
+<meta name="description" content="在 Linux 系统下通过 SSH 密钥来连接 GitHub (Mac系统下设置方法相同)">
 <meta name="keywords" content="Linux,GitHub,SSH">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下使用SSH密钥连接Github">
 <meta property="og:url" content="http://yoursite.com/2017/03/03/using-ssh-key-connection-github-in-linux/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="在 Linux 系统下通过 SSH 密钥来连接 GitHub">
+<meta property="og:description" content="在 Linux 系统下通过 SSH 密钥来连接 GitHub (Mac系统下设置方法相同)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-07T04:06:53.483Z">
+<meta property="og:updated_time" content="2017-10-27T08:14:16.020Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下使用SSH密钥连接Github">
-<meta name="twitter:description" content="在 Linux 系统下通过 SSH 密钥来连接 GitHub">
+<meta name="twitter:description" content="在 Linux 系统下通过 SSH 密钥来连接 GitHub (Mac系统下设置方法相同)">
 
 
 
@@ -307,9 +307,9 @@
       
 
       
-        <p>在 Linux 系统下如何通过 SSH 密钥来连接 GitHub。</p>
+        <p>在 Linux 系统下如何通过 SSH 密钥来连接 GitHub (Mac系统下设置方法相同)。</p>
 <h4 id="引申"><a href="#引申" class="headerlink" title="引申"></a>引申</h4><ul>
-<li>Linux下：<a href="/2017/03/03/using-ssh-key-connection-github-in-linux/">Linux下使用SSH密钥连接Github</a></li>
+<li>Linux下 ：<a href="/2017/03/03/using-ssh-key-connection-github-in-linux/">Linux下使用SSH密钥连接Github</a></li>
 <li>Windows下：<a href="/2016/09/24/using-ssh-key-connection-github/">使用SSH密钥连接Github</a></li>
 </ul>
 <hr>
@@ -323,6 +323,10 @@
 <h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><p>The <code>ssh-keygen</code> command is part of <code>OpenSSH</code> (package “openssh”).</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ apk update</div><div class="line">$ apk add git openssh</div></pre></td></tr></table></figure>
 <h5 id="设置时区-1"><a href="#设置时区-1" class="headerlink" title="设置时区"></a>设置时区</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ apk add tzdata</div><div class="line">$ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</div><div class="line">$ echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="Mac-系统初始化配置git环境"><a href="#Mac-系统初始化配置git环境" class="headerlink" title="Mac 系统初始化配置git环境"></a>Mac 系统初始化配置git环境</h4><p>Mac系统上安装git,可以直接从git网站下载安装包,访问 <a href="https://git-scm.com/download/mac" target="_blank" rel="external">Git - Downloads</a> 安装.</p>
+<p>也可以通过 <code>homebrew</code> 进行安装:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install git</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="设置git账户"><a href="#设置git账户" class="headerlink" title="设置git账户"></a>设置git账户</h4><p>执行如下两条命令设置git账户的用户名和密码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.name &quot;Your Name&quot;</div><div class="line">$ git config --global user.email &quot;youremail@domain.com&quot;</div><div class="line"></div><div class="line">$ git config --list</div></pre></td></tr></table></figure>
@@ -346,8 +350,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh -T git@github.com</div></pre></td></tr></table></figure>
 <p>当提示如下信息时，说明正常连通了github:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hi xxxxxx! You&apos;ve successfully authenticated, but GitHub does not provide shell access.</div></pre></td></tr></table></figure>
+<p>如果你是第一次设置连接github.com,会询问你是否继续,输入 <code>yes</code> 即可,这样就会将连接地址记录在本地:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ ssh -T git@github.com</div><div class="line">The authenticity of host &apos;github.com (192.30.253.112)&apos; can&apos;t be established.</div><div class="line">RSA key fingerprint is SHA256:nThbg6kXUpxxxxxxxxARLviKw6E5SY8.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added &apos;github.com,192.30.253.112&apos; (RSA) to the list of known hosts.</div><div class="line">Hi xxxxxx! You&apos;ve successfully authenticated, but GitHub does not provide shell access.</div></pre></td></tr></table></figure>
 <hr>
 <p>然后就可以将本地的项目用github来管理了。</p>
+<hr>
+<h4 id="更新日志"><a href="#更新日志" class="headerlink" title="更新日志"></a>更新日志</h4><ul>
+<li>2017-10-27 - 完善”连接测试”内容; 添加Mac系统下安装git配置</li>
+</ul>
 
       
     </div>
@@ -477,7 +487,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-count">41</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -494,7 +504,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -543,7 +553,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#引申"><span class="nav-number">1.</span> <span class="nav-text">引申</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubuntu-系统初始化配置git环境"><span class="nav-number">2.</span> <span class="nav-text">Ubuntu 系统初始化配置git环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新软件源"><span class="nav-number">2.1.</span> <span class="nav-text">更新软件源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装git依赖"><span class="nav-number">2.2.</span> <span class="nav-text">安装git依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置时区"><span class="nav-number">2.3.</span> <span class="nav-text">设置时区</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alpine-系统初始化配置git环境"><span class="nav-number">3.</span> <span class="nav-text">Alpine 系统初始化配置git环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新软件源-1"><span class="nav-number">3.1.</span> <span class="nav-text">更新软件源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装依赖"><span class="nav-number">3.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置时区-1"><span class="nav-number">3.3.</span> <span class="nav-text">设置时区</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置git账户"><span class="nav-number">4.</span> <span class="nav-text">设置git账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成SSH公钥"><span class="nav-number">5.</span> <span class="nav-text">生成SSH公钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建新的SSH密钥"><span class="nav-number">5.1.</span> <span class="nav-text">创建新的SSH密钥</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-GibHub-中添加你的公钥"><span class="nav-number">6.</span> <span class="nav-text">在 GibHub 中添加你的公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接测试"><span class="nav-number">7.</span> <span class="nav-text">连接测试</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#引申"><span class="nav-number">1.</span> <span class="nav-text">引申</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubuntu-系统初始化配置git环境"><span class="nav-number">2.</span> <span class="nav-text">Ubuntu 系统初始化配置git环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新软件源"><span class="nav-number">2.1.</span> <span class="nav-text">更新软件源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装git依赖"><span class="nav-number">2.2.</span> <span class="nav-text">安装git依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置时区"><span class="nav-number">2.3.</span> <span class="nav-text">设置时区</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alpine-系统初始化配置git环境"><span class="nav-number">3.</span> <span class="nav-text">Alpine 系统初始化配置git环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新软件源-1"><span class="nav-number">3.1.</span> <span class="nav-text">更新软件源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装依赖"><span class="nav-number">3.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置时区-1"><span class="nav-number">3.3.</span> <span class="nav-text">设置时区</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mac-系统初始化配置git环境"><span class="nav-number">4.</span> <span class="nav-text">Mac 系统初始化配置git环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置git账户"><span class="nav-number">5.</span> <span class="nav-text">设置git账户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成SSH公钥"><span class="nav-number">6.</span> <span class="nav-text">生成SSH公钥</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建新的SSH密钥"><span class="nav-number">6.1.</span> <span class="nav-text">创建新的SSH密钥</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在-GibHub-中添加你的公钥"><span class="nav-number">7.</span> <span class="nav-text">在 GibHub 中添加你的公钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接测试"><span class="nav-number">8.</span> <span class="nav-text">连接测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新日志"><span class="nav-number">9.</span> <span class="nav-text">更新日志</span></a></li></ol></div>
             
           </div>
         </section>

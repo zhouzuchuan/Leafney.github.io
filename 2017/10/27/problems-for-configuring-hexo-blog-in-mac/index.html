@@ -1,0 +1,674 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Node.js,Hexo," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="今天在Mac下更新hexo博客时,遇到了一些安装 Node.js 和安装 hexo 相关的小问题,特此记录下来.">
+<meta name="keywords" content="Node.js,Hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac系统下配置hexo博客运行环境遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2017/10/27/problems-for-configuring-hexo-blog-in-mac/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="今天在Mac下更新hexo博客时,遇到了一些安装 Node.js 和安装 hexo 相关的小问题,特此记录下来.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-27T08:14:16.020Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac系统下配置hexo博客运行环境遇到的问题">
+<meta name="twitter:description" content="今天在Mac下更新hexo博客时,遇到了一些安装 Node.js 和安装 hexo 相关的小问题,特此记录下来.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/27/problems-for-configuring-hexo-blog-in-mac/"/>
+
+  <title> Mac系统下配置hexo博客运行环境遇到的问题 | IT范儿 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">IT范儿</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">程序员改变世界</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mac系统下配置hexo博客运行环境遇到的问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-27T14:38:51+08:00" content="2017-10-27">
+              2017-10-27
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天在Mac下更新hexo博客时,遇到了一些安装 Node.js 和安装 hexo 相关的小问题,特此记录下来.</p>
+<h4 id="Mac下配置Node-js环境"><a href="#Mac下配置Node-js环境" class="headerlink" title="Mac下配置Node.js环境"></a>Mac下配置Node.js环境</h4><p>安装 node.js 有多种方法：使用 <code>homebrew</code> 安装或者直接下载 <code>安装包</code>。 </p>
+<h5 id="官网下载安装包"><a href="#官网下载安装包" class="headerlink" title="官网下载安装包"></a>官网下载安装包</h5><p>从node.js官网 <a href="https://nodejs.org/en/" target="_blank" rel="external">Node.js</a> 下载对应系统的安装包,打开会提示安装位置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">This package will install:</div><div class="line">  • Node.js v8.8.1 to /usr/local/bin/node</div><div class="line">  • npm v5.4.2 to /usr/local/bin/npm</div></pre></td></tr></table></figure>
+<p>按照步骤安装即可.</p>
+<h5 id="homebrew安装"><a href="#homebrew安装" class="headerlink" title="homebrew安装"></a>homebrew安装</h5><p>通过 <code>homebrew</code> 安装,直接执行如下命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew install node</div></pre></td></tr></table></figure>
+<h5 id="检测安装是否成功"><a href="#检测安装是否成功" class="headerlink" title="检测安装是否成功"></a>检测安装是否成功</h5><p>终端输入 <code>-v</code> , 成功则显示版本号:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ node -v</div><div class="line">v8.8.1</div><div class="line">$ npm -v</div><div class="line">5.4.2</div><div class="line">$</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="Mac系统下Finder显示隐藏文件"><a href="#Mac系统下Finder显示隐藏文件" class="headerlink" title="Mac系统下Finder显示隐藏文件"></a>Mac系统下Finder显示隐藏文件</h4><p>涉及到一些以 <code>.</code> 开头的文件或目录(如.git目录)或者隐藏文件,默认在Finder下是看不到的.</p>
+<p>我们可以通过命令 <code>Command+Shift+.</code> 来在Finder中快速的切换显示出隐藏的文件或文件夹,再按一次,恢复隐藏.</p>
+<hr>
+<h4 id="更换Node-js镜像源"><a href="#更换Node-js镜像源" class="headerlink" title="更换Node.js镜像源"></a>更换Node.js镜像源</h4><p>由于npm的官方镜像源在国外,而由于国内”众所周知的”的网络原因,访问默认的官方镜像源常常会出问题.我们可以更改为国内的镜像源来加速软件的安装.</p>
+<h5 id="淘宝npm镜像"><a href="#淘宝npm镜像" class="headerlink" title="淘宝npm镜像"></a>淘宝npm镜像</h5><p>目前国内推荐的是淘宝的npm镜像:</p>
+<ul>
+<li>搜索地址：<a href="ttp://npm.taobao.org/" target="_blank" rel="external">http://npm.taobao.org/</a></li>
+<li>registry地址：<a href="http://registry.npm.taobao.org/" target="_blank" rel="external">http://registry.npm.taobao.org/</a></li>
+</ul>
+<h5 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h5><h6 id="临时使用"><a href="#临时使用" class="headerlink" title="临时使用"></a>临时使用</h6><p>以下载 <code>express</code> 软件为例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm --registry https://registry.npm.taobao.org install express</div></pre></td></tr></table></figure>
+<h6 id="持久使用"><a href="#持久使用" class="headerlink" title="持久使用"></a>持久使用</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm config set registry https://registry.npm.taobao.org</div></pre></td></tr></table></figure>
+<p>配置后可通过下面方式来查看是否设置成功:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm config get registry</div></pre></td></tr></table></figure>
+<p>我的操作记录:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ npm config get registry</div><div class="line">https://registry.npmjs.org/</div><div class="line">$ npm config set registry https://registry.npm.taobao.org</div><div class="line">$ npm config get registry</div><div class="line">https://registry.npm.taobao.org/</div><div class="line">$</div></pre></td></tr></table></figure>
+<p><strong>提醒</strong> : 我在实际操作时发现淘宝的npm镜像源有时候也会请求失败,然后又切换回了官方源(<code>npm config set registry https://registry.npmjs.org/</code>)发现能够操作成功了.所以是否更换镜像源还要根据实际情况来定.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">$ npm config get registry</div><div class="line">https://registry.npm.taobao.org/</div><div class="line">$ npm install</div><div class="line">npm ERR! code ENOTFOUND</div><div class="line">npm ERR! errno ENOTFOUND</div><div class="line">npm ERR! network request to https://registry.npm.taobao.org/hexo-generator-category failed, reason: getaddrinfo ENOTFOUND registry.npm.taobao.org registry.npm.taobao.org:443</div><div class="line">npm ERR! network This is a problem related to network connectivity.</div><div class="line">npm ERR! network In most cases you are behind a proxy or have bad network settings.</div><div class="line">npm ERR! network</div><div class="line">npm ERR! network If you are behind a proxy, please make sure that the</div><div class="line">npm ERR! network &apos;proxy&apos; config is set properly.  See: &apos;npm help config&apos;</div><div class="line"></div><div class="line">npm ERR! A complete log of this run can be found in:</div><div class="line">npm ERR!     /Users/xxx/.npm/_logs/2017-10-26T14_59_23_770Z-debug.log</div><div class="line">$ </div><div class="line">$ </div><div class="line">$ npm config set registry https://registry.npmjs.org/</div><div class="line">$ npm install</div><div class="line">npm WARN deprecated swig@1.4.2: This package is no longer maintained</div><div class="line"></div><div class="line">&gt; dtrace-provider@0.8.5 install /Users/xxx/Project17/Leafney.github.io/node_modules/dtrace-provider</div><div class="line">&gt; node scripts/install.js</div><div class="line"></div><div class="line"></div><div class="line">&gt; fsevents@1.1.2 install /Users/xxx/Project17/Leafney.github.io/node_modules/fsevents</div><div class="line">&gt; node install</div><div class="line"></div><div class="line">[fsevents] Success: &quot;/Users/xxx/Project17/Leafney.github.io/node_modules/fsevents/lib/binding/Release/node-v57-darwin-x64/fse.node&quot; already installed</div><div class="line">Pass --update-binary to reinstall or --build-from-source to recompile</div><div class="line"></div><div class="line">&gt; hexo-util@0.6.1 postinstall /Users/xxx/Project17/Leafney.github.io/node_modules/hexo-util</div><div class="line">&gt; npm run build:highlight</div><div class="line"></div><div class="line"></div><div class="line">&gt; hexo-util@0.6.1 build:highlight /Users/xxx/Project17/Leafney.github.io/node_modules/hexo-util</div><div class="line">&gt; node scripts/build_highlight_alias.js &gt; highlight_alias.json</div><div class="line"></div><div class="line">npm notice created a lockfile as package-lock.json. You should commit this file.</div><div class="line">added 430 packages in 119.035s</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="Mac-install-hexo-use-sudo-but-sitll-permission-denied"><a href="#Mac-install-hexo-use-sudo-but-sitll-permission-denied" class="headerlink" title="Mac install hexo use sudo but sitll permission denied"></a>Mac install hexo use sudo but sitll permission denied</h4><h5 id="安装报错"><a href="#安装报错" class="headerlink" title="安装报错"></a>安装报错</h5><p>参照hexo官网 <a href="https://hexo.io/zh-cn/index.html" target="_blank" rel="external">Hexo</a> 安装hexo时,使用命令 <code>npm install hexo-cli -g</code> 却报没有权限:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-cli -g</div><div class="line">npm WARN checkPermissions Missing write access to /usr/local/lib/node_modules</div><div class="line">npm ERR! path /usr/local/lib/node_modules</div><div class="line">npm ERR! code EACCES</div><div class="line">npm ERR! errno -13</div><div class="line">npm ERR! syscall access</div><div class="line">npm ERR! Error: EACCES: permission denied, access &apos;/usr/local/lib/node_modules&apos;</div><div class="line">npm ERR!  &#123; Error: EACCES: permission denied, access &apos;/usr/local/lib/node_modules&apos;</div><div class="line">npm ERR!   stack: &apos;Error: EACCES: permission denied, access \&apos;/usr/local/lib/node_modules\&apos;&apos;,</div><div class="line">npm ERR!   errno: -13,</div><div class="line">npm ERR!   code: &apos;EACCES&apos;,</div><div class="line">npm ERR!   syscall: &apos;access&apos;,</div><div class="line">npm ERR!   path: &apos;/usr/local/lib/node_modules&apos; &#125;</div><div class="line">npm ERR!</div><div class="line">npm ERR! Please try running this command again as root/Administrator.</div><div class="line"></div><div class="line">npm ERR! A complete log of this run can be found in:</div><div class="line">npm ERR!     /Users/xxx/.npm/_logs/2017-10-27T01_21_01_871Z-debug.log</div></pre></td></tr></table></figure>
+<p>然后我换用管理员权限,加上 <code>sudo</code> ,执行如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install hexo-cli -g</div><div class="line">Password:</div><div class="line">/usr/local/bin/hexo -&gt; /usr/local/lib/node_modules/hexo-cli/bin/hexo</div><div class="line"></div><div class="line">&gt; dtrace-provider@0.8.5 install /usr/local/lib/node_modules/hexo-cli/node_modules/dtrace-provider</div><div class="line">&gt; node scripts/install.js</div><div class="line"></div><div class="line">fs.js:768</div><div class="line">  return binding.rename(pathModule._makeLong(oldPath),</div><div class="line">                 ^</div><div class="line"></div><div class="line">Error: EACCES: permission denied, rename &apos;/usr/local/lib/node_modules/hexo-cli/node_modules/dtrace-provider/compile.py&apos; -&gt; &apos;/usr/local/lib/node_modules/hexo-cli/node_modules/dtrace-provider/binding.gyp&apos;</div><div class="line">    at Object.fs.renameSync (fs.js:768:18)</div><div class="line">    at Object.&lt;anonymous&gt; (/usr/local/lib/node_modules/hexo-cli/node_modules/dtrace-provider/scripts/install.js:14:4)</div><div class="line">    at Module._compile (module.js:612:30)</div><div class="line">    at Object.Module._extensions..js (module.js:623:10)</div><div class="line">    at Module.load (module.js:531:32)</div><div class="line">    at tryModuleLoad (module.js:494:12)</div><div class="line">    at Function.Module._load (module.js:486:3)</div><div class="line">    at Function.Module.runMain (module.js:653:10)</div><div class="line">    at startup (bootstrap_node.js:187:16)</div><div class="line">    at bootstrap_node.js:608:3</div><div class="line"></div><div class="line">&gt; fsevents@1.1.2 install /usr/local/lib/node_modules/hexo-cli/node_modules/fsevents</div><div class="line">&gt; node install</div><div class="line"></div><div class="line">[fsevents] Success: &quot;/usr/local/lib/node_modules/hexo-cli/node_modules/fsevents/lib/binding/Release/node-v57-darwin-x64/fse.node&quot; already installed</div><div class="line">Pass --update-binary to reinstall or --build-from-source to recompile</div><div class="line"></div><div class="line">&gt; hexo-util@0.6.1 postinstall /usr/local/lib/node_modules/hexo-cli/node_modules/hexo-util</div><div class="line">&gt; npm run build:highlight</div><div class="line"></div><div class="line"></div><div class="line">&gt; hexo-util@0.6.1 build:highlight /usr/local/lib/node_modules/hexo-cli/node_modules/hexo-util</div><div class="line">&gt; node scripts/build_highlight_alias.js &gt; highlight_alias.json</div><div class="line"></div><div class="line">sh: highlight_alias.json: Permission denied</div><div class="line">npm ERR! code ELIFECYCLE</div><div class="line">npm ERR! errno 1</div><div class="line">npm ERR! hexo-util@0.6.1 build:highlight: `node scripts/build_highlight_alias.js &gt; highlight_alias.json`</div><div class="line">npm ERR! Exit status 1</div><div class="line">npm ERR!</div><div class="line">npm ERR! Failed at the hexo-util@0.6.1 build:highlight script.</div><div class="line">npm ERR! This is probably not a problem with npm. There is likely additional logging output above.</div><div class="line"></div><div class="line">┌────────────────────────────────────────────────────────┐</div><div class="line">│                npm update check failed                 │</div><div class="line">│          Try running with sudo or get access           │</div><div class="line">│          to the local update config store via          │</div><div class="line">│ sudo chown -R $USER:$(id -gn $USER) /Users/xxx/.config │</div><div class="line">└────────────────────────────────────────────────────────┘</div><div class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: dtrace-provider@0.8.5 (node_modules/hexo-cli/node_modules/dtrace-provider):</div><div class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: dtrace-provider@0.8.5 install: `node scripts/install.js`</div><div class="line">npm WARN optional SKIPPING OPTIONAL DEPENDENCY: Exit status 1</div><div class="line"></div><div class="line">npm ERR! code ELIFECYCLE</div><div class="line">npm ERR! errno 1</div><div class="line">npm ERR! hexo-util@0.6.1 postinstall: `npm run build:highlight`</div><div class="line">npm ERR! Exit status 1</div><div class="line">npm ERR!</div><div class="line">npm ERR! Failed at the hexo-util@0.6.1 postinstall script.</div><div class="line">npm ERR! This is probably not a problem with npm. There is likely additional logging output above.</div><div class="line"></div><div class="line">npm ERR! A complete log of this run can be found in:</div><div class="line">npm ERR!     /Users/xxx/.npm/_logs/2017-10-27T02_56_29_887Z-debug.log</div></pre></td></tr></table></figure>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p>第一步,赋予目录权限:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo chown -R `whoami` /usr/local/lib/node_modules</div></pre></td></tr></table></figure>
+<p>第二步,安装hexo:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install hexo-cli -g</div></pre></td></tr></table></figure>
+<p><strong>需要注意的点</strong>: 在安装hexo时,不要用 <code>sudo</code> 命令.</p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://riny.net/2014/cnpm/" target="_blank" rel="external">国内优秀npm镜像推荐及使用</a></li>
+<li><a href="https://github.com/hexojs/hexo/issues/2785" target="_blank" rel="external">Mac install hexo use sudo but sitll permission denied</a></li>
+<li><a href="https://github.com/npm/npm/issues/8165" target="_blank" rel="external"><code>npm update -g</code> fails and causes <code>/usr/local/lib/node_modules</code> to be deleted</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Node-js/" rel="tag">#Node.js</a>
+          
+            <a href="/tags/Hexo/" rel="tag">#Hexo</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/07/docker-ubuntu-gogs-initialization/" rel="next" title="Docker-Ubuntu-Gogs数据库及初始化配置">
+                <i class="fa fa-chevron-left"></i> Docker-Ubuntu-Gogs数据库及初始化配置
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Leafney" />
+          <p class="site-author-name" itemprop="name">Leafney</p>
+          <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">34</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  DockerHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mac下配置Node-js环境"><span class="nav-number">1.</span> <span class="nav-text">Mac下配置Node.js环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#官网下载安装包"><span class="nav-number">1.1.</span> <span class="nav-text">官网下载安装包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#homebrew安装"><span class="nav-number">1.2.</span> <span class="nav-text">homebrew安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#检测安装是否成功"><span class="nav-number">1.3.</span> <span class="nav-text">检测安装是否成功</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mac系统下Finder显示隐藏文件"><span class="nav-number">2.</span> <span class="nav-text">Mac系统下Finder显示隐藏文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更换Node-js镜像源"><span class="nav-number">3.</span> <span class="nav-text">更换Node.js镜像源</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#淘宝npm镜像"><span class="nav-number">3.1.</span> <span class="nav-text">淘宝npm镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何使用"><span class="nav-number">3.2.</span> <span class="nav-text">如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#临时使用"><span class="nav-number">3.2.1.</span> <span class="nav-text">临时使用</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#持久使用"><span class="nav-number">3.2.2.</span> <span class="nav-text">持久使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mac-install-hexo-use-sudo-but-sitll-permission-denied"><span class="nav-number">4.</span> <span class="nav-text">Mac install hexo use sudo but sitll permission denied</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装报错"><span class="nav-number">4.1.</span> <span class="nav-text">安装报错</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解决方法"><span class="nav-number">4.2.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
