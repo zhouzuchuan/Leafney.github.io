@@ -280,4 +280,9 @@ $ python firefox.py
 
 详情请参考开源项目：
 
+* [Leafney/alpine-selenium-chrome](https://github.com/Leafney/alpine-selenium-chrome)
+* [leafney/alpine-selenium-chrome](https://hub.docker.com/r/leafney/alpine-selenium-chrome/)
+* [Leafney/alpine-selenium-firefox](https://github.com/Leafney/alpine-selenium-firefox)
+* [leafney/alpine-selenium-firefox](https://hub.docker.com/r/leafney/alpine-selenium-firefox/)
+
 ***
