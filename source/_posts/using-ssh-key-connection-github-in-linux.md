@@ -5,14 +5,14 @@ tags:
 	- Linux
 	- GitHub
 	- SSH
-description: 在 Linux 系统下通过 SSH 密钥来连接 GitHub
+description: 在 Linux 系统下通过 SSH 密钥来连接 GitHub (Mac系统下设置方法相同)
 ---
 
-在 Linux 系统下如何通过 SSH 密钥来连接 GitHub。
+在 Linux 系统下如何通过 SSH 密钥来连接 GitHub (Mac系统下设置方法相同)。
 
 #### 引申
 
-* Linux下：[Linux下使用SSH密钥连接Github](/2017/03/03/using-ssh-key-connection-github-in-linux/)
+* Linux下 ：[Linux下使用SSH密钥连接Github](/2017/03/03/using-ssh-key-connection-github-in-linux/)
 * Windows下：[使用SSH密钥连接Github](/2016/09/24/using-ssh-key-connection-github/)
 
 ***
@@ -72,6 +72,18 @@ $ apk add git openssh
 $ apk add tzdata
 $ ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 $ echo "Asia/Shanghai" > /etc/timezone
+```
+
+***
+
+#### Mac 系统初始化配置git环境
+
+Mac系统上安装git,可以直接从git网站下载安装包,访问 [Git - Downloads](https://git-scm.com/download/mac) 安装.
+
+也可以通过 `homebrew` 进行安装:
+
+```
+$ brew install git
 ```
 
 ***
@@ -173,6 +185,24 @@ $ ssh -T git@github.com
 Hi xxxxxx! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
+如果你是第一次设置连接github.com,会询问你是否继续,输入 `yes` 即可,这样就会将连接地址记录在本地:
+
+```
+$ ssh -T git@github.com
+The authenticity of host 'github.com (192.30.253.112)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpxxxxxxxxARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,192.30.253.112' (RSA) to the list of known hosts.
+Hi xxxxxx! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
 ***
 
 然后就可以将本地的项目用github来管理了。
+
+***
+
+#### 更新日志
+
+* 2017-10-27 - 完善"连接测试"内容; 添加Mac系统下安装git配置
+
