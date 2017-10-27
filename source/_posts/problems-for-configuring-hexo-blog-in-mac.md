@@ -1,9 +1,11 @@
 ---
-title: Mac系统下配置hexo博客运行环境遇到的问题
+title: Mac系统下配置Hexo博客运行环境遇到的问题
 date: 2017-10-27 14:38:51
 tags:
-	- Node.js
-	- Hexo
+    - Node.js
+    - Hexo
+categories: 
+    - Hexo博客搭建
 description: 今天在Mac下更新hexo博客时,遇到了一些安装 Node.js 和安装 hexo 相关的小问题,特此记录下来.
 ---
 

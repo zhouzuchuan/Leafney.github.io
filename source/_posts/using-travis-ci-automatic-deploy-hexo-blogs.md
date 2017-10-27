@@ -2,8 +2,10 @@
 title: 使用Travis CI自动部署Hexo博客
 date: 2017-08-09 18:01:35
 tags:
-	- Hexo
-	- Travis-CI
+    - Hexo
+    - Travis-CI
+categories: 
+    - Hexo博客搭建
 description: 自从使用GitHub Pages和Hexo来发布博客之后，不得不说方便了许多，只需要几个简单的命令博客就发布了。但在不断的使用中发现每次的发布操作也挺耗时的。 我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 "Ubuntu Gogs 用更简单的方式部署、升级或迁移Gogs服 ...
 ---
 

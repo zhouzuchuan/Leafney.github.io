@@ -2,12 +2,14 @@
 title: 使用GitHub搭建Hexo静态博客
 date: 2016-9-24 14:06:00
 tags:
-	- GitHub
-	- Hexo
+    - GitHub
+    - Hexo
+categories: 
+    - Hexo博客搭建
 description: 使用Hexo搭建静态博客并部署到GitHub
 ---
 
-#### 介绍
+#### 说明
 
 之前一直在用自己创建的.Net网站来写博客文章，只有简单的CRUD的功能，数据也是从数据库中直接查询的。自从接触了markdown之后，渐渐习惯了用markdown来记录自己在开发过程中遇到的问题和学到的新知识。但由于之前博客中是通过百度的 `ueditor` 编辑器来编辑文章，不能直接处理markdown，所以后来就一直考虑有没有其他的方法来更方便的管理和发布博客。
 
