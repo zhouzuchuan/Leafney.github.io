@@ -157,28 +157,28 @@ $ git checkout hexo
 > git branch -r
 ```
 
-##### 创建分支 blog
+##### 创建分支 hexo
 
 ```
-> git branch blog
+> git branch hexo
 ```
 
-##### 切换到 blog 分支
+##### 切换到 hexo 分支
 
 ```
-> git checkout blog
+> git checkout hexo
 ```
 
 ##### 创建并切换到新分支
 
 ```
-> git checkout -b blog
+> git checkout -b hexo
 ```
 
 ##### 删除分支
 
 ```
-> git branch -d blog
+> git branch -d hexo
 ```
 
 ##### 提交本地test分支作为远程的test分支
@@ -187,20 +187,20 @@ $ git checkout hexo
 > git push origin test:test
 ```
 
-##### merge合并分支(将名称为[blog]的分支与当前分支[master]合并)
+##### merge合并分支(将名称为[hexo]的分支与当前分支[master]合并)
 
 ```
 > git branch
 * master
-  blog
+  hexo
 
-> git merge blog
+> git merge hexo
 ```
 
 ##### 获取远程指定分支
 
 ```
-> git pull origin blog
+> git pull origin hexo
 ```
 
 ***
