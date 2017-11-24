@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Golang," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Golang下的数组操作">
+<meta name="keywords" content="Golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0到1学Golang之基础--Go 数组">
+<meta property="og:url" content="http://yoursite.com/2017/05/24/learn-golang-from-0-to-1-of-go-array/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Golang下的数组操作">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-11-24T04:36:41.555Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从0到1学Golang之基础--Go 数组">
+<meta name="twitter:description" content="Golang下的数组操作">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/24/learn-golang-from-0-to-1-of-go-array/"/>
+
+
+
+
+
+  <title>从0到1学Golang之基础--Go 数组 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/learn-golang-from-0-to-1-of-go-array/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从0到1学Golang之基础--Go 数组</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-24T22:07:58+08:00">
+                2017-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/从0到1学Golang/" itemprop="url" rel="index">
+                    <span itemprop="name">从0到1学Golang</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Golang下的数组操作
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>《Go In Action》 中文版 《Go语言实战》 读书笔记</p>
+<h4 id="内部实现"><a href="#内部实现" class="headerlink" title="内部实现"></a>内部实现</h4><p>数组是切片和映射的基础数据结构。</p>
+<p>在Go语言中，数组是长度固定的数据类型，用于存储一段具有相同类型的元素的连续块。</p>
+<p>数组存储的类型可以是内置类型，如整型或字符串，也可以是某种结构类型。</p>
+<p>数组占用的内存是连续分配的。由于内存连续，CPU能把正在使用的数据缓存更久的时间。而且内存连续很容易计算索引，可以快速迭代数组里的所有元素。</p>
+<p>特点：</p>
+<ul>
+<li>长度固定</li>
+<li>类型相同</li>
+<li>内存连续</li>
+</ul>
+<h4 id="声明和初始化"><a href="#声明和初始化" class="headerlink" title="声明和初始化"></a>声明和初始化</h4><h5 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h5><p>数组声明的原则：</p>
+<ol>
+<li>指明存储数据的类型</li>
+<li>指明存储元素数量（指明数组长度）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#声明一个包含5个元素的整型数组</div><div class="line">var array [5]int</div></pre></td></tr></table></figure>
+<p>数组一旦声明后，数组里存储的数据类型和数组长度就不能改变了。</p>
+<p>当数组初始化时，数组内每个元素都初始化为对应类型的零值。</p>
+<h5 id="声明并初始化"><a href="#声明并初始化" class="headerlink" title="声明并初始化"></a>声明并初始化</h5><p>使用<strong>数组字面量</strong>声明并初始化数组。数组字面量允许声明数组里元素的数量同时指定每个元素的值。</p>
+<p>Go为我们提供了 <code>:=</code> 操作符，可以让我们在创建数组的时候直接初始化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 声明并初始化</div><div class="line">array:=[5]int&#123;1,2,3,4,5&#125;</div></pre></td></tr></table></figure>
+<h5 id="自动推导数组长度"><a href="#自动推导数组长度" class="headerlink" title="自动推导数组长度"></a>自动推导数组长度</h5><p>使用 <code>...</code> 替代数组的长度，Go语言会根据初始化时数组元素的数量来确定该数组的长度。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 容量由初始化值的数量决定</div><div class="line">array:=[...]int&#123;1,2,3,4,5&#125;</div></pre></td></tr></table></figure>
+<h5 id="用具体值初始化特定索引"><a href="#用具体值初始化特定索引" class="headerlink" title="用具体值初始化特定索引"></a>用具体值初始化特定索引</h5><p>使用指定索引的方式初始化特定索引值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 用具体值初始化索引为1和3的元素，其余元素保持零值</div><div class="line">array:=[5]int&#123;1:10,3:30&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用数组"><a href="#使用数组" class="headerlink" title="使用数组"></a>使用数组</h4><p>要访问数组里某个单独元素，使用索引操作符 <code>[]</code> 即可。因为内存是连续的，所以索引访问的效率非常高。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 声明一个包含5个元素的整形数组</div><div class="line">array:=[5]int&#123;1,2,3,4,5&#125;</div><div class="line"># 修改索引为2的元素值</div><div class="line">array[2]=80</div></pre></td></tr></table></figure>
+<h5 id="遍历访问数组"><a href="#遍历访问数组" class="headerlink" title="遍历访问数组"></a>遍历访问数组</h5><p>使用 <code>for</code> 遍历访问数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    array := [5]int&#123;1, 2, 3, 4, 5&#125;</div><div class="line">    for i := 0; i &lt; 5; i++ &#123;</div><div class="line">        fmt.Printf(&quot;索引：%d,值：%d\n&quot;, i, array[i])</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>使用 <code>for range</code> 遍历访问数组每个元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    array := [5]int&#123;1, 2, 3, 4, 5&#125;</div><div class="line">    for k, v := range array &#123;</div><div class="line">        fmt.Printf(&quot;索引：%d,值：%d\n&quot;, k, v)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="数组相互赋值"><a href="#数组相互赋值" class="headerlink" title="数组相互赋值"></a>数组相互赋值</h5><p>同样类型的数组是可以相互赋值的，不同类型的不行，会编译错误。</p>
+<p>数组变量的类型包括数组长度和每个元素的类型。只有这两部分都相同的数组，才是类型相同的数组，才能相互赋值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    array := [5]int&#123;1, 2, 3, 4, 5&#125;</div><div class="line">    //# 相同数组类型，能够互相赋值</div><div class="line">    // var array1 [5]int = array</div><div class="line">    // fmt.Println(array1) //[1 2 3 4 5]</div><div class="line"></div><div class="line">    //不同数组类型，不能互相赋值</div><div class="line">    var array2 [4]int = array //cannot use array (type [5]int) as type [4]int in assignment</div><div class="line">    fmt.Println(array2)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h5><p>在数组的类型前面加 <code>*</code> 声明为指针数组组。</p>
+<p>使用 <code>*</code> 运算符可以访问指针数组元素指针所指向的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    // # 声明指向整数的数组，用整形指针初始化索引为0和3的数组元素</div><div class="line">    array := [5]*int&#123;0: new(int), 3: new(int)&#125;</div><div class="line"></div><div class="line">    // # 为索引为0和3的元素赋值</div><div class="line">    *array[0] = 10</div><div class="line">    *array[3] = 40</div><div class="line"></div><div class="line">    fmt.Println(array)</div><div class="line">     // [0xc420070188 &lt;nil&gt; &lt;nil&gt; 0xc4200701b0 &lt;nil&gt;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面的示例要注意，我们只可以给索引0 和 3 赋值，因为只有它们分配了内存，才可以赋值。如果给其他索引赋值，运行时会提示无效内存或nil指针引用。要解决这个问题，需要先给这些索引分配内存，然后再进行赋值修改操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">...</div><div class="line">// # 为未分配内存的索引赋值，报错</div><div class="line"> *array[2] = 30</div><div class="line">// panic: runtime error: invalid memory address or nil pointer dereference</div><div class="line">// [signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x2199]</div><div class="line"></div><div class="line">// # 先分配内存再赋值</div><div class="line">array[2] = new(int)</div><div class="line">*array[2] = 35</div><div class="line">fmt.Println(array)</div><div class="line">// [0xc420074188 &lt;nil&gt; 0xc4200741d0 0xc4200741b0 &lt;nil&gt;]</div></pre></td></tr></table></figure>
+<h5 id="指针数组相互赋值"><a href="#指针数组相互赋值" class="headerlink" title="指针数组相互赋值"></a>指针数组相互赋值</h5><p>复制数组指针，只会复制指针的值，而不会复制指针所指向的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    // # 声明第一个包含3个元素的指向字符串的指针数组</div><div class="line">    var array1 [3]*string</div><div class="line"></div><div class="line">    // # 声明第一个包含3个元素的指向字符串的指针数组</div><div class="line">    var array2 [3]*string</div><div class="line">    // # 使用字符串指针初始化这个数组</div><div class="line">    array2 = [3]*string&#123;new(string), new(string), new(string)&#125;</div><div class="line"></div><div class="line">    // # 使用颜色为每个元素赋值</div><div class="line">    *array2[0] = &quot;red&quot;</div><div class="line">    *array2[1] = &quot;blue&quot;</div><div class="line">    *array2[2] = &quot;green&quot;</div><div class="line"></div><div class="line">    // # 将array2 复制给 array1</div><div class="line">    array1 = array2</div><div class="line"></div><div class="line">    // # 复制之后，两个数组指向同一组字符串</div><div class="line">    fmt.Println(array1)</div><div class="line">    fmt.Println(array2)</div><div class="line">    // [0xc420074030 0xc420074040 0xc420074050]</div><div class="line">    // [0xc420074030 0xc420074040 0xc420074050]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h4><p>数组本身只有一个维度，可以组合多个数组创建多维数组。</p>
+<h5 id="声明多维数组"><a href="#声明多维数组" class="headerlink" title="声明多维数组"></a>声明多维数组</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    // # 声明一个二维数组</div><div class="line">    var array1 [4][2]int</div><div class="line">    fmt.Println(array1) // [[0 0] [0 0] [0 0] [0 0]]</div><div class="line"></div><div class="line">    // # 使用数组字面量来声明并初始化一个二维数组</div><div class="line">    array2 := [4][2]int&#123;&#123;10, 11&#125;, &#123;20, 21&#125;, &#123;30, 31&#125;, &#123;40, 41&#125;&#125;</div><div class="line">    fmt.Println(array2) //  [[10 11] [20 21] [30 31] [40 41]]</div><div class="line"></div><div class="line">    // # 声明并初始化外层数组中索引为1 和 3 的元素</div><div class="line">    array3 := [4][2]int&#123;1: &#123;20, 21&#125;, 3: &#123;40, 41&#125;&#125;</div><div class="line">    fmt.Println(array3) //  [[0 0] [20 21] [0 0] [40 41]]</div><div class="line"></div><div class="line">    // # 声明并初始化外层数组和内层数组的当个元素</div><div class="line">    array4 := [4][2]int&#123;1: &#123;0: 20&#125;, 3: &#123;1: 41&#125;&#125;</div><div class="line">    fmt.Println(array4) // [[0 0] [20 0] [0 0] [0 41]]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>声明多维数组时，第一维度的数组长度也可以使用 <code>...</code> 来根据数组值的个数来确定，但后面维度不能使用 <code>...</code>来自动推测。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    b := [...][2]int&#123;&#123;1, 1&#125;, &#123;2, 2&#125;, &#123;3, 3&#125;&#125;</div><div class="line">    fmt.Println(b) //  [[1 1] [2 2] [3 3]]</div><div class="line">    fmt.Println(len(b)) // 3</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="访问二维数组元素"><a href="#访问二维数组元素" class="headerlink" title="访问二维数组元素"></a>访问二维数组元素</h5><p>为了访问单个元素，需要反复组合使用 <code>[]</code> 运算符。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    // # 声明一个二维数组</div><div class="line">    var array1 [4][2]int</div><div class="line">    fmt.Println(array1) // [[0 0] [0 0] [0 0] [0 0]]</div><div class="line"></div><div class="line">    // # 设置指定元素的值</div><div class="line">    array1[1][0] = 5</div><div class="line">    fmt.Println(array1) // [[0 0] [5 0] [0 0] [0 0]]</div><div class="line"></div><div class="line">    // # 获取指定位置的元素</div><div class="line">    fmt.Println(array1[1][0]) //5</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="多维数组相互赋值"><a href="#多维数组相互赋值" class="headerlink" title="多维数组相互赋值"></a>多维数组相互赋值</h5><p>多维数组的类型包括每一维度的藏毒以及最终存储在元素中的数据的类型。只要类型一致，就可以将多维数组互相赋值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    array1 := [2][2]int&#123;&#123;1, 2&#125;, &#123;3, 4&#125;&#125;</div><div class="line">    var array2 [2][2]int</div><div class="line"></div><div class="line">    array2 = array1</div><div class="line">    fmt.Println(array2) // [[1 2] [3 4]]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="在函数间传递数组"><a href="#在函数间传递数组" class="headerlink" title="在函数间传递数组"></a>在函数间传递数组</h5><p>在函数间传递变量时，总是以<strong>值</strong>的形式传递。如果变量是个数组，那么就会整个复制，并传递给函数，如果数组非常大，对于内存是一个很大的开销。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    array := [5]int&#123;1: 2, 3: 4&#125;</div><div class="line">    modify(array)</div><div class="line">    fmt.Println(array) //[0 2 0 4 0]</div><div class="line">&#125;</div><div class="line"></div><div class="line">func modify(a [5]int) &#123;</div><div class="line">    a[1] = 3</div><div class="line">    fmt.Println(a) // [0 3 0 4 0]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如示例，数组是复制的，原来的数组没有修改。如果复制的数组非常大，对内存是一个非常大的浪费。</p>
+<p>可以通过传递数组的指针的方式来在函数间传递大数组。</p>
+<h5 id="使用指针在函数间传递大数组"><a href="#使用指针在函数间传递大数组" class="headerlink" title="使用指针在函数间传递大数组"></a>使用指针在函数间传递大数组</h5><p>传递数组的指针，复制的大小只是一个数组类型的指针大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    array := [5]int&#123;1: 2, 3: 4&#125;</div><div class="line">    modify(&amp;array)</div><div class="line">    fmt.Println(array) //[0 3 0 4 0]</div><div class="line">&#125;</div><div class="line"></div><div class="line">func modify(a *[5]int) &#123;</div><div class="line">    a[1] = 3</div><div class="line">    fmt.Println(*a) // [0 3 0 4 0]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如示例，通过传递数组的指针，会发现原来的数组也被修改了。要意识到的是，因为传递的是指针，所以如果改变指针指向的值，会改变共享的内存。</p>
+<p>使用切片能更好的处理内存共享问题。</p>
+<blockquote>
+<p>这里注意，数组的指针和指针数组是两个概念，数组的指针是 <code>*[5]int</code>,指针数组是 <code>[5]*int</code>，注意 <code>*</code> 的位置。</p>
+</blockquote>
+<hr>
+<h4 id="总结概括"><a href="#总结概括" class="headerlink" title="总结概括"></a>总结概括</h4><h5 id="数组知识点"><a href="#数组知识点" class="headerlink" title="数组知识点"></a>数组知识点</h5><ul>
+<li>数组是值类型，赋值和传参会复制整个数组，而不是指针。</li>
+<li>数组长度必须是常量，且是类型的组成部分。<code>[2]int</code> 和 <code>[3]int</code> 是不同类型。</li>
+<li>支持 <code>&quot;==&quot;</code>、<code>&quot;!=&quot;</code> 操作符，因为内存总是被初始化过的。</li>
+<li>指针数组 <code>[n]*T</code>，数组指针 <code>*[n]T</code>。</li>
+<li>值拷贝行为会造成性能问题，通常会建议使用 slice，或数组指针。</li>
+</ul>
+<h5 id="声明并初始化-1"><a href="#声明并初始化-1" class="headerlink" title="声明并初始化"></a>声明并初始化</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    // a := [3]int&#123;1, 2&#125;         //未初始化元素值未数组类型零值</div><div class="line">    // b := [...]int&#123;1, 2, 3, 4&#125; //通过初始化值确定数组长度</div><div class="line">    // c := [5]int&#123;2: 10, 4: 20&#125; // 使用索引号初始化元素</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="多维数组-1"><a href="#多维数组-1" class="headerlink" title="多维数组"></a>多维数组</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    d := [2][3]int&#123;&#123;1, 2, 3&#125;, &#123;4, 5, 6&#125;&#125;             //多维数组</div><div class="line">    e := [...][2]int&#123;&#123;1, 1&#125;, &#123;2, 2&#125;, &#123;3, 3&#125;, &#123;4, 4&#125;&#125; //第 2 维度不能用 &quot;...&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="内置函数-len-和-cap-都返回数组长度-元素数量"><a href="#内置函数-len-和-cap-都返回数组长度-元素数量" class="headerlink" title="内置函数 len 和 cap 都返回数组长度 (元素数量)"></a>内置函数 len 和 cap 都返回数组长度 (元素数量)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">func main() &#123;</div><div class="line">    f := [2]int&#123;&#125;</div><div class="line">    fmt.Println(len(f), cap(f)) // 2 2 </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag"># Golang</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/12/learn-golang-from-0-to-1-of-go-package/" rel="next" title="从0到1学Golang之基础--Go 包">
+                <i class="fa fa-chevron-left"></i> 从0到1学Golang之基础--Go 包
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/15/Golang-implements-HTTP-request-and-proxy-settings/" rel="prev" title="Golang实现http请求及代理设置">
+                Golang实现http请求及代理设置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-dockerhub"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#内部实现"><span class="nav-number">1.</span> <span class="nav-text">内部实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#声明和初始化"><span class="nav-number">2.</span> <span class="nav-text">声明和初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#声明"><span class="nav-number">2.1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#声明并初始化"><span class="nav-number">2.2.</span> <span class="nav-text">声明并初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#自动推导数组长度"><span class="nav-number">2.3.</span> <span class="nav-text">自动推导数组长度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用具体值初始化特定索引"><span class="nav-number">2.4.</span> <span class="nav-text">用具体值初始化特定索引</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用数组"><span class="nav-number">3.</span> <span class="nav-text">使用数组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#遍历访问数组"><span class="nav-number">3.1.</span> <span class="nav-text">遍历访问数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数组相互赋值"><span class="nav-number">3.2.</span> <span class="nav-text">数组相互赋值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指针数组"><span class="nav-number">3.3.</span> <span class="nav-text">指针数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指针数组相互赋值"><span class="nav-number">3.4.</span> <span class="nav-text">指针数组相互赋值</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多维数组"><span class="nav-number">4.</span> <span class="nav-text">多维数组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#声明多维数组"><span class="nav-number">4.1.</span> <span class="nav-text">声明多维数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#访问二维数组元素"><span class="nav-number">4.2.</span> <span class="nav-text">访问二维数组元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多维数组相互赋值"><span class="nav-number">4.3.</span> <span class="nav-text">多维数组相互赋值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在函数间传递数组"><span class="nav-number">4.4.</span> <span class="nav-text">在函数间传递数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用指针在函数间传递大数组"><span class="nav-number">4.5.</span> <span class="nav-text">使用指针在函数间传递大数组</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结概括"><span class="nav-number">5.</span> <span class="nav-text">总结概括</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数组知识点"><span class="nav-number">5.1.</span> <span class="nav-text">数组知识点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#声明并初始化-1"><span class="nav-number">5.2.</span> <span class="nav-text">声明并初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多维数组-1"><span class="nav-number">5.3.</span> <span class="nav-text">多维数组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#内置函数-len-和-cap-都返回数组长度-元素数量"><span class="nav-number">5.4.</span> <span class="nav-text">内置函数 len 和 cap 都返回数组长度 (元素数量)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>
