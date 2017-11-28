@@ -35,6 +35,66 @@ go get github.com/golang/example/hello
 
 ***
 
+#### Win下配置Golang开发环境添加多个工作目录
+
+我一般会设置两个目录用作我的工作项目。一般我会命名为 `xgo` 和 `xgo_workspace` ，一个用来存储网络上其他的Golang依赖项目，一个作为我自己的开发项目存放位置。
+
+在Windows系统下安装上Go的msi安装包后，默认的 `GOPATH` 目录为当前管理员账户目录下的go文件夹：`C:\Users\xxxx\go` 中，在 `Cmder` 控制台中通过 `go env` 查看：
+
+```                                                     
+λ go env                                             
+set GOARCH=amd64                                     
+set GOBIN=                                           
+set GOEXE=.exe                                       
+set GOHOSTARCH=amd64                                 
+set GOHOSTOS=windows                                 
+set GOOS=windows                                     
+set GOPATH=C:\Users\xxxx\go                           
+set GORACE=                                          
+set GOROOT=C:\Go                                     
+set GOTOOLDIR=C:\Go\pkg\tool\windows_amd64           
+set GCCGO=gccgo                                      
+set CC=gcc                                           
+set GOGCCFLAGS=-m64 -mthreads -fmessage-length=0     
+set CXX=g++                                          
+set CGO_ENABLED=1                                    
+set CGO_CFLAGS=-g -O2                                
+set CGO_CPPFLAGS=                                    
+set CGO_CXXFLAGS=-g -O2                              
+set CGO_FFLAGS=-g -O2                                
+set CGO_LDFLAGS=-g -O2                               
+set PKG_CONFIG=pkg-config      
+```
+
+在 `环境变量` 下新增 `GOPATH` 项，添加值为 `E:\GOProject\xgo;E:\GOProject\xgo_workspace` ，注意多个目录在windows下使用分号 `;` 分隔，重启 `Cmder` 再次通过 `go env` 查看：
+
+```
+λ go env
+set GOARCH=amd64
+set GOBIN=
+set GOEXE=.exe
+set GOHOSTARCH=amd64
+set GOHOSTOS=windows
+set GOOS=windows
+set GOPATH=E:\GOProject\xgo;E:\GOProject\xgo_workspace
+set GORACE=
+set GOROOT=C:\Go
+set GOTOOLDIR=C:\Go\pkg\tool\windows_amd64
+set GCCGO=gccgo
+set CC=gcc
+set GOGCCFLAGS=-m64 -mthreads -fmessage-length=0
+set CXX=g++
+set CGO_ENABLED=1
+set CGO_CFLAGS=-g -O2
+set CGO_CPPFLAGS=
+set CGO_CXXFLAGS=-g -O2
+set CGO_FFLAGS=-g -O2
+set CGO_LDFLAGS=-g -O2
+set PKG_CONFIG=pkg-config
+```
+
+
+***
 
 #### Mac下配置Golang开发环境
 
@@ -52,7 +112,7 @@ $ brew install go
 
 ##### 环境变量配置
 
-GOPATH允许多个目录，当有多个目录时，请注意分隔符，多个目录的时候Windows是分号，Linux系统是冒号，当有多个GOPATH时，默认会将 `go get` 的内容放在第一个目录下。
+GOPATH允许多个目录，当有多个目录时，请注意分隔符，多个目录的时候Windows是分号 `;`，Linux系统及Mac下是冒号 `:`，当有多个GOPATH时，默认会将 `go get` 的内容放在第一个目录下。
 
 ```
 $ go env
@@ -119,4 +179,9 @@ CGO_ENABLED="1"
 * http://blog.studygolang.com/2013/01/%E5%86%8D%E7%9C%8Bgopath/  (设置多个目录时只会将最后一个目录添加上bin 这里要说明)
 
 ***
+
+#### Update
+
+* 2017-11-28 更新windows下设置多个工作目录的说明
+
 
