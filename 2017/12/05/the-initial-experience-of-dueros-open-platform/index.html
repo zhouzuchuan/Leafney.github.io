@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="DuerOS,智能家居," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="DuerOS开放平台是为企业及开发者提供的一整套对话式人工智能解决方案的开放平台">
+<meta name="keywords" content="DuerOS,智能家居">
+<meta property="og:type" content="article">
+<meta property="og:title" content="百度人工智能开放平台DuerOS初体验">
+<meta property="og:url" content="http://yoursite.com/2017/12/05/the-initial-experience-of-dueros-open-platform/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="DuerOS开放平台是为企业及开发者提供的一整套对话式人工智能解决方案的开放平台">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/1HHmf7HcHh.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/mhG80D6keF.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/Ha2dDjLkCl.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/gead092HB7.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/9BLDE9GllL.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/JkK98AlhB6.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/8A48988iE7.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/1H0kJCiD7i.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/GBIHDg2A9k.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/AedIAK9chJ.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/mDL3h3G9GE.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/ee14cebf7G.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/fLbc7ehf6B.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/7d91GlFC56.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/JDkd7Idcak.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/1BBDKhaC6c.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/BKfi41AImL.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/BfD84IEJJ1.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/GF9559eF6j.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/926bH7lJBl.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/ik2hLA9K0C.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/F2jhkif846.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/14d0Ik0ddi.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/im394L0fA7.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/ldkA768AdC.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/jLciAm6A4f.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/3ebjjK0LkG.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/Ba8jgec5kl.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/fgmEh6ei60.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/744die8bjc.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/1E5cDdb1jg.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/e6dBAefhid.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/KgGHdJGJ89.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/e6iEB7LKEm.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/mFK66gbHId.jpg?imageslim">
+<meta property="og:updated_time" content="2017-12-05T08:10:30.069Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="百度人工智能开放平台DuerOS初体验">
+<meta name="twitter:description" content="DuerOS开放平台是为企业及开发者提供的一整套对话式人工智能解决方案的开放平台">
+<meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171205/1HHmf7HcHh.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/12/05/the-initial-experience-of-dueros-open-platform/"/>
+
+
+
+
+
+  <title>百度人工智能开放平台DuerOS初体验 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/05/the-initial-experience-of-dueros-open-platform/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">百度人工智能开放平台DuerOS初体验</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-05T15:58:29+08:00">
+                2017-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DuerOS开放平台/" itemprop="url" rel="index">
+                    <span itemprop="name">DuerOS开放平台</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+              <div class="post-description">
+                  DuerOS开放平台是为企业及开发者提供的一整套对话式人工智能解决方案的开放平台
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今年11月初的时候在百度DuerOS开放平台上申请了DuerOS的“开发套件个人版”的开发板，前几天正式收到了该开发板，经过几天的摸索，发现DuerOS开放平台还是有很多可挖掘的功能的。在此将这几天的研究成果记录一下。</p>
+<p>双十一的时候在天猫上买了一个阿里的天猫精灵，通过对比小米的小爱同学，阿里的天猫精灵，和百度的DuerOS开发板比起来，个人感觉DuerOS开发板要更贴近于开发者，可以让开发者自己动手去实现想要的智能化的功能。</p>
+<h4 id="DuerOS唤醒"><a href="#DuerOS唤醒" class="headerlink" title="DuerOS唤醒"></a>DuerOS唤醒</h4><p>百度的DuerOS开发套件个人版需要用户自备一个树莓派3B来结合使用。开发板上带有2颗高灵敏度MEMS麦克风，搭载百度DuerOS SDK，可为用户提供百度海量的信息服务能力。</p>
+<p>按照官方给的硬件安装文档和提供的镜像系统将设备组合成功，插入刷好系统的内存卡，通电等待系统开机。在初次连接时，可以使用百度提供的 “小度之家app” 将系统接入网络。 小度联网成功后，直接说 “小度小度+内容” 即可实现语音式的对话交互操作。</p>
+<p>总体来说，唤醒小度的这一步非常的简单，附上一张设备的合影。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/1HHmf7HcHh.jpg?imageslim" alt="mark"></p>
+<hr>
+<h4 id="接入Python-SDK"><a href="#接入Python-SDK" class="headerlink" title="接入Python SDK"></a>接入Python SDK</h4><p>DuerOS开发平台中也提供了相应的Python SDK，以便于个人开发者通过该SDK来实现想要的技能。</p>
+<h4 id="通过SSH登陆"><a href="#通过SSH登陆" class="headerlink" title="通过SSH登陆"></a>通过SSH登陆</h4><p>官方提供的DuerOS镜像系统是基于Raspbian系统的，所以我们可以按照在树莓派上安装Raspbian系统的方式来配置SSH服务。</p>
+<p>为了找到树莓派的IP地址，我们可以使用 <code>Fing</code> 这个app来查看当前局域网上连接的所有设备。</p>
+<p>然后通过SSH使用默认的用户名 <code>pi</code> 密码 <code>raspberry</code> 登陆DuerOS系统。我这里使用的是 <code>Xshell</code>，也可以选择 <code>Putty</code> 等其他软件。</p>
+<p>在当前的用户目录下创建一个目录，用于后面的操作。比如我这里创建的目录名为 <code>Leafney</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir Leafney</div><div class="line">$ cd Leafney</div></pre></td></tr></table></figure>
+<h4 id="停止现有小度功能，因为会占用MIC资源"><a href="#停止现有小度功能，因为会占用MIC资源" class="headerlink" title="停止现有小度功能，因为会占用MIC资源"></a>停止现有小度功能，因为会占用MIC资源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo systemctl disable duer</div><div class="line">$ sudo systemctl stop duer</div></pre></td></tr></table></figure>
+<h4 id="安装需要的依赖"><a href="#安装需要的依赖" class="headerlink" title="安装需要的依赖"></a>安装需要的依赖</h4><h5 id="更换地址源"><a href="#更换地址源" class="headerlink" title="更换地址源"></a>更换地址源</h5><p>在操作之前，建议先更换地址源。因为DuerOS系统是基于 <code>Raspbian jessie</code> 版本的，操作如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo vim /etc/apt/sources.list</div></pre></td></tr></table></figure>
+<p>把原来的第一行用#注释掉，在末尾添加下面一行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb http://mirrors.aliyun.com/raspbian/raspbian/ jessie main contrib non-free rpi</div></pre></td></tr></table></figure>
+<p>还需要更改deb的源地址，这里可选择清华的源:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb https://mirrors.tuna.tsinghua.edu.cn/raspberrypi/ jessie main ui</div></pre></td></tr></table></figure>
+<p>或中科大的源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">deb http://mirrors.ustc.edu.cn/archive.raspberrypi.org/debian/ jessie main ui</div></pre></td></tr></table></figure>
+<p>编辑以下文件添加:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo vim /etc/apt/sources.list.d/raspi.list</div></pre></td></tr></table></figure></p>
+<h5 id="update更新"><a href="#update更新" class="headerlink" title="update更新"></a>update更新</h5><p>修改完成后，更新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/mhG80D6keF.jpg?imageslim" alt="mark"></p>
+<h5 id="其他依赖包"><a href="#其他依赖包" class="headerlink" title="其他依赖包"></a>其他依赖包</h5><p>安装其他的依赖包：</p>
+<p>hyper库用来支持http2.0 client, pyaudio用来支持录音，tornado用来完成oauth认证。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install python-dateutil gir1.2-gstreamer-1.0 python-pyaudio libatlas-base-dev python-dev</div><div class="line">$ sudo pip install tornado hyper</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/Ha2dDjLkCl.jpg?imageslim" alt="mark"></p>
+<h4 id="下载编译好的openssl和Python安装包"><a href="#下载编译好的openssl和Python安装包" class="headerlink" title="下载编译好的openssl和Python安装包"></a>下载编译好的openssl和Python安装包</h4><p>由于DuerOS运行所需要的依赖环境跟平台是相关的。比如DuerOS是基于Http2 ALPN的，但树莓派官方镜像的OpenSSL并不支持，而对应的Python库依赖于OpenSSL。为了在树莓派平台上支持Python的DuerOS SDK，专门交叉编译了OpenSSL和Python。</p>
+<p><em>从如下地址下载openssl安装包</em>(链接: <a href="https://pan.baidu.com/s/1skAP6WH" target="_blank" rel="external">https://pan.baidu.com/s/1skAP6WH</a> 密码: wknz)<br><em>从如下地址下载python2.7.14安装包</em>(链接: <a href="https://pan.baidu.com/s/1o8MHkzK" target="_blank" rel="external">https://pan.baidu.com/s/1o8MHkzK</a> 密码: ngx4)</p>
+<p>将下载的两个文件用 <code>FileZilla</code> 传输到树莓派的 <code>/home/pi/Leafney</code> 目录下：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/gead092HB7.jpg?imageslim" alt="mark"></p>
+<p>然后分别解压：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -zxvf openssl1.1.tar.gz -C /usr</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/9BLDE9GllL.jpg?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -zxvf python2.7.14.tar.gz -C /usr/local/</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/JkK98AlhB6.jpg?imageslim" alt="mark"></p>
+<p>替换已有的python：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo rm -rf /usr/bin/python</div><div class="line">$ sudo ln -s /usr/local/python2.7.14/bin/python /usr/bin/python</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/8A48988iE7.jpg?imageslim" alt="mark"></p>
+<h5 id="下载Python-SDK和示例代码"><a href="#下载Python-SDK和示例代码" class="headerlink" title="下载Python SDK和示例代码"></a>下载Python SDK和示例代码</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/MyDuerOS/DuerOS-Python-Client.git</div><div class="line">$ cd DuerOS-Python-Client</div><div class="line">$ git checkout raspberry-dev</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/1H0kJCiD7i.jpg?imageslim" alt="mark"></p>
+<h4 id="初次授权"><a href="#初次授权" class="headerlink" title="初次授权"></a>初次授权</h4><p>如果直接按照官方给出的教程配置 <a href="http://open.duer.baidu.com/forum/topic/show?topicId=244796" target="_blank" rel="external">Step by Step带你玩转DuerOS - Python DuerOS SDK[树莓派平台] (3)</a>，下一步就是授权操作了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./auth.sh</div></pre></td></tr></table></figure>
+<p>执行后在 <code>Xshell</code> 中有提示 <code>A web page should is opened. If not, go to http://127.0.0.1:3000 to start</code> 。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/GBIHDg2A9k.jpg?imageslim" alt="mark"></p>
+<p>因为这里是要求访问 <code>127.0.0.1</code> ，所以必须在树莓派系统中通过浏览器来访问。我在Windows系统下通过 <code>树莓派IP+端口3000</code> 的方式访问，会提示 “授权回调页地址错误” 的错误页面。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/AedIAK9chJ.jpg?imageslim" alt="mark"></p>
+<p>我并没有多余的HDMI数据线来直接连接树莓派和显示器，所以这里我用远程桌面的方式来配置。</p>
+<h4 id="安装远程桌面"><a href="#安装远程桌面" class="headerlink" title="安装远程桌面"></a>安装远程桌面</h4><p>树莓派下的远程桌面我们选择 <code>xrdp</code> 或者 <code>VNC</code> 来实现。</p>
+<h5 id="xrdp"><a href="#xrdp" class="headerlink" title="xrdp"></a>xrdp</h5><p>xrdp 可以使用 windows下的远程桌面直接连接，不过这种方式只适合于Windows系统下连接。</p>
+<p>在树莓派下执行安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install xrdp</div></pre></td></tr></table></figure>
+<p>打开windows系统的 “远程桌面连接” 程序，输入树莓派的IP地址进行连接。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/mDL3h3G9GE.jpg?imageslim" alt="mark"></p>
+<p>在弹出的 <code>Login to xrdp</code> 窗口中，输入树莓派的用户名和密码，点击 <code>OK</code> 连接。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/ee14cebf7G.jpg?imageslim" alt="mark"></p>
+<h5 id="VNC"><a href="#VNC" class="headerlink" title="VNC"></a>VNC</h5><p>如果你是MAC系统或者不喜欢Windows自带的远程桌面，可以使用适合于全平台的 <code>VNC</code> 。</p>
+<h6 id="VNC初始化"><a href="#VNC初始化" class="headerlink" title="VNC初始化"></a>VNC初始化</h6><p>在树莓派下执行安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install tightvncserver</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/fLbc7ehf6B.jpg?imageslim" alt="mark"></p>
+<p>增加一个桌面，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tightvncserver</div></pre></td></tr></table></figure>
+<p>会要求设置一个连接的密码并重复输入。</p>
+<p>会询问是否设置一个只读方式的密码，一般选择否 <code>n</code> 。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/7d91GlFC56.jpg?imageslim" alt="mark"></p>
+<h6 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h6><p>从网站 <a href="http://www.realvnc.com/download/viewer/" target="_blank" rel="external">vncViewer</a> 下载vncViewer。打开程序后连接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">your Pi IP:1</div><div class="line"></div><div class="line"># 比如我的设置：</div><div class="line">192.168.5.130:1</div></pre></td></tr></table></figure>
+<h6 id="关闭桌面"><a href="#关闭桌面" class="headerlink" title="关闭桌面"></a>关闭桌面</h6><p>关闭VNC桌面只需要在树莓派中将VNC的服务kill掉即可。在 <code>Xshell</code> 中操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vncserver -kill :1</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/JDkd7Idcak.jpg?imageslim" alt="mark"></p>
+<hr>
+<h4 id="再次授权"><a href="#再次授权" class="headerlink" title="再次授权"></a>再次授权</h4><p>再次进入树莓派的 <code>/home/pi/Leafney/DuerOS-Python-Client</code> 目录，启动授权：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd /home/pi/Leafney/DuerOS-Python-Client</div><div class="line"></div><div class="line">$ ./auth.sh</div></pre></td></tr></table></figure>
+<p>通过远程桌面访问，在树莓派的桌面系统下打开浏览器，访问 <code>127.0.0.1:3000</code> 地址，会出现 “百度账号的登陆授权页面” 。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/1BBDKhaC6c.jpg?imageslim" alt="mark"></p>
+<p>不过这个是官方的测试账号 <code>GitHub项目测试账号</code>。如果我们想要配置自己的设备，还是需要去申请自己的client_id和client_secret来调用。</p>
+<p>这里我不在继续往下操作，先去申请自己的ClientID信息。</p>
+<p>在 <code>Xshell</code> 中按 <code>Ctrl+C</code> 停止启动的web服务。</p>
+<h4 id="创建设备"><a href="#创建设备" class="headerlink" title="创建设备"></a>创建设备</h4><p>打开 DuerOS开放平台官网 <a href="https://dueros.baidu.com/open" target="_blank" rel="external">DuerOS开放平台</a> ，选择右上角 “控制台” – “设备控制台” – 在打开的新页面选择 “配置新设备” 。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/BKfi41AImL.jpg?imageslim" alt="mark"></p>
+<p>然后在 <code>请选择终端场景</code> 中选择 “音箱” 点击 “下一步” 。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/BfD84IEJJ1.jpg?imageslim" alt="mark"></p>
+<p>在 <code>请选择操作系统</code> 界面选择第一项 “Linux” 或者也可以选择最下面的 “点击这里” ，没有太大区别。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/GF9559eF6j.jpg?imageslim" alt="mark"></p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/926bH7lJBl.jpg?imageslim" alt="mark"></p>
+<p>输入 “产品名称”，比如这里我取名叫 <code>贾维斯</code> （电影钢铁侠里的人工智能系统），点击 “申请ClientID” ，下面会显示出相应的 client_id 和 client_secret等信息。这里，我们先将这两项记下来以待后面使用。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/ik2hLA9K0C.jpg?imageslim" alt="mark"></p>
+<p>接下来是配置 “端能力”的页面，可以自定义选择，或者直接保持默认下一步即可。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/F2jhkif846.jpg?imageslim" alt="mark"></p>
+<p>然后会弹出 <code>BOT配置</code> 页面。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/14d0Ik0ddi.jpg?imageslim" alt="mark"></p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/im394L0fA7.jpg?imageslim" alt="mark"></p>
+<p>​可以看到上面是一些 <code>音乐</code> <code>有声点播</code> <code>有声直播</code> 等等选项；下面有 <code>聊天定制</code> <code>语音唤醒服务</code> <code>自定义控制指令</code> 这些，如果看不懂呢可以不用管，直接下一步。后面会询问是否下载SDK，也不用管，直接点击下面的 “完成” 会提示 “创建产品成功” 。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/ldkA768AdC.jpg?imageslim" alt="mark"></p>
+<p>这样我们就创建好了自己的client_id和client_secret。</p>
+<h4 id="设置个人的ClientID信息"><a href="#设置个人的ClientID信息" class="headerlink" title="设置个人的ClientID信息"></a>设置个人的ClientID信息</h4><p>使用 <code>FileZilla</code> 软件，在树莓派的目录 <code>/home/pi/Leafney/DuerOS-Python-Client</code> 下找到 <code>app/auth.py</code> 这个文件，因为在控制台界面下不太方便编辑文件，所以这里我选择将该文件下载到Windows本地来编辑。</p>
+<p>将 <code>auth.py</code> 下载到本地后，推荐使用 <code>SublimeText</code> 或 <code>NotePad++</code> 来进行编辑。</p>
+<p>找到 <code>开发者注册信息</code> 部分，替换成刚刚申请的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># 开发者注册信息</div><div class="line">CLIENT_ID = &apos;XXXXX&apos;</div><div class="line">CLIENT_SECRET = &apos;XXXXXX&apos;</div></pre></td></tr></table></figure>
+<p>然后将下面的 <code>使用开发者注册信息</code> 一行下面代码段前面的井号 <code>#</code> 去掉，解注释这一行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 使用开发者注册信息</div><div class="line">auth.auth_request(CLIENT_ID, CLIENT_SECRET)</div></pre></td></tr></table></figure>
+<p>再将下面的 <code>使用默认的CLIENT_ID和CLIENT_SECRET</code> 一行下面代码行前面加一个井号 <code>#</code> 注释掉这一行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 使用默认的CLIENT_ID和CLIENT_SECRET</div><div class="line"># auth.auth_request()</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/jLciAm6A4f.jpg?imageslim" alt="mark"></p>
+<p>然后使用 <code>FileZilla</code> 将我们刚刚改好的 <code>auth.py</code> 上传到树莓派中。</p>
+<h4 id="设置授权回调地址"><a href="#设置授权回调地址" class="headerlink" title="设置授权回调地址"></a>设置授权回调地址</h4><p>在浏览器中访问 <code>控制台</code> – <code>设备控制台</code> 页面 <a href="https://dueros.baidu.com/didp/product/listview" target="_blank" rel="external">设备控制台</a> , 选择我们刚刚创建的产品点击 “编辑” 选项。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/3ebjjK0LkG.jpg?imageslim" alt="mark"></p>
+<p>在 <code>基础信息</code> 页面，可以查看刚刚创建设备的 client_id 等信息。这里我们点击 <code>OAUTH CONFIG URL</code> 这个链接：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/Ba8jgec5kl.jpg?imageslim" alt="mark"></p>
+<p>在新页面的左侧点击 <code>安全设置</code> 选项，在 <code>授权回调页</code> 的输入框中输入如下内容，然后点击 <code>确定</code> 保存修改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">http://127.0.0.1:3000/authresponse</div></pre></td></tr></table></figure>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/fgmEh6ei60.jpg?imageslim" alt="mark"></p>
+<h4 id="使用个人设备授权"><a href="#使用个人设备授权" class="headerlink" title="使用个人设备授权"></a>使用个人设备授权</h4><p>完成上面的配置后，回到 <code>Xshell</code> 中，在树莓派的 <code>/home/pi/Leafney/DuerOS-Python-Client</code> 目录下，再次执行授权命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ./auth.sh</div><div class="line">A web page should is opened. If not, go to http://127.0.0.1:3000 to start</div></pre></td></tr></table></figure>
+<p>然后在树莓派系统浏览器输入 <code>127.0.0.1:3000</code> 访问。</p>
+<p>可以看到页面右侧的授权应用变成了我自己创建的设备名称。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/744die8bjc.jpg?imageslim" alt="mark"></p>
+<p>如果你的授权页面中这里显示的是空的，那是因为你用的是中文名称。在“基础信息” 的 “名称”那里需要再次添加一下名称。如果是英文的话，这个名称会直接显示。我觉得这里可能是一个bug。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/1E5cDdb1jg.jpg?imageslim" alt="mark"></p>
+<p>​在授权页面输入我的百度账号和密码进行授权。</p>
+<p>看到提示 <code>Succeed to login DuerOS Voice Service</code> 的信息就说明授权成功了。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/e6dBAefhid.jpg?imageslim" alt="mark"></p>
+<p>同时在 <code>Xshell</code> 下我们会看到输出相应的授权信息。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/KgGHdJGJ89.jpg?imageslim" alt="mark"></p>
+<h4 id="语言唤醒"><a href="#语言唤醒" class="headerlink" title="语言唤醒"></a>语言唤醒</h4><p>执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./wakeup_trigger_start.sh</div></pre></td></tr></table></figure>
+<p>使用唤醒词 <code>小度小度</code> 就能唤醒了。</p>
+<p>因为我在 <code>Xshell</code> 下操作时发现命令行下的中文会有乱码的情况，所以我改用远程桌面下树莓派上自带的 <code>Terminal</code> 程序来执行。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/e6iEB7LKEm.jpg?imageslim" alt="mark"></p>
+<p>也可以使用enter按键唤醒，执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./enter_trigger_start.sh</div></pre></td></tr></table></figure>
+<p>使用enter键回车唤醒。</p>
+<p>这里我尝试了上面的两种唤醒方式，发现不知道是哪里的问题，音箱都没有声音输出。查看输出的日志信息是能看到有音频文件下载成功并播放的。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171205/mFK66gbHId.jpg?imageslim" alt="mark"></p>
+<h4 id="解决没有声音的问题"><a href="#解决没有声音的问题" class="headerlink" title="解决没有声音的问题"></a>解决没有声音的问题</h4><p>我使用 <code>alsamixer</code> 然后按 <code>F6</code> 切换使用的声卡，发现无论如何切换，似乎都没有效果。</p>
+<p>后来我考虑<strong>将音箱线换到树莓派本身的音频接口</strong>上，发现居然有声音输出了。不过树莓派自带的音频输出杂音还是很吵的。</p>
+<p>这里要注意的是不能在树莓派通电的情况下切换音频口，我发现如果直接将音频线从DuerOS板子的音频口换到树莓派的音频口上时，刚一接触的时候噪音是非常大的，所以最后我是将树莓派关机然后切换的。</p>
+<h4 id="感受"><a href="#感受" class="headerlink" title="感受"></a>感受</h4><ol>
+<li>使用Python SDK 最后唤醒的时候需要将音频接口插到树莓派的音频接口上，这一点在论坛的文档中没有说明，可能会给一些人操作时带来困惑。</li>
+<li>个人认为应该是有方法使用DuerOS开发版的音频接口的，毕竟没有杂音嘛。需要进一步研究一下。</li>
+<li>发现在使用 Python SDK 唤醒小度时，语言识别的效果不如镜像系统中语音的识别准确度高。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DuerOS/" rel="tag"># DuerOS</a>
+          
+            <a href="/tags/智能家居/" rel="tag"># 智能家居</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/24/resolve-hexo-blog-search-exception/" rel="next" title="解决Hexo博客搜索异常">
+                <i class="fa fa-chevron-left"></i> 解决Hexo博客搜索异常
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-docker"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#DuerOS唤醒"><span class="nav-number">1.</span> <span class="nav-text">DuerOS唤醒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接入Python-SDK"><span class="nav-number">2.</span> <span class="nav-text">接入Python SDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过SSH登陆"><span class="nav-number">3.</span> <span class="nav-text">通过SSH登陆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#停止现有小度功能，因为会占用MIC资源"><span class="nav-number">4.</span> <span class="nav-text">停止现有小度功能，因为会占用MIC资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装需要的依赖"><span class="nav-number">5.</span> <span class="nav-text">安装需要的依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更换地址源"><span class="nav-number">5.1.</span> <span class="nav-text">更换地址源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#update更新"><span class="nav-number">5.2.</span> <span class="nav-text">update更新</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他依赖包"><span class="nav-number">5.3.</span> <span class="nav-text">其他依赖包</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载编译好的openssl和Python安装包"><span class="nav-number">6.</span> <span class="nav-text">下载编译好的openssl和Python安装包</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#下载Python-SDK和示例代码"><span class="nav-number">6.1.</span> <span class="nav-text">下载Python SDK和示例代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初次授权"><span class="nav-number">7.</span> <span class="nav-text">初次授权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装远程桌面"><span class="nav-number">8.</span> <span class="nav-text">安装远程桌面</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#xrdp"><span class="nav-number">8.1.</span> <span class="nav-text">xrdp</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VNC"><span class="nav-number">8.2.</span> <span class="nav-text">VNC</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#VNC初始化"><span class="nav-number">8.2.1.</span> <span class="nav-text">VNC初始化</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#连接"><span class="nav-number">8.2.2.</span> <span class="nav-text">连接</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#关闭桌面"><span class="nav-number">8.2.3.</span> <span class="nav-text">关闭桌面</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#再次授权"><span class="nav-number">9.</span> <span class="nav-text">再次授权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建设备"><span class="nav-number">10.</span> <span class="nav-text">创建设备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置个人的ClientID信息"><span class="nav-number">11.</span> <span class="nav-text">设置个人的ClientID信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置授权回调地址"><span class="nav-number">12.</span> <span class="nav-text">设置授权回调地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用个人设备授权"><span class="nav-number">13.</span> <span class="nav-text">使用个人设备授权</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语言唤醒"><span class="nav-number">14.</span> <span class="nav-text">语言唤醒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决没有声音的问题"><span class="nav-number">15.</span> <span class="nav-text">解决没有声音的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#感受"><span class="nav-number">16.</span> <span class="nav-text">感受</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>
