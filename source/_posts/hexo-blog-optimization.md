@@ -201,11 +201,11 @@ npm i --save hexo-wordcount
 # Post wordcount display settings
 # Dependencies: https://github.com/willin/hexo-wordcount
 post_wordcount:
-  item_text: true
-  wordcount: false
-  min2read: false
-  totalcount: false
-  separated_meta: true
+  item_text: true   //底部是否显示“总字数”字样
+  wordcount: false  //文章字数统计
+  min2read: false  //文章预计阅读时长（分钟）
+  totalcount: false  //网站总字数，位于底部
+  separated_meta: true //是否将文章的字数统计信息换行显示
 ```
 
 将 `wordcount: false` 改为 `wordcount: true` 即可显示单篇文章的总字数了。
@@ -214,3 +214,4 @@ post_wordcount:
 ##### 相关参考
 
 * [hexo-wordcount](https://github.com/willin/hexo-wordcount)
+* [畅玩Hexo——2：骚起来吧，NexT](https://zcore.coding.me/%E7%95%85%E7%8E%A9Hexo%E2%80%94%E2%80%942%EF%BC%9A%E9%AA%9A%E8%B5%B7%E6%9D%A5%E5%90%A7%EF%BC%8CNexT/)
