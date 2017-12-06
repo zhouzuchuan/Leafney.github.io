@@ -83,7 +83,7 @@
 <meta name="keywords" content="Hexo,Travis-CI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Travis CI自动部署Hexo博客">
-<meta property="og:url" content="http://yoursite.com/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/index.html">
+<meta property="og:url" content="http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/index.html">
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="自从使用GitHub Pages和Hexo来发布博客之后，不得不说方便了许多，只需要几个简单的命令博客就发布了。但在不断的使用中发现每次的发布操作也挺耗时的。 我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 &quot;Ubuntu Gogs 用更简单的方式部署、升级或迁移Gogs服 ...">
 <meta property="og:locale" content="zh-Hans">
@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/L8IgF7ijH5.jpg?imageslim">
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/dHK41IbL4h.jpg?imageslim">
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/170809/ii4E0ca8G4.jpg?imageslim">
-<meta property="og:updated_time" content="2017-12-05T08:10:30.073Z">
+<meta property="og:updated_time" content="2017-12-06T04:11:23.818Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Travis CI自动部署Hexo博客">
 <meta name="twitter:description" content="自从使用GitHub Pages和Hexo来发布博客之后，不得不说方便了许多，只需要几个简单的命令博客就发布了。但在不断的使用中发现每次的发布操作也挺耗时的。 我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 &quot;Ubuntu Gogs 用更简单的方式部署、升级或迁移Gogs服 ...">
@@ -128,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/"/>
+  <link rel="canonical" href="http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/"/>
 
 
 
@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Leafney">
@@ -340,7 +340,19 @@
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-06T12:11:23+08:00">
+                2017-12-06
+              </time>
             
           </span>
 
@@ -383,6 +395,25 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,971
+                </span>
+              
+
+              
+
+              
+            </div>
+          
 
           
               <div class="post-description">
@@ -407,7 +438,7 @@
 <p>我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 <a href="https://github.com/Leafney/ubuntu-gogs" target="_blank" rel="external">Ubuntu-Gogs 用更简单的方式部署、升级或迁移Gogs服务</a>），每次发布的时候都要先将文件 <code>clone</code> 到本地，然后配置一下hexo的运行环境，接着再执行 <code>hexo s -g</code> 来预览和调整，最后执行 <code>hexo d</code> 命令将博客发布上去，在这之前如果你没有配置过GitHub的 <code>SSH Key</code>,还要花一些时间来弄权限的问题。久而久之就发现这样操作起来实在是太繁琐了。</p>
 <p>后来看到一篇文章介绍可以使用Travis CI来自动部署hexo的博客，只需要将md文件 <code>pull</code> 到仓库中博客就自动发布好了。趁着这几天工作任务不太着急，研究了一下，特纪录在此，希望能帮到有需要的朋友。</p>
 <p>Travis CI 是目前新兴的开源持续集成构建项目，用来构建托管在GitHub上的代码。它提供了多种编程语言的支持，包括Ruby，JavaScript，Java，Scala，PHP，Haskell和Erlang在内的多种语言。</p>
-<h4 id="配置GitHub-Pages"><a href="#配置GitHub-Pages" class="headerlink" title="配置GitHub Pages"></a>配置GitHub Pages</h4><p>如果你是新手或者还没有自己的 <code>GitHub Pages</code> 博客站点，可以先看我之前的文章 <a href="http://www.itfanr.cc/2016/09/24/use-github-to-build-hexo-static-blog/" target="_blank" rel="external">使用GitHub搭建Hexo静态博客 | IT范儿</a> 了解如何配置，具体过程这里不再详述。</p>
+<h4 id="配置GitHub-Pages"><a href="#配置GitHub-Pages" class="headerlink" title="配置GitHub Pages"></a>配置GitHub Pages</h4><p>如果你是新手或者还没有自己的 <code>GitHub Pages</code> 博客站点，可以先看我之前的文章 <a href="http://www.itfanr.cc/2016/09/24/use-github-to-build-hexo-static-blog/">使用GitHub搭建Hexo静态博客 | IT范儿</a> 了解如何配置，具体过程这里不再详述。</p>
 <h5 id="创建-hexo-分支"><a href="#创建-hexo-分支" class="headerlink" title="创建 hexo 分支"></a>创建 hexo 分支</h5><p>因为我之前的博客源文件是存放在私有的git管理工具下，如果我们要使用Travis CI自动部署，必须将这些博客的源码文件放到GitHub上才能被Travis访问到。因为 <code>GitHub Pages</code> 默认要求必须使用 <code>master</code> 分支存放静态文件，我们可以在该仓库下使用其他分支来存放博客源码文件，或者新创建一个仓库来单独保存。这里我们把hexo博客的源码放在 <code>hexo</code> 分支下，博客的静态文件部署在 <code>master</code> 分支下。</p>
 <p>对于如何在GitHub上创建分支，相关操作命令如下，仅供参考：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 克隆项目到本地</div><div class="line">&gt; git clone https://github.com/Leafney/Leafney.github.io.git</div><div class="line"></div><div class="line"># 创建并切换到 hexo 分支</div><div class="line">&gt; git checkout -b hexo</div></pre></td></tr></table></figure>
@@ -536,7 +567,7 @@
 <p>该文章同步发表在：</p>
 <ul>
 <li><a href="http://www.cnblogs.com/babycool/p/7326722.html" target="_blank" rel="external">使用Travis CI自动部署Hexo博客 - 酷小孩 - 博客园</a></li>
-<li><a href="http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/" target="_blank" rel="external">使用Travis CI自动部署Hexo博客 | IT范儿</a></li>
+<li><a href="http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/">使用Travis CI自动部署Hexo博客 | IT范儿</a></li>
 </ul>
 
       
@@ -578,6 +609,24 @@
       </div>
     
 
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/" title="使用Travis CI自动部署Hexo博客">http://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
     
 
     <footer class="post-footer">
@@ -692,7 +741,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -736,7 +785,7 @@
                 <span class="links-of-author-item">
                   <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
                     
-                      <i class="fa fa-fw fa-docker"></i>DockerHub</a>
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
                 </span>
               
             
