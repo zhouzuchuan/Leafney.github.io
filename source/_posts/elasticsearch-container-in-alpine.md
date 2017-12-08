@@ -2,7 +2,7 @@
 title: Docker下配置Elasticsearch容器过程记录
 date: 2017-03-22 10:42:06
 tags:
-    - Elasticsearch
+    - ElasticSearch
     - Docker
 description: Docker下配置Elasticsearch容器过程记录
 ---
