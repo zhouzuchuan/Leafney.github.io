@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ElasticSearch," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="分布式搜索引擎ElasticSearch初探">
+<meta name="keywords" content="ElasticSearch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式搜索引擎ElasticSearch初探">
+<meta property="og:url" content="http://www.itfanr.cc/2016/06/20/distributed-search-engine-elasticsearch/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="分布式搜索引擎ElasticSearch初探">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-08T16:01:31.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式搜索引擎ElasticSearch初探">
+<meta name="twitter:description" content="分布式搜索引擎ElasticSearch初探">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.itfanr.cc/2016/06/20/distributed-search-engine-elasticsearch/"/>
+
+
+
+
+
+  <title>分布式搜索引擎ElasticSearch初探 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2016/06/20/distributed-search-engine-elasticsearch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">分布式搜索引擎ElasticSearch初探</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-06-20T20:06:00+08:00">
+                2016-06-20
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-09T00:01:31+08:00">
+                2017-12-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/开发笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">开发笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4,840
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  分布式搜索引擎ElasticSearch初探
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ElasticSearch是一个基于Lucene构建的开源，分布式，RESTful搜索引擎。</p>
+<h4 id="任务点"><a href="#任务点" class="headerlink" title="任务点"></a>任务点</h4><ul>
+<li>在Ubuntu下安装</li>
+<li>在Windows下安装</li>
+<li>使用Restful API实现搜索引擎的CURD操作</li>
+<li>在Python网站Flask下使用ElasticSearch实现文章搜索</li>
+<li>ElasticSearch的Python连接器：Pyes</li>
+</ul>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>Java (JVM) versionedit</p>
+<p>Elasticsearch is built using Java, and requires at least Java 7 in order to run. Only Oracle’s Java and the OpenJDK are supported. The same JVM version should be used on all Elasticsearch nodes and clients.<br>We recommend installing the Java 8 update 20 or later, or Java 7 update 55 or later. Previous versions of Java 7 are known to have bugs that can cause index corruption and data loss. Elasticsearch will refuse to start if a known-bad version of Java is used.<br>The version of Java to use can be configured by setting the JAVA_HOME environment variable.</p>
+<h5 id="Linux-Ubuntu-下安装"><a href="#Linux-Ubuntu-下安装" class="headerlink" title="Linux(Ubuntu)下安装"></a>Linux(Ubuntu)下安装</h5><h6 id="Installing-the-oracle-JDK"><a href="#Installing-the-oracle-JDK" class="headerlink" title="Installing the oracle JDK"></a>Installing the oracle JDK</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:webupd8team/java</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install oracle-java8-installer</div><div class="line">java -version</div></pre></td></tr></table></figure>
+<h6 id="RPM-based-distributions"><a href="#RPM-based-distributions" class="headerlink" title="RPM based distributions"></a>RPM based distributions</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo /bin/systemctl daemon-reload</div><div class="line">sudo /bin/systemctl enable elasticsearch.service</div><div class="line">sudo /bin/systemctl start elasticsearch.service</div></pre></td></tr></table></figure>
+<h5 id="Windows下安装"><a href="#Windows下安装" class="headerlink" title="Windows下安装"></a>Windows下安装</h5><p>从网站 <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external"></a> 下载windows下的msi安装包，<br>在cmd命令行进入安装目录，再进入 <code>bin</code> 目录，运行 <code>elasticsearch.bat</code> 。</p>
+<hr>
+<h4 id="Ubuntu下配置ElasticSearch环境实录"><a href="#Ubuntu下配置ElasticSearch环境实录" class="headerlink" title="Ubuntu下配置ElasticSearch环境实录"></a>Ubuntu下配置ElasticSearch环境实录</h4><h4 id="安装Java环境"><a href="#安装Java环境" class="headerlink" title="安装Java环境"></a>安装Java环境</h4><p>由于ElasticSearch的运行需要Java环境的支持，先安装java环境。<br>由于Ubuntu系统中由于授权问题，默认只安装了OpenJDK的包，通过<code>java</code>和<code>javac</code>可以看到：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">* default-jdk</div><div class="line">* ecj</div><div class="line">* gcj-4.9-jdk</div><div class="line">* openjdk-8-jdk-headless</div><div class="line">* gcj-4.8-jdk</div><div class="line">* gcj-5-jdk</div><div class="line">* openjdk-9-jdk</div></pre></td></tr></table></figure></p>
+<p>根据ElasticSearch官方推荐安装方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:webupd8team/java</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install oracle-java8-installer</div><div class="line">java -version</div></pre></td></tr></table></figure>
+<p>如果出现如下提示信息，并有进度条显示，则说明运行顺利并正在下载所需文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">HTTP request sent, awaiting response... 200 OK</div><div class="line">Length: 181367942 (173M) [application/x-gzip]</div><div class="line">Saving to: ‘jdk-8u91-linux-x64.tar.gz’</div><div class="line"></div><div class="line">     0K ........ ........ ........ ........ ........ ........  1%  566K 5m8s</div><div class="line">  3072K ........ ........ ........ ........ ........ ........  3% 1.15M 3m44s</div><div class="line">  6144K ........ ........ ........ ........ ........ ........  5% 1.10M 3m16s</div><div class="line">  9216K ........ ........ ........ ........ ........ ........  6% 1002K 3m5s</div><div class="line"> 12288K ........ ........ ........ ........ ........ ........  8%  715K 3m11s</div><div class="line"> 15360K ........ ........ ........ ........ ........ ........ 10%  624K 3m18s</div><div class="line"> 18432K ........ ........ ........ ........ ........ ........ 12%  417K 3m40s</div></pre></td></tr></table></figure>
+<p>否则可能由于网络原因或其他问题，会中断下载或报错。</p>
+<h5 id="错误一："><a href="#错误一：" class="headerlink" title="错误一："></a>错误一：</h5><p>安装时出现错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">sha256sum mismatch jdk-8u91-linux-x64.tar.gz</div><div class="line">Oracle JDK 8 is NOT installed.</div><div class="line">dpkg: 处理软件包 oracle-java8-installer (--configure)时出错：</div><div class="line"> 子进程 已安装 post-installation 脚本 返回错误状态 1</div><div class="line">正在设置 gsfonts-x11 (0.24) ...</div><div class="line">在处理时有错误发生：</div><div class="line"> oracle-java8-installer</div><div class="line">E: Sub-process /usr/bin/dpkg returned an error code (1)</div></pre></td></tr></table></figure></p>
+<p>可以用该文章中介绍的方法解决，亲测有效：<br><a href="http://www.miaoqiyuan.cn/p/ubuntu-e-sub-process-dpkg-returned-an-error-code" target="_blank" rel="external">http://www.miaoqiyuan.cn/p/ubuntu-e-sub-process-dpkg-returned-an-error-code</a></p>
+<h5 id="错误二："><a href="#错误二：" class="headerlink" title="错误二："></a>错误二：</h5><p>根据上面的方法执行完命令后，执行 <code>java -version</code> 时只会显示下列输出信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ java -version</div><div class="line">程序 &apos;java&apos; 已包含在下列软件包中：</div><div class="line"> * default-jre</div><div class="line"> * gcj-4.9-jre-headless</div><div class="line"> * gcj-5-jre-headless</div><div class="line"> * openjdk-8-jre-headless</div><div class="line"> * gcj-4.8-jre-headless</div><div class="line"> * openjdk-9-jre-headless</div><div class="line">请尝试：sudo apt install &lt;选定的软件包&gt;</div></pre></td></tr></table></figure>
+<p>即使是重复执行上面的安装方法，结果仍是如此：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ sudo apt-get install oracle-java8-installer</div><div class="line">正在读取软件包列表... 完成</div><div class="line">正在分析软件包的依赖关系树       </div><div class="line">正在读取状态信息... 完成       </div><div class="line">oracle-java8-installer 已经是最新版 (8u92+8u91arm-2~really8u91~webupd8~0)。</div><div class="line">升级了 0 个软件包，新安装了 0 个软件包，要卸载 0 个软件包，有 196 个软件包未被升级。</div><div class="line">tiger@vbox:~$ sudo apt-get install oracle-java8-set-default</div><div class="line">正在读取软件包列表... 完成</div><div class="line">正在分析软件包的依赖关系树       </div><div class="line">正在读取状态信息... 完成       </div><div class="line">oracle-java8-set-default 已经是最新版 (8u92+8u91arm-2~really8u91~webupd8~0)。</div><div class="line">升级了 0 个软件包，新安装了 0 个软件包，要卸载 0 个软件包，有 196 个软件包未被升级。</div></pre></td></tr></table></figure>
+<p><strong>根本问题是什么</strong></p>
+<p>转到目录<code>/usr/lib/jvm/</code> 下，可以看到一个名为 <code>java-8-oracle</code> 的目录，但查看该目录却发现里面是空的。所以虽然提示是安装成功了，但却没有可执行的文件，可能是在下载文件时出错了。</p>
+<p>由于直接安装错误，下面尝试手动进行安装。</p>
+<h5 id="什么情况下表示安装成功，什么情况下表示安装失败"><a href="#什么情况下表示安装成功，什么情况下表示安装失败" class="headerlink" title="什么情况下表示安装成功，什么情况下表示安装失败"></a>什么情况下表示安装成功，什么情况下表示安装失败</h5><p>通过 <code>java -version</code> 来查看</p>
+<p>如果输出如下，则说明 Orancel JDK 安装失败：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">root@ubuntu:~# java -version</div><div class="line">The program &apos;java&apos; can be found in the following packages:</div><div class="line"> * default-jre</div><div class="line"> * gcj-4.8-jre-headless</div><div class="line"> * openjdk-7-jre-headless</div><div class="line"> * gcj-4.6-jre-headless</div><div class="line"> * openjdk-6-jre-headless</div><div class="line">Try: apt-get install &lt;selected package&gt;</div></pre></td></tr></table></figure>
+<p>如果输出如下，则说明安装成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:/usr/lib/jvm$ java -version</div><div class="line">java version &quot;1.8.0_91&quot;</div><div class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</div></pre></td></tr></table></figure>
+<h4 id="Ubuntu下手动安装JDK"><a href="#Ubuntu下手动安装JDK" class="headerlink" title="Ubuntu下手动安装JDK"></a>Ubuntu下手动安装JDK</h4><ol>
+<li>到Oracle官网下载对应当前系统的jdk版本 <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="external">Java SE Development Kit 8 Downloads</a> ：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 下载对应版本jdk压缩包，这里选择 `Linux64`</div><div class="line">wget http://download.oracle.com/otn-pub/java/jdk/8u91-b14/jdk-8u91-linux-x64.tar.gz</div><div class="line">// 等待下载完成后，执行：</div><div class="line">tar zxvf jdk-8u91-linux-x64.tar.gz</div><div class="line">// 查看  `ls`</div><div class="line">jdk1.8.0_91 jdk-8u91-linux-x64.tar.gz</div></pre></td></tr></table></figure>
+<p>将解压后的目录 <code>jdk1.8.0_91</code> 复制到 <code>/usr/lib/jvm</code> 目录里，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo cp -r jdk1.8.0_91/ /usr/lib/jvm</div></pre></td></tr></table></figure></p>
+<p>配置环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim /etc/profile</div></pre></td></tr></table></figure>
+<p>在文件的末尾添加以下内容：(注意对应自己的目录路径和jdk的版本号)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/lib/jvm/jdk1.8.0_91</div><div class="line">export JRE_HOME=/usr/lib/jvm/jdk1.8.0_91/jre</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH</div><div class="line">export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH</div></pre></td></tr></table></figure>
+<p>修改完后，执行 <code>:wq</code> 退出vim ，使用<code>source</code>刷新一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
+<p>然后执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">java -version</div><div class="line">//看到如下信息表示安装成功：</div><div class="line">tiger@vbox:/usr/lib/jvm$ java -version</div><div class="line">java version &quot;1.8.0_91&quot;</div><div class="line">Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)</div><div class="line"></div><div class="line">//执行 `java`</div><div class="line"></div><div class="line">tiger@vbox:/usr/lib/jvm$ java</div><div class="line">用法: java [-options] class [args...]</div><div class="line">           (执行类)</div><div class="line">   或  java [-options] -jar jarfile [args...]</div><div class="line">           (执行 jar 文件)</div><div class="line">其中选项包括:</div><div class="line">    -d32      使用 32 位数据模型 (如果可用)</div><div class="line">    -d64      使用 64 位数据模型 (如果可用)</div><div class="line">    -server   选择 &quot;server&quot; VM</div><div class="line">                  默认 VM 是 server.</div><div class="line"></div><div class="line">    -cp &lt;目录和 zip/jar 文件的类搜索路径&gt;</div><div class="line">    -classpath &lt;目录和 zip/jar 文件的类搜索路径&gt;</div><div class="line">                  用 : 分隔的目录, JAR 档案</div><div class="line">                  和 ZIP 档案列表, 用于搜索类文件。</div><div class="line">    -D&lt;名称&gt;=&lt;值&gt;</div><div class="line">                  设置系统属性</div><div class="line">    -verbose:[class|gc|jni]</div><div class="line">                  启用详细输出</div><div class="line">    -version      输出产品版本并退出</div><div class="line">....</div><div class="line">....</div><div class="line"></div><div class="line">//执行 `javac`</div><div class="line"></div><div class="line">tiger@vbox:/usr/lib/jvm$ javac</div><div class="line">用法: javac &lt;options&gt; &lt;source files&gt;</div><div class="line">其中, 可能的选项包括:</div><div class="line">  -g                         生成所有调试信息</div><div class="line">  -g:none                    不生成任何调试信息</div><div class="line">  -g:&#123;lines,vars,source&#125;     只生成某些调试信息</div><div class="line">  -nowarn                    不生成任何警告</div><div class="line">  -verbose                   输出有关编译器正在执行的操作的消息</div><div class="line">  -deprecation               输出使用已过时的 API 的源位置</div><div class="line">  -classpath &lt;路径&gt;            指定查找用户类文件和注释处理程序的位置</div><div class="line">  -cp &lt;路径&gt;                   指定查找用户类文件和注释处理程序的位置</div><div class="line">  -sourcepath &lt;路径&gt;           指定查找输入源文件的位置</div><div class="line">  -bootclasspath &lt;路径&gt;        覆盖引导类文件的位置</div><div class="line">.... </div><div class="line">....</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>下面的步骤未测试，仅供参考</strong></p>
+<p>如果到这一步，任然不成功的话，则属于手动配置默认的JDK版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java/bin/java 300  </div><div class="line">sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java/bin/javac 300  </div><div class="line">sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java/bin/jar 300   </div><div class="line">sudo update-alternatives --install /usr/bin/javah javah /usr/lib/jvm/java/bin/javah 300   </div><div class="line">sudo update-alternatives --install /usr/bin/javap javap /usr/lib/jvm/java/bin/javap 300 </div><div class="line"></div><div class="line">//然后执行</div><div class="line">sudo update-alternatives --config java</div><div class="line"></div><div class="line">// 在通过 java -version 来判断</div><div class="line">java -version</div></pre></td></tr></table></figure>
+<p>参考 ：</p>
+<ul>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-service.html" target="_blank" rel="external">Running as a Service on Linux        | Elasticsearch Reference [2.3]      | Elastic</a></li>
+<li><a href="http://www.cnblogs.com/plinx/archive/2013/06/01/3113106.html" target="_blank" rel="external">ubuntu 13.04 安装 JDK - plinx - 博客园</a></li>
+<li><a href="http://www.orangeclk.com/2014/08/10/install-java-on-linux/" target="_blank" rel="external">在 Ubuntu 系统上安装 Oracle Java 8 | 半瓶</a></li>
+</ul>
+<hr>
+<h4 id="安装ElasticSearch"><a href="#安装ElasticSearch" class="headerlink" title="安装ElasticSearch"></a>安装ElasticSearch</h4><p>下载最新安装包：</p>
+<p>从 <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">download Elasticsearch free</a> 下载Linux的安装包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 下载</div><div class="line">$ wget -c https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/2.3.3/elasticsearch-2.3.3.zip</div><div class="line">// 解压安装</div><div class="line">unzip elasticsearch-2.3.3.zip</div></pre></td></tr></table></figure></p>
+<p>进入解压后得到的目录 <code>elasticsearch-2.3.3</code> ，参考官网安装教程 <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html#setup-installation" target="_blank" rel="external">Setup</a> 执行如下命令来运行:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ bin/elasticsearch</div></pre></td></tr></table></figure></p>
+<p>如果上一步的java环境没有安装成功，执行该命令会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Could not find any executable java binary. Please install java in your PATH or set JAVA_HOME</div></pre></td></tr></table></figure>
+<p>如果没有出现错误，提示信息中输出 如 <code>[INFO] .....</code> 等信息，说明运行成功。</p>
+<p>再新开一个命令行终端，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ curl http://localhost:9200/</div><div class="line">&#123;</div><div class="line">  &quot;name&quot; : &quot;Rune&quot;,</div><div class="line">  &quot;cluster_name&quot; : &quot;elasticsearch&quot;,</div><div class="line">  &quot;version&quot; : &#123;</div><div class="line">    &quot;number&quot; : &quot;2.3.3&quot;,</div><div class="line">    &quot;build_hash&quot; : &quot;218bdf10790eef486ff2c41a3df5cfa32dadcfde&quot;,</div><div class="line">    &quot;build_timestamp&quot; : &quot;2016-05-17T15:40:04Z&quot;,</div><div class="line">    &quot;build_snapshot&quot; : false,</div><div class="line">    &quot;lucene_version&quot; : &quot;5.5.0&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;tagline&quot; : &quot;You Know, for Search&quot;</div><div class="line">&#125;</div><div class="line">tiger@vbox:~$</div></pre></td></tr></table></figure>
+<p>出现上面的提示则说明ElasticSearch安装成功。</p>
+<ul>
+<li><a href="http://www.cnblogs.com/kid551/p/4273256.html" target="_blank" rel="external">ElasticSearch - kid551 - 博客园</a></li>
+</ul>
+<hr>
+<p>默认情况下 <code>Elasticsearch</code> 的 <code>RESTful</code> 服务只有本机才能访问。也就是说无法从主机访问虚拟机中的服务。为了方便调试，可以修改 <code>/config/elasticsarch.yml</code> 文件，加入以下两行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">network.bind_host: &quot;0.0.0.0&quot;</div><div class="line">network.publish_host: _non_loopback:ipv4_</div></pre></td></tr></table></figure>
+<p>但线上环境切忌不要这样配置，否则任何人都可以通过这个接口修改你的数据。</p>
+<hr>
+<h4 id="安装-IK-Analysis-处理中文搜索"><a href="#安装-IK-Analysis-处理中文搜索" class="headerlink" title="安装 IK Analysis 处理中文搜索"></a>安装 IK Analysis 处理中文搜索</h4><p>Elasticsearch 自带的分词器会粗暴地把每个汉字直接分开，没有根据词库来分词。为了处理中文搜索，还需要安装中文分词插件。我使用的是 <a href="https://github.com/medcl/elasticsearch-analysis-ik" target="_blank" rel="external">elasticsearch-analysis-ik</a>，支持自定义词库。</p>
+<p>首先，下载与 Elasticsearch 匹配的 elasticsearch-analysis-ik 插件：{2.3.3–1.9.3}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 从github 下载内容</div><div class="line">git clone https://github.com/medcl/elasticsearch-analysis-ik.git</div><div class="line">cd elasticsearch-analysis-ik</div><div class="line">// 进入指定的 tag v1.9.3</div><div class="line">git checkout v1.9.3</div><div class="line">// 当前目录</div><div class="line">ls</div><div class="line">config  LICENSE.txt  pom.xml  README.md  src</div></pre></td></tr></table></figure>
+<p>要编译 <code>elasticsearch-analysis-ik</code> ,需要安装 <code>Apache Maven</code> 工具：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install maven</div><div class="line"></div><div class="line">//查看是否正确安装</div><div class="line">mvn -v</div></pre></td></tr></table></figure>
+<p>执行编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 当前目录</div><div class="line">ls</div><div class="line">config  LICENSE.txt  pom.xml  README.md  src</div><div class="line">// 编译</div><div class="line">mvn package</div></pre></td></tr></table></figure>
+<p>等待直到出现如下提示时，表示编译成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[INFO] ------------------------------------------------------------------------</div><div class="line">[INFO] BUILD SUCCESS</div><div class="line">[INFO] ------------------------------------------------------------------------</div><div class="line">[INFO] Total time: 7:43.935s</div><div class="line">[INFO] Finished at: Sun Jun 19 18:36:59 CST 2016</div><div class="line">[INFO] Final Memory: 15M/56M</div><div class="line">[INFO] ------------------------------------------------------------------------</div><div class="line"></div><div class="line">//查看目录</div><div class="line">ls</div><div class="line">config  LICENSE.txt  pom.xml  README.md  src  target</div></pre></td></tr></table></figure>
+<p>发现会多出了一个 <code>target</code> 目录，<code>copy and unzip</code> 目录下的文件 <code>target/releases/elasticsearch-analysis-ik-{version}.zip</code>  到 上面安装的 <code>elasticsearch/plugins/ik</code> 目录中，需要新建 <code>ik</code> 目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// target 目录</div><div class="line">$ pwd</div><div class="line">elasticsearch-analysis-ik/target/releases</div><div class="line">$ ls </div><div class="line">elasticsearch-analysis-ik-1.9.3.zip</div></pre></td></tr></table></figure>
+<p>在 <code>elasticsearch-2.3.3/plugins/</code> 下新建目录<code>ik</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ ls /elastic/elasticsearch-2.3.3/plugins</div><div class="line">$ mkdir /elastic/elasticsearch-2.3.3/plugins/ik</div><div class="line">$ ls /elastic/elasticsearch-2.3.3/plugins</div><div class="line">ik</div></pre></td></tr></table></figure>
+<p>将上面编译完成的 <code>elasticsearch-analysis-ik-1.9.3.zip</code> 拷贝到 <code>ik</code> 目录并解压：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ cp elasticsearch-analysis-ik-1.9.3.zip ~/elastic/elasticsearch-2.3.3/plugins/ik</div><div class="line">$ ls /elastic/elasticsearch-2.3.3/plugins/ik</div><div class="line">elasticsearch-analysis-ik-1.9.3.zip</div><div class="line">// 解压</div><div class="line">$ unzip elasticsearch-analysis-ik-1.9.3.zip</div><div class="line">// 得到如下内容：</div><div class="line">$ ls</div><div class="line">commons-codec-1.9.jar                elasticsearch-analysis-ik-1.9.3.zip</div><div class="line">commons-logging-1.2.jar              httpclient-4.4.1.jar</div><div class="line">config                               httpcore-4.4.1.jar</div><div class="line">elasticsearch-analysis-ik-1.9.3.jar  plugin-descriptor.properties</div></pre></td></tr></table></figure>
+<p><strong>注意：上面的操作目录请根据个人的目录和所下载的版本号进行修改</strong></p>
+<hr>
+<p>如果你觉得上面的编译步骤太繁琐，也可以直接在github页面的<code>release</code>中下载已经编译好的zip文件，直接解压到 <code>ik</code> 目录下即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget -c https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v1.9.3/elasticsearch-analysis-ik-1.9.3.zip</div><div class="line"></div><div class="line">unzip elasticsearch-analysis-ik-1.9.3.zip</div></pre></td></tr></table></figure>
+<p>重启 <code>elasticsearch</code> 服务即可。</p>
+<p>如果看到类似于下面的信息，说明 IK Analysis 插件已经装好了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">plugins [analysis-ik]</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="如何以root-账户运行elasticSearch"><a href="#如何以root-账户运行elasticSearch" class="headerlink" title="如何以root 账户运行elasticSearch"></a>如何以<code>root</code> 账户运行elasticSearch</h4><p>默认情况下，ElasticSearch不允许以<code>root</code>账户运行，会报 <code>don&#39;t run elasticsearch as root.</code> 错误。<br>不过我们也可以强制让其以 <code>root</code> 账户来运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bin/elasticsearch -Des.insecure.allow.root=true</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="配置同义词-该部分待测试"><a href="#配置同义词-该部分待测试" class="headerlink" title="配置同义词  (该部分待测试)"></a>配置同义词  (该部分待测试)</h4><p>Elasticsearch 自带一个名为 <code>synonym</code> 的同义词 <code>filter</code>。为了能让 <code>IK</code> 和 <code>synonym</code> 同时工作，我们需要定义新的 <code>analyzer</code>，用 <code>IK</code> 做 <code>tokenizer</code>，<code>synonym</code> 做 <code>filter</code>。听上去很复杂，实际上要做的只是加一段配置。</p>
+<p>打开 <code>~/elasticsearch-2.3.3/config/elasticsearch.yml</code> 文件，加入以下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">index:</div><div class="line">  analysis:</div><div class="line">    analyzer:</div><div class="line">      ik_syno:</div><div class="line">          type: custom</div><div class="line">          tokenizer: ik_max_word</div><div class="line">          filter: [my_synonym_filter]</div><div class="line">      ik_syno_smart:</div><div class="line">          type: custom</div><div class="line">          tokenizer: ik_smart</div><div class="line">          filter: [my_synonym_filter]</div><div class="line">    filter:</div><div class="line">      my_synonym_filter:</div><div class="line">          type: synonym</div><div class="line">          synonyms_path: analysis/synonym.txt</div></pre></td></tr></table></figure>
+<p>以上配置定义了 <code>ik_syno</code> 和 <code>ik_syno_smart</code> 这两个新的 <code>analyzer</code>，分别对应 <code>IK</code> 的 <code>ik_max_word</code> 和 <code>ik_smart</code> 两种分词策略。根据 <code>IK</code> 的文档，二者区别如下：</p>
+<ul>
+<li>ik_max_word：会将文本做最细粒度的拆分，例如「中华人民共和国国歌」会被拆分为「中华人民共和国、中华人民、中华、华人、人民共和国、人民、人、民、共和国、共和、和、国国、国歌」，会穷尽各种可能的组合；</li>
+<li>ik_smart：会将文本做最粗粒度的拆分，例如「中华人民共和国国歌」会被拆分为「中华人民共和国、国歌」；</li>
+</ul>
+<p>ik_syno 和 ik_syno_smart 都会使用 synonym filter 实现同义词转换。为了方便后续测试，建议创建 <code>~/elasticsearch-2.3.3/config/analysis/synonym.txt</code> 文件，输入一些同义词并存为 <code>utf-8</code> 格式。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ua,user-agent,userAgent</div><div class="line">js,javascript</div><div class="line">internet explore=&gt;ie</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="用Restful-api-测试搜索"><a href="#用Restful-api-测试搜索" class="headerlink" title="用Restful api 测试搜索"></a>用Restful api 测试搜索</h4><p>(1) 查看集群健康信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -X GET http://localhost:9200/_cat/health?v</div></pre></td></tr></table></figure>
+<p>返回结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">epoch      timestamp cluster       status node.total node.data shards pri relo init unassign pending_tasks max_task_wait_time active_shards_percent </div><div class="line">1466352115 00:01:55  elasticsearch green           1         1      0   0    0    0        0             0                  -                100.0%</div></pre></td></tr></table></figure>
+<p>返回结果的主要字段意义：</p>
+<ul>
+<li>cluster：集群名，是在ES的配置文件中配置的cluster.name的值。</li>
+<li>status：集群状态。集群共有green、yellow或red中的三种状态。green代表一切正常（集群功能齐全），yellow意味着所有的数据都是可用的，但是某些复制没有被分配（集群功能齐全），red则代表因为某些原因，某些数据不可用。如果是red状态，则要引起高度注意，数据很有可能已经丢失。</li>
+<li>node.total：集群中的节点数。</li>
+<li>node.data：集群中的数据节点数。</li>
+<li>shards：集群中总的分片数量。</li>
+<li>pri：主分片数量，英文全称为private。</li>
+<li>relo：复制分片总数。</li>
+<li>unassign：未指定的分片数量，是应有分片数和现有的分片数的差值（包括主分片和复制分片）。</li>
+</ul>
+<p>我们也可以在请求中添加help参数来查看每个操作返回结果字段的意义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -X GET http://localhost:9200/_cat/health?help</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">epoch                 | t,time                                   | seconds since 1970-01-01 00:00:00  </div><div class="line">timestamp             | ts,hms,hhmmss                            | time in HH:MM:SS                   </div><div class="line">cluster               | cl                                       | cluster name                      </div><div class="line">status                | st                                       | health status                      </div><div class="line">node.total            | nt,nodeTotal                             | total number of nodes              </div><div class="line">node.data             | nd,nodeData                              | number of nodes that can store data</div><div class="line">shards                | t,sh,shards.total,shardsTotal            | total number of shards             </div><div class="line">pri                   | p,shards.primary,shardsPrimary           | number of primary shards           </div><div class="line">relo                  | r,shards.relocating,shardsRelocating     | number of relocating nodes         </div><div class="line">init                  | i,shards.initializing,shardsInitializing | number of initializing nodes       </div><div class="line">unassign              | u,shards.unassigned,shardsUnassigned     | number of unassigned shards        </div><div class="line">pending_tasks         | pt,pendingTasks                          | number of pending tasks            </div><div class="line">max_task_wait_time    | mtwt,maxTaskWaitTime                     | wait time of longest task pending  </div><div class="line">active_shards_percent | asp,activeShardsPercent                  | active number of shards in percent</div></pre></td></tr></table></figure>
+<p>有了这个东东，就可以减少看文档的时间。ES中许多API都可以添加help参数来显示字段含义，哪些可以这么做呢？每个API都试试就知道了。</p>
+<p>当然，如果你觉得返回的东西太多，看着眼烦，我们也可以人为地指定返回的字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">elasticsearch green 0</div></pre></td></tr></table></figure>
+<p>(2) 查看集群中的节点信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ curl -XGET http://localhost:9200/_cat/nodes?v</div></pre></td></tr></table></figure>
+<p>返回节点的详细信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">host      ip        heap.percent ram.percent load node.role master name     </div><div class="line">10.0.2.15 10.0.2.15            9          90 0.15 d         *      Bullseye </div><div class="line">tiger@vbox:~$</div></pre></td></tr></table></figure>
+<p>(3) 查看集群中的索引信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ curl -XGET http://localhost:9200/_cat/indices?v</div><div class="line">health status index   pri rep docs.count docs.deleted store.size pri.store.size </div><div class="line">yellow open   twitter   5   1          1            0      4.1kb          4.1kb</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="索引（Index）相关API"><a href="#索引（Index）相关API" class="headerlink" title="索引（Index）相关API"></a>索引（Index）相关API</h5><p>需要一个索引 <code>index</code> 和 <code>type</code></p>
+<p>(1) 创建一个新的索引</p>
+<ul>
+<li>使用自定义id索引文档</li>
+</ul>
+<p>使用<code>PUT</code>请求创建一个索引为<code>twitter</code>类型为<code>tweet</code>的文档。其文档编号为<code>1</code>，文档内容包含<code>title</code>和<code>content</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tiger@tiger-vbox:~$ curl -XPUT &apos;http://localhost:9200/twitter/tweet/1?pretty&apos; -d &apos;&#123;</div><div class="line">    &quot;title&quot;:&quot;三星无线充电技术，值得国产手机去学习吗&quot;,</div><div class="line">    &quot;content&quot;:&quot;三星无线充电器为圆行造型&quot;</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
+<p>返回信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">  &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">  &quot;_id&quot; : &quot;1&quot;,</div><div class="line">  &quot;_version&quot; : 1,</div><div class="line">  &quot;_shards&quot; : &#123;</div><div class="line">    &quot;total&quot; : 2,</div><div class="line">    &quot;successful&quot; : 1,</div><div class="line">    &quot;failed&quot; : 0</div><div class="line">  &#125;,</div><div class="line">  &quot;created&quot; : true</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再添加一篇：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ curl -XPUT &apos;http://localhost:9200/twitter/tweet/2?pretty&apos; -d &apos;&#123;</div><div class="line">    &quot;title&quot;:&quot;范冰冰着花裙亮相青岛，侧颜精致&quot;,</div><div class="line">    &quot;content&quot;:&quot;6月19日，范冰冰现身青岛某活动，一身花裙甜美亮相，精致侧颜秒杀菲林。&quot;</div><div class="line">&#125;&apos;</div></pre></td></tr></table></figure>
+<p>返回结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ curl -XPUT &apos;http://localhost:9200/twitter/tweet/2?pretty&apos; -d &apos;&#123;&quot;title&quot;:&quot;范冰冰着花裙亮相青岛，侧颜精致&quot;,&quot;content&quot;:&quot;6月19日，范冰 冰现身青岛某活动，一身花裙甜美亮相，精致侧颜秒杀菲林。&quot;&#125;&apos;</div><div class="line">&#123;</div><div class="line">  &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">  &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">  &quot;_id&quot; : &quot;2&quot;,</div><div class="line">  &quot;_version&quot; : 2,</div><div class="line">  &quot;_shards&quot; : &#123;</div><div class="line">    &quot;total&quot; : 2,</div><div class="line">    &quot;successful&quot; : 1,</div><div class="line">    &quot;failed&quot; : 0</div><div class="line">  &#125;,</div><div class="line">  &quot;created&quot; : false</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>查看所有文章：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -XGET &apos;http://localhost:9200/twitter/tweet/_search?pretty=true&apos; -d &apos;&#123;&quot;query&quot;:&#123;&quot;match_all&quot;:&#123;&#125;&#125;&#125;&apos;</div></pre></td></tr></table></figure>
+<p>返回结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;took&quot; : 147,</div><div class="line">  &quot;timed_out&quot; : false,</div><div class="line">  &quot;_shards&quot; : &#123;</div><div class="line">    &quot;total&quot; : 5,</div><div class="line">    &quot;successful&quot; : 5,</div><div class="line">    &quot;failed&quot; : 0</div><div class="line">  &#125;,</div><div class="line">  &quot;hits&quot; : &#123;</div><div class="line">    &quot;total&quot; : 2,</div><div class="line">    &quot;max_score&quot; : 1.0,</div><div class="line">    &quot;hits&quot; : [ &#123;</div><div class="line">      &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">      &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">      &quot;_id&quot; : &quot;2&quot;,</div><div class="line">      &quot;_score&quot; : 1.0,</div><div class="line">      &quot;_source&quot; : &#123;</div><div class="line">        &quot;title&quot; : &quot;范冰冰着花裙亮相青岛，侧颜精致&quot;,</div><div class="line">        &quot;content&quot; : &quot;6月19日，范冰冰现身青岛某活动，一身花裙甜美亮相，精致侧颜秒杀菲林。&quot;</div><div class="line">      &#125;</div><div class="line">    &#125;, &#123;</div><div class="line">      &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">      &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">      &quot;_id&quot; : &quot;1&quot;,</div><div class="line">      &quot;_score&quot; : 1.0,</div><div class="line">      &quot;_source&quot; : &#123;</div><div class="line">        &quot;title&quot; : &quot;三星无线充电技术，值得国产手机去学习吗&quot;,</div><div class="line">        &quot;content&quot; : &quot;三星无线充电器为圆行造型&quot;</div><div class="line">      &#125;</div><div class="line">    &#125; ]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样会把刚才添加的文章都列出来。</p>
+<p>搜索关键词“无线”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tiger@vbox:~$ curl -XGET &quot;http://localhost:9200/twitter/tweet/_search?pretty=true&quot; -d &apos;&#123;&quot;query&quot;:&#123;&quot;query_string&quot;:&#123;&quot;query&quot;:&quot;无线&quot;&#125;&#125;&#125;&apos;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;took&quot; : 49,</div><div class="line">  &quot;timed_out&quot; : false,</div><div class="line">  &quot;_shards&quot; : &#123;</div><div class="line">    &quot;total&quot; : 5,</div><div class="line">    &quot;successful&quot; : 5,</div><div class="line">    &quot;failed&quot; : 0</div><div class="line">  &#125;,</div><div class="line">  &quot;hits&quot; : &#123;</div><div class="line">    &quot;total&quot; : 1,</div><div class="line">    &quot;max_score&quot; : 0.0958915,</div><div class="line">    &quot;hits&quot; : [ &#123;</div><div class="line">      &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">      &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">      &quot;_id&quot; : &quot;1&quot;,</div><div class="line">      &quot;_score&quot; : 0.0958915,</div><div class="line">      &quot;_source&quot; : &#123;</div><div class="line">        &quot;title&quot; : &quot;三星无线充电技术，值得国产手机去学习吗&quot;,</div><div class="line">        &quot;content&quot; : &quot;三星无线充电器为圆行造型&quot;</div><div class="line">      &#125;</div><div class="line">    &#125; ]</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>检查ik的切词效果，可以执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tiger@tiger-vbox:~$ curl &apos;http://localhost:9200/twitter/_analyze?analyzer=ik_max_word&amp;pretty=true&apos; -d &apos;&#123;&quot;text&quot;:&quot;中华人民共和国国歌&quot;&#125;&apos;</div></pre></td></tr></table></figure>
+<p>返回结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;tokens&quot; : [ &#123;</div><div class="line">    &quot;token&quot; : &quot;中华人民共和国&quot;,</div><div class="line">    &quot;start_offset&quot; : 0,</div><div class="line">    &quot;end_offset&quot; : 7,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 0</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;中华人民&quot;,</div><div class="line">    &quot;start_offset&quot; : 0,</div><div class="line">    &quot;end_offset&quot; : 4,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 1</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;中华&quot;,</div><div class="line">    &quot;start_offset&quot; : 0,</div><div class="line">    &quot;end_offset&quot; : 2,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 2</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;华人&quot;,</div><div class="line">    &quot;start_offset&quot; : 1,</div><div class="line">    &quot;end_offset&quot; : 3,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 3</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;人民共和国&quot;,</div><div class="line">    &quot;start_offset&quot; : 2,</div><div class="line">    &quot;end_offset&quot; : 7,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 4</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;人民&quot;,</div><div class="line">    &quot;start_offset&quot; : 2,</div><div class="line">    &quot;end_offset&quot; : 4,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 5</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;共和国&quot;,</div><div class="line">    &quot;start_offset&quot; : 4,</div><div class="line">    &quot;end_offset&quot; : 7,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 6</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;共和&quot;,</div><div class="line">    &quot;start_offset&quot; : 4,</div><div class="line">    &quot;end_offset&quot; : 6,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 7</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;国&quot;,</div><div class="line">    &quot;start_offset&quot; : 6,</div><div class="line">    &quot;end_offset&quot; : 7,</div><div class="line">    &quot;type&quot; : &quot;CN_CHAR&quot;,</div><div class="line">    &quot;position&quot; : 8</div><div class="line">  &#125;, &#123;</div><div class="line">    &quot;token&quot; : &quot;国歌&quot;,</div><div class="line">    &quot;start_offset&quot; : 7,</div><div class="line">    &quot;end_offset&quot; : 9,</div><div class="line">    &quot;type&quot; : &quot;CN_WORD&quot;,</div><div class="line">    &quot;position&quot; : 9</div><div class="line">  &#125; ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="说明一下"><a href="#说明一下" class="headerlink" title="说明一下"></a>说明一下</h5><p><code>pretty</code> 参数就是让返回的json有换行和缩进，容易阅读，调试时可以加上，开发到程序里就可以去掉了。</p>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><h5 id="依赖包"><a href="#依赖包" class="headerlink" title="依赖包"></a>依赖包</h5><ul>
+<li><a href="https://github.com/medcl/elasticsearch-analysis-ik/" target="_blank" rel="external">GitHub - medcl/elasticsearch-analysis-ik: The IK Analysis plugin integrates Lucene IK analyzer into elasticsearch, support customized dictionary.</a></li>
+</ul>
+<h5 id="Linux下安装"><a href="#Linux下安装" class="headerlink" title="Linux下安装"></a>Linux下安装</h5><ul>
+<li><a href="https://imququ.com/post/elasticsearch.html" target="_blank" rel="external">使用 Elasticsearch 实现博客站内搜索 | JerryQu 的小站</a> <strong>☆</strong></li>
+<li><a href="http://www.shareditor.com/blogshow/?blogId=36" target="_blank" rel="external">教你成为全栈工程师(Full Stack Developer) 二十四-ES(elasticsearch)搜索引擎安装和使用 - SharEDITor - 关注大数据技术</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-service.html" target="_blank" rel="external">Running as a Service on Linux        | Elasticsearch Reference [2.3]      | Elastic</a></li>
+<li><a href="https://www.elastic.co/downloads" target="_blank" rel="external">The Elastic Stack Download · Get Started in Minutes  | Elastic</a></li>
+</ul>
+<h5 id="Windows下安装-1"><a href="#Windows下安装-1" class="headerlink" title="Windows下安装"></a>Windows下安装</h5><ul>
+<li><a href="http://www.fromwww.net/36206.html" target="_blank" rel="external">windows下安装elasticsearch-1.7.1 | 教程网</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-service-win.html" target="_blank" rel="external">Running as a Service on Windows        | Elasticsearch Reference [2.3]      | Elastic</a></li>
+<li><a href="http://jingyan.baidu.com/article/1709ad808ad49f4634c4f00d.html" target="_blank" rel="external">Windows下安装Maven参考</a></li>
+</ul>
+<h5 id="Restful-Api"><a href="#Restful-Api" class="headerlink" title="Restful Api"></a>Restful Api</h5><ul>
+<li><a href="http://www.cnblogs.com/letong/p/4749234.html" target="_blank" rel="external">Python Elasticsearch api - letong - 博客园</a></li>
+<li><a href="http://ju.outofmemory.cn/entry/50617" target="_blank" rel="external">ElasticSearch教程（4）——ElasticSearch基于REST的CRUD API - 为程序员服务</a></li>
+<li><a href="http://blog.csdn.net/xialei199023/article/details/48085125" target="_blank" rel="external">实时搜索引擎Elasticsearch（2）——Rest API的使用 - HinyLover的专栏        - 博客频道 - CSDN.NET</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html" target="_blank" rel="external">Document APIs        | Elasticsearch Reference [2.3]      | Elastic</a></li>
+<li><a href="https://github.com/sxyx2008/elasticsearch/issues/5" target="_blank" rel="external">elasticsearch rest api 快速上手 · Issue #5 · sxyx2008/elasticsearch · GitHub</a></li>
+</ul>
+<h5 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h5><ul>
+<li><a href="http://www.cnblogs.com/xing901022/category/642865.html" target="_blank" rel="external">Elasticsearch - 随笔分类 - xingoo - 博客园</a></li>
+<li><a href="http://www.justinablog.com/archives/967" target="_blank" rel="external">使用Python进行Elasticsearch数据索引 | Silent River</a></li>
+<li><a href="http://www.vpsee.com/2014/05/install-and-play-with-elasticsearch/" target="_blank" rel="external">安装和使用 Elasticsearch | vpsee.com</a></li>
+<li><a href="http://blog.csdn.net/xialei199023/article/details/47680401" target="_blank" rel="external">实时搜索引擎Elasticsearch（1）——基础概念、安装和运行 - HinyLover的专栏        - 博客频道 - CSDN.NET</a> <strong>☆</strong></li>
+<li><a href="http://es.xiaoleilu.com/" target="_blank" rel="external">Introduction | Elasticsearch权威指南（中文版）</a> <strong>☆</strong></li>
+<li><a href="http://www.ttlsa.com/bigdata/elasticsearch-analysis-ik-chinese/" target="_blank" rel="external">AAAAAAA</a></li>
+<li><a href="https://github.com/medcl/elasticsearch-analysis-ik" target="_blank" rel="external">https://github.com/medcl/elasticsearch-analysis-ik</a></li>
+<li><a href="http://blog.csdn.net/xialei199023/article/details/48085125" target="_blank" rel="external">http://blog.csdn.net/xialei199023/article/details/48085125</a></li>
+<li><a href="http://blog.csdn.net/xialei199023/article/details/48227247" target="_blank" rel="external">http://blog.csdn.net/xialei199023/article/details/48227247</a></li>
+<li><a href="https://github.com/elastic/elasticsearch" target="_blank" rel="external">https://github.com/elastic/elasticsearch</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html" target="_blank" rel="external">https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html</a></li>
+<li><a href="https://github.com/sxyx2008/elasticsearch/issues/5" target="_blank" rel="external">https://github.com/sxyx2008/elasticsearch/issues/5</a></li>
+<li><a href="http://www.shareditor.com/blogshow/?blogId=36" target="_blank" rel="external">http://www.shareditor.com/blogshow/?blogId=36</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2016/06/20/distributed-search-engine-elasticsearch/" title="分布式搜索引擎ElasticSearch初探">http://www.itfanr.cc/2016/06/20/distributed-search-engine-elasticsearch/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ElasticSearch/" rel="tag"># ElasticSearch</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/20/python-connect-sqlserver/" rel="next" title="Python操作SQLServer数据库">
+                <i class="fa fa-chevron-left"></i> Python操作SQLServer数据库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/27/scrapy-introduction/" rel="prev" title="Scrapy爬虫初探">
+                Scrapy爬虫初探 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#任务点"><span class="nav-number">1.</span> <span class="nav-text">任务点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Linux-Ubuntu-下安装"><span class="nav-number">2.1.</span> <span class="nav-text">Linux(Ubuntu)下安装</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Installing-the-oracle-JDK"><span class="nav-number">2.1.1.</span> <span class="nav-text">Installing the oracle JDK</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#RPM-based-distributions"><span class="nav-number">2.1.2.</span> <span class="nav-text">RPM based distributions</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Windows下安装"><span class="nav-number">2.2.</span> <span class="nav-text">Windows下安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubuntu下配置ElasticSearch环境实录"><span class="nav-number">3.</span> <span class="nav-text">Ubuntu下配置ElasticSearch环境实录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Java环境"><span class="nav-number">4.</span> <span class="nav-text">安装Java环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#错误一："><span class="nav-number">4.1.</span> <span class="nav-text">错误一：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#错误二："><span class="nav-number">4.2.</span> <span class="nav-text">错误二：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#什么情况下表示安装成功，什么情况下表示安装失败"><span class="nav-number">4.3.</span> <span class="nav-text">什么情况下表示安装成功，什么情况下表示安装失败</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubuntu下手动安装JDK"><span class="nav-number">5.</span> <span class="nav-text">Ubuntu下手动安装JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装ElasticSearch"><span class="nav-number">6.</span> <span class="nav-text">安装ElasticSearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-IK-Analysis-处理中文搜索"><span class="nav-number">7.</span> <span class="nav-text">安装 IK Analysis 处理中文搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何以root-账户运行elasticSearch"><span class="nav-number">8.</span> <span class="nav-text">如何以root 账户运行elasticSearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置同义词-该部分待测试"><span class="nav-number">9.</span> <span class="nav-text">配置同义词  (该部分待测试)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用Restful-api-测试搜索"><span class="nav-number">10.</span> <span class="nav-text">用Restful api 测试搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#索引（Index）相关API"><span class="nav-number">10.1.</span> <span class="nav-text">索引（Index）相关API</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#说明一下"><span class="nav-number">10.2.</span> <span class="nav-text">说明一下</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">11.</span> <span class="nav-text">相关链接</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#依赖包"><span class="nav-number">11.1.</span> <span class="nav-text">依赖包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Linux下安装"><span class="nav-number">11.2.</span> <span class="nav-text">Linux下安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Windows下安装-1"><span class="nav-number">11.3.</span> <span class="nav-text">Windows下安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Restful-Api"><span class="nav-number">11.4.</span> <span class="nav-text">Restful Api</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文档"><span class="nav-number">11.5.</span> <span class="nav-text">文档</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>

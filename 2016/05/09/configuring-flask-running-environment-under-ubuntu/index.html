@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,Flask," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Ubuntu下配置Flask运行环境">
+<meta name="keywords" content="Python,Flask">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu下配置Flask运行环境">
+<meta property="og:url" content="http://www.itfanr.cc/2016/05/09/configuring-flask-running-environment-under-ubuntu/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="Ubuntu下配置Flask运行环境">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-08T16:01:31.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu下配置Flask运行环境">
+<meta name="twitter:description" content="Ubuntu下配置Flask运行环境">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.itfanr.cc/2016/05/09/configuring-flask-running-environment-under-ubuntu/"/>
+
+
+
+
+
+  <title>Ubuntu下配置Flask运行环境 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2016/05/09/configuring-flask-running-environment-under-ubuntu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ubuntu下配置Flask运行环境</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-09T21:15:00+08:00">
+                2016-05-09
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-09T00:01:31+08:00">
+                2017-12-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/开发笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">开发笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,275
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Ubuntu下配置Flask运行环境
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Virtualenv + Flask + Gunicorn + Supervisor + Nginx</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>假设我所在的当前账户名为 <code>tiger</code> 。</p>
+<h5 id="准备python环境"><a href="#准备python环境" class="headerlink" title="准备python环境"></a>准备<code>python</code>环境</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get udpate</div><div class="line">// 安装python 和 pip (如果已经安装可以忽略)</div><div class="line">$ sudo apt-get install python-dev python-pip -y</div></pre></td></tr></table></figure>
+<h5 id="创建virtualenv虚拟环境"><a href="#创建virtualenv虚拟环境" class="headerlink" title="创建virtualenv虚拟环境"></a>创建virtualenv虚拟环境</h5><p>Virtualenv可以为每个Python应用创建独立的开发环境，使他们互不影响，Virtualenv能够做到：</p>
+<ul>
+<li>在没有权限的情况下安装新套件</li>
+<li>不同应用可以使用不同的套件版本</li>
+<li>套件升级不影响其他应用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//安装或通过执行：</div><div class="line">$ sudo pip install virtualenv</div></pre></td></tr></table></figure>
+<p>我通常创建一个包含 <code>venv</code> 文件夹的项目文件夹:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ mkdir myproject</div><div class="line">$ cd myproject</div><div class="line">$ virtualenv venv</div><div class="line">New python executable in venv/bin/python2</div><div class="line">Also creating executable in venv/bin/python</div><div class="line">Installing setuptools, pip...done.</div></pre></td></tr></table></figure>
+<p>现在，每次需要使用项目时，必须先激活相应的环境。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ ls</div><div class="line">-- venv</div><div class="line">$  . venv/bin/activate</div><div class="line"></div><div class="line">//结果：</div><div class="line">(venv)tiger@VirtualBox:~/xbox/myflask$</div></pre></td></tr></table></figure>
+<p>你现在进入你的 <code>virtualenv</code> （注意查看你的 shell 提示符已经改变了）。</p>
+<h5 id="安装Flask"><a href="#安装Flask" class="headerlink" title="安装Flask"></a>安装Flask</h5><p>现在可以开始在你的 <code>virtualenv</code> 中安装 <code>Flask</code> 了:  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ pip install Flask</div><div class="line"></div><div class="line">//结果：</div><div class="line">(venv)tiger@VirtualBox:~/xbox/myflask$ pip install Flask</div><div class="line">Downloading/unpacking Flask</div><div class="line">  Downloading Flask-0.10.1.tar.gz (544kB): 544kB downloaded</div><div class="line">    ......</div><div class="line">  Successfully installed Flask Werkzeug Jinja2 itsdangerous MarkupSafe</div><div class="line">Cleaning up...</div></pre></td></tr></table></figure>
+<p>几秒钟后就安装好了。</p>
+<h5 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h5><p>可通过<code>deactivate</code>退出虚拟环境：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(venv)tiger@VirtualBox:~/xbox/myflask$ deactivate</div><div class="line">tiger@VirtualBox:~/xbox/myflask$</div></pre></td></tr></table></figure>
+<p>具体可详见：<a href="http://dormousehole.readthedocs.io/en/latest/installation.html" target="_blank" rel="external">Flask-安装</a></p>
+<h5 id="启动falsk"><a href="#启动falsk" class="headerlink" title="启动falsk"></a>启动falsk</h5><p>在当前目录下新建一个 <code>hello.py</code> 的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(venv) $ vim hello.py</div><div class="line">(venv) $ ls</div><div class="line">venv hello.py</div></pre></td></tr></table></figure>
+<p>创建一个简单的Flask程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&apos;/&apos;)</div><div class="line">def hello_world():</div><div class="line">    return &apos;Hello World!&apos;</div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    app.run()</div></pre></td></tr></table></figure>
+<p>修改<code>hello.py</code> 的权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) $ chmod a+x hello.py</div></pre></td></tr></table></figure>
+<p>启动 flask:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) $ python hello.py</div></pre></td></tr></table></figure>
+<p>此时，用浏览器访问 <code>http://127.0.0.1:5000</code> 就能看到网页显示 <code>hello world</code>。</p>
+<hr>
+<h4 id="配置Gunicorn"><a href="#配置Gunicorn" class="headerlink" title="配置Gunicorn"></a>配置Gunicorn</h4><p>Gunicorn是用于部署WSGI应用的，任何支持WSGI的都可以，虽说直接执行 <code>python hello.py</code> 这样网站也能跑起来，但那是方便开发而已，在线上环境，还是需要更高效的组件来做。</p>
+<h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv)$ pip install gunicorn</div></pre></td></tr></table></figure>
+<p>然后可以执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">gunicorn -w 4 -b 127.0.0.1:8000 hello:app</div><div class="line"></div><div class="line">//结果：</div><div class="line">(venv) $ gunicorn -w 4 -b 127.0.0.1:8000 hello:app</div><div class="line">[2016-05-08 16:07:36 +0000] [1337] [INFO] Starting gunicorn 19.4.5</div><div class="line">[2016-05-08 16:07:36 +0000] [1337] [INFO] Listening at: http://127.0.0.1:8000 (1337)</div><div class="line">[2016-05-08 16:07:36 +0000] [1337] [INFO] Using worker: sync</div><div class="line">[2016-05-08 16:07:36 +0000] [1342] [INFO] Booting worker with pid: 1342</div><div class="line">[2016-05-08 16:07:36 +0000] [1343] [INFO] Booting worker with pid: 1343</div><div class="line">[2016-05-08 16:07:36 +0000] [1344] [INFO] Booting worker with pid: 1344</div><div class="line">[2016-05-08 16:07:36 +0000] [1345] [INFO] Booting worker with pid: 1345</div></pre></td></tr></table></figure>
+<blockquote>
+<p>“hello” is the name of the file (without extension). And “app” is the name of the Flask object.</p>
+</blockquote>
+<p>这里 “hello” 是python文件的名称(不包含扩展名)，冒号后面的”app” 是flask程序中<code>app = Flask(__name__)</code>创建的这个Flask对象的名称。</p>
+<p>这里我们用了 <code>8000</code> 的端口进行访问，原先的 <code>5000</code> 并没有启用。</p>
+<p><code>-w</code>表示开启多少个 <code>worker</code>，<code>-b</code> 表示 <code>gunicorn</code> 开发的访问地址  </p>
+<p>想要结束 <code>gunicorn</code> 只需执行 <code>pkill gunicorn</code> : </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">(venv)  $ pkill gunicorn</div><div class="line"></div><div class="line">//结果：</div><div class="line">[2016-05-08 16:09:28 +0000] [1337] [INFO] Handling signal: term</div><div class="line">[2016-05-08 16:09:28 +0000] [1344] [INFO] Worker exiting (pid: 1344)</div><div class="line">[2016-05-08 16:09:28 +0000] [1342] [INFO] Worker exiting (pid: 1342)</div><div class="line">[2016-05-08 16:09:28 +0000] [1343] [INFO] Worker exiting (pid: 1343)</div><div class="line">[2016-05-08 16:09:28 +0000] [1345] [INFO] Worker exiting (pid: 1345)</div><div class="line">[2016-05-08 16:09:29 +0000] [1337] [INFO] Shutting down: Master</div></pre></td></tr></table></figure>
+<p>我们还可以在一个独立的配置文件中来设置，新增配置文件 <code>gunicorn.conf</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">(venv) $ ls</div><div class="line">-- hello.py  hello.pyc  venv</div><div class="line">(venv) $ vim gunicorn.conf</div><div class="line"></div><div class="line">//写入下列内容：</div><div class="line">workers=4</div><div class="line">bind=&apos;127.0.0.1:8000&apos;</div></pre></td></tr></table></figure>
+<p>上面使用<code>pkill gunicorn</code>的方式来停止进程，太过于繁琐，因此出现了另外一个神器—<code>supervisor</code>，一个专门用来管理进程的工具，还可以管理系统的工具进程。</p>
+<hr>
+<h4 id="Supervisor"><a href="#Supervisor" class="headerlink" title="Supervisor"></a>Supervisor</h4><p>Supervisor 是用Python实现的一款非常实用的进程管理工具。</p>
+<h5 id="安装supervisor"><a href="#安装supervisor" class="headerlink" title="安装supervisor"></a>安装supervisor</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) $ pip install supervisor</div></pre></td></tr></table></figure>
+<h6 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">## 启动服务</div><div class="line">$ sudo service supervisor start</div><div class="line">## 停止服务</div><div class="line">$ sudo service supervisor stop</div><div class="line">## 也可以直接 kill pid</div><div class="line">$ ps -A | grep supervisor</div></pre></td></tr></table></figure>
+<h6 id="生成supervisor默认配置文件"><a href="#生成supervisor默认配置文件" class="headerlink" title="生成supervisor默认配置文件"></a>生成supervisor默认配置文件</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(venv) $ echo_supervisord_conf &gt; supervisor.conf</div><div class="line"></div><div class="line">## 添加一个`logs`目录，用来后面存放日志：</div><div class="line">(venv) $ mkdir logs</div><div class="line">(venv) $ ls</div><div class="line">gunicorn.conf  hello.py  hello.pyc  logs  supervisor.conf  venv</div></pre></td></tr></table></figure>
+<h6 id="修改supervisor配置文件，添加gunicorn进程管理"><a href="#修改supervisor配置文件，添加gunicorn进程管理" class="headerlink" title="修改supervisor配置文件，添加gunicorn进程管理"></a>修改supervisor配置文件，添加gunicorn进程管理</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) $ vim supervisor.conf</div></pre></td></tr></table></figure>
+<p>在 <code>supervisor.conf</code> 配置文件底部添加：(假设我的工作目录为： <code>/home/tiger/myflask/myproject/</code> )</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">##文件内容</div><div class="line">[program:hello]  ## 服务的名称，后面操作会用到</div><div class="line">command=/home/tiger/myflask/myproject/venv/bin/gunicorn hello:app -c /home/tiger/myflask/myproject/gunicorn.conf      ; supervisor启动命令</div><div class="line">directory=/home/tiger/myflask/myproject     ; 项目的文件夹路径</div><div class="line">user=tiger</div><div class="line">autostart=true                           ; 是否自动启动</div><div class="line">autorestart=true                         ; 是否自动重启</div><div class="line">##log文件的位置</div><div class="line">stdout_logfile=/home/tiger/myflask/myproject/logs/gunicorn_supervisor.log     ; log 日志</div><div class="line">stderr_logfile=/home/tiger/myflask/myproject/logs/gunicorn_supervisor.err     ; 错误日志</div></pre></td></tr></table></figure>
+<p><code>supervisor</code>的基本使用命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">supervisord -c supervisor.conf            通过配置文件启动supervisor</div><div class="line">supervisorctl -c supervisor.conf status   查看supervisor的状态</div><div class="line">supervisorctl -c supervisor.conf reload                    重新载入 配置文件</div><div class="line">supervisorctl -c supervisor.conf start [all]|[appname]     启动指定/所有 supervisor管理的程序进程</div><div class="line">supervisorctl -c supervisor.conf stop [all]|[appname]      关闭指定/所有 supervisor管理的程序进程</div></pre></td></tr></table></figure>
+<p>添加完上面的内容后，保存退出。执行操作：</p>
+<p>当前目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(venv) $ ls</div><div class="line">-- gunicorn.conf  hello.py  hello.pyc  logs  supervisor.conf  venv</div></pre></td></tr></table></figure>
+<p>通过配置文件 启动 <code>supervisor</code> :      </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) $ supervisord -c supervisor.conf</div></pre></td></tr></table></figure>
+<p>查看 <code>supervisor</code> 的状态：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(venv) $ supervisorctl -c supervisor.conf status</div><div class="line">-- hello              RUNNING   pid 1550, uptime 0:04:08</div></pre></td></tr></table></figure>
+<p>停止 设置的 服务 <code>hello</code> ：   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(venv) $ supervisorctl -c supervisor.conf stop hello </div><div class="line">-- hello: stopped</div></pre></td></tr></table></figure>
+<p>再次查看 服务 <code>hello</code> 的状态 ：   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(venv) $ supervisorctl -c supervisor.conf status</div><div class="line">-- hello              STOPPED   May 08 05:23 PM</div></pre></td></tr></table></figure>
+<hr>
+<p>自动启动：</p>
+<p>那么，如果想开机时自动启动怎么办呢？或者说，如果机器重启了，那WEB服务就断了。<br>其实呢，也很简单，只要在 <code>/etc/rc.d/rc.local</code> 中加入一句就可以了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">supervisord -c /home/tiger/myflask/myproject/supervisor.conf</div></pre></td></tr></table></figure>
+<p>有了Gunicorn、Supervisor，本地的环境的算是搭好了，但是我们需要让VPS上的网站从外网可以访问，这时候需要Nginx。</p>
+<p>现在，我们只能在本机上通过<code>http://127.0.0.1:8000</code> 的方式来访问的，但在外网上是无法访问到的。</p>
+<hr>
+<h4 id="配置Nginx"><a href="#配置Nginx" class="headerlink" title="配置Nginx"></a>配置Nginx</h4><p>在安装Nginx之前，要先退出上面步骤中操作所在的<code>venv</code>环境，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(venv) $ deactivate</div></pre></td></tr></table></figure>
+<h5 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install nginx</div></pre></td></tr></table></figure>
+<p>安装完成后访问<code>localhost</code>可以看到 <strong>Welcome to nginx on Ubuntu!</strong> 的页面。</p>
+<p><code>nginx</code> 的默认网站目录 <code>/usr/share/nginx/html</code></p>
+<h5 id="常用配置命令"><a href="#常用配置命令" class="headerlink" title="常用配置命令"></a>常用配置命令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">##启动服务</div><div class="line">$ sudo service nginx start</div><div class="line">##重启和暂停服务</div><div class="line">$ sudo service nginx restart</div><div class="line">$ sudo service nginx stop</div><div class="line">##查看状态</div><div class="line">$ sudo service nginx status</div></pre></td></tr></table></figure>
+<p>或下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo /etc/init.d/nginx start</div><div class="line">$ sudo /etc/init.d/nginx stop</div><div class="line">$ sudo /etc/init.d/nginx restart</div><div class="line">$ sudo /etc/init.d/nginx status</div></pre></td></tr></table></figure>
+<p>Nginx的配置文件和Supervisor类似，不同的程序可以分别配置，然后被总配置文件<code>include</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">## Nginx的主配置文件地址</div><div class="line">/etc/nginx/nginx.conf</div><div class="line"></div><div class="line">## 新建单独的配置文件</div><div class="line">## 在conf.d目录下</div><div class="line">$ sudo vim /etc/nginx/conf.d/helloweb.conf</div><div class="line"></div><div class="line">## 然后写入下列内容：</div><div class="line">server &#123;</div><div class="line">        listen   80;             //端口</div><div class="line">        server_name 192.168.1.144;   //访问域名</div><div class="line">        root /home/tiger/myflack/myproject;</div><div class="line">        access_log /home/tiger/myflask/myproject/logs/nginx_access.log;</div><div class="line">        error_log /home/tiger/myflask/myproject/logs/nginx_error.log;</div><div class="line">        location / &#123;</div><div class="line">                proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;</div><div class="line">                proxy_set_header Host $http_host;</div><div class="line">                proxy_redirect off;</div><div class="line">                if (!-f $request_filename) &#123;</div><div class="line">                        proxy_pass http://127.0.0.1:8000;  //这里是flask的gunicorn端口</div><div class="line">                        break;</div><div class="line">                &#125;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>也可以用下面的最简配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name _; # _表示 localhost </div><div class="line"></div><div class="line">    root /home/tiger/myflack/myproject; # hello.py 文件所在的目录</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        proxy_pass http://127.0.0.1:8000;  //这里是flask的gunicorn端口</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>配置完成之后，<code>sudo service nginx restart</code> 重启一下服务。</p>
+<p>现在，在浏览器中输入 <code>http://127.0.0.1</code> 即可正常访问。</p>
+<hr>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ul>
+<li>Flask应用的基本部署依赖包括一个应用容器（比如Gunicorn）和一个反向代理（比如Nginx）。 </li>
+<li>Gunicorn应该退居Nginx幕后并监听127.0.0.1（内部请求）而非0.0.0.0（外部请求）。</li>
+<li>仍有疑问的地方：在虚拟环境下安装的<code>supervisor</code> 并非是全局的，经测试 <code>kill</code> 掉 <code>supervisor</code> 进程后也不会自动重启，或如何随系统启动？该问题待进一步测试</li>
+</ul>
+<hr>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><ul>
+<li><a href="http://virtualenv-chinese-docs.readthedocs.io/en/latest/" target="_blank" rel="external">virtualenv &mdash; virtualenv 1.7.1.2.post1 documentation</a></li>
+<li><a href="https://github.com/defshine/flaskblog" target="_blank" rel="external">GitHub - defshine/flaskblog: Learn python and flask,just a tony blog system</a></li>
+<li><a href="http://gunicorn.org/" target="_blank" rel="external">Gunicorn - Python WSGI HTTP Server for UNIX</a></li>
+<li><a href="http://dormousehole.readthedocs.io/en/latest/installation.html" target="_blank" rel="external">安装 Flask 0.10 documentation</a></li>
+</ul>
+<hr>
+<ul>
+<li><a href="http://www.cnblogs.com/Ray-liang/p/4837850.html" target="_blank" rel="external">Flask + Gunicorn + Nginx 部署 - Ray Liang - 博客园</a></li>
+<li><a href="http://www.cnblogs.com/herryly/p/4517852.html" target="_blank" rel="external">阿里云ECS上环境搭建(virtualenv+flask+gunicorn+supervisor+nginx) - 菩提本无树 - 博客园</a></li>
+<li><a href="http://www.cnblogs.com/Ray-liang/p/4173923.html" target="_blank" rel="external">阿里云部署 Flask  + WSGI + Nginx 详解 - Ray Liang - 博客园</a></li>
+<li><a href="http://blog.csdn.net/beerium/article/details/8721906" target="_blank" rel="external">Supervisor 管理后台守护进程</a></li>
+</ul>
+<hr>
+<ul>
+<li><a href="http://www.jianshu.com/p/be9dd421fb8d" target="_blank" rel="external">python web 部署：nginx + gunicorn + supervisor + flask 部署笔记 - 简书</a></li>
+<li><a href="http://beiyuu.com/vps-config-python-vitrualenv-flask-gunicorn-supervisor-nginx/" target="_blank" rel="external">VPS环境搭建详解 (Virtualenv+Gunicorn+Supervisor+Nginx) | BeiYuu.com</a></li>
+<li><a href="http://xhrwang.me/2014/12/13/restful-api-by-flask.html" target="_blank" rel="external">基于 Flask 实现 RESTful API | Ross’s Page</a></li>
+<li><a href="http://xhrwang.me/2014/12/17/deploy-flask-app-with-gunicorn-and-nginx.html" target="_blank" rel="external">Ubuntu 14.04 系统基于 Gunicorn 和 Nginx 部署 Flask 应用 | Ross’s Page</a></li>
+<li><a href="http://codingnow.cn/server/539.html" target="_blank" rel="external">Flask+Nginx+Gunicorn+Redis+Mysql搭建一个小站 | Alex&#039;s Blog</a></li>
+<li><a href="http://www.onurguzel.com/how-to-run-flask-applications-with-nginx-using-gunicorn/" target="_blank" rel="external">How to Run Flask Applications with Nginx Using Gunicorn &#8211; Onur Güzel</a> *</li>
+<li><a href="http://codingnow.cn/server/431.html" target="_blank" rel="external">dnsmasq配置域名重定向和dns缓存 | Alex&#039;s Blog</a></li>
+<li><a href="http://www.simpleapples.com/2015/06/configure-nginx-supervisor-gunicorn-flask/" target="_blank" rel="external">在阿里云CentOS7中配置基于Nginx+Supervisor+Gunicorn的Flask项目 - simpleapples</a></li>
+<li><a href="http://news.oneapm.com/flask-nginx-gunicorn-supervisor-python/" target="_blank" rel="external">virtualenv 环境下 Django + Nginx + Gunicorn+ Supervisor 搭建 Python Web</a></li>
+<li><a href="https://spacewander.github.io/explore-flask-zh/14-deployment.html" target="_blank" rel="external">部署 | Flask之旅</a></li>
+<li><a href="http://dushunfan.com/2013/03/17/deploy-flask-in-centos6-nginx-gunicorn-supervisor/" target="_blank" rel="external">CentOS 6 下使用 Nginx，Gunicorn 以及 Supervisor 部署 Flask 应用 - 杜顺帆的个人博客</a></li>
+<li><a href="http://autarch.me/archives/2016/01/%E5%9C%A8-Ubuntu-%E4%B8%AD-Nginx-Gunicorn-%E9%83%A8%E7%BD%B2-Flask.html" target="_blank" rel="external">在 Ubuntu 中 Nginx,Gunicorn 部署 Flask | autarch</a> * </li>
+<li><a href="https://zhuanlan.zhihu.com/p/22126999" target="_blank" rel="external">阿里云Python+Flask环境搭建</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2016/05/09/configuring-flask-running-environment-under-ubuntu/" title="Ubuntu下配置Flask运行环境">http://www.itfanr.cc/2016/05/09/configuring-flask-running-environment-under-ubuntu/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/Flask/" rel="tag"># Flask</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/06/linux-performance-monitoring-tool-netdata/" rel="next" title="Netdata-Linux下性能监视工具">
+                <i class="fa fa-chevron-left"></i> Netdata-Linux下性能监视工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/17/time-difference-in-python/" rel="prev" title="Python时间差">
+                Python时间差 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#准备python环境"><span class="nav-number">1.1.</span> <span class="nav-text">准备python环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建virtualenv虚拟环境"><span class="nav-number">1.2.</span> <span class="nav-text">创建virtualenv虚拟环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Flask"><span class="nav-number">1.3.</span> <span class="nav-text">安装Flask</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#退出虚拟环境"><span class="nav-number">1.4.</span> <span class="nav-text">退出虚拟环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动falsk"><span class="nav-number">1.5.</span> <span class="nav-text">启动falsk</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Gunicorn"><span class="nav-number">2.</span> <span class="nav-text">配置Gunicorn</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Supervisor"><span class="nav-number">3.</span> <span class="nav-text">Supervisor</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装supervisor"><span class="nav-number">3.1.</span> <span class="nav-text">安装supervisor</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#常用操作"><span class="nav-number">3.1.1.</span> <span class="nav-text">常用操作</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#生成supervisor默认配置文件"><span class="nav-number">3.1.2.</span> <span class="nav-text">生成supervisor默认配置文件</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#修改supervisor配置文件，添加gunicorn进程管理"><span class="nav-number">3.1.3.</span> <span class="nav-text">修改supervisor配置文件，添加gunicorn进程管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置Nginx"><span class="nav-number">4.</span> <span class="nav-text">配置Nginx</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装nginx"><span class="nav-number">4.1.</span> <span class="nav-text">安装nginx</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常用配置命令"><span class="nav-number">4.2.</span> <span class="nav-text">常用配置命令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">6.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>

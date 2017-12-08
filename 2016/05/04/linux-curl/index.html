@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="cURL-命令行下工作的文件传输工具">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cURL-命令行下工作的文件传输工具">
+<meta property="og:url" content="http://www.itfanr.cc/2016/05/04/linux-curl/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="cURL-命令行下工作的文件传输工具">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-08T16:01:31.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cURL-命令行下工作的文件传输工具">
+<meta name="twitter:description" content="cURL-命令行下工作的文件传输工具">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.itfanr.cc/2016/05/04/linux-curl/"/>
+
+
+
+
+
+  <title>cURL-命令行下工作的文件传输工具 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2016/05/04/linux-curl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cURL-命令行下工作的文件传输工具</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-04T22:16:00+08:00">
+                2016-05-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-09T00:01:31+08:00">
+                2017-12-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/开发笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">开发笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,525
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  cURL-命令行下工作的文件传输工具
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>cURL是一种命令行工具，作用是发出网络请求，然后得到和提取数据，显示在”标准输出”（stdout）上面。</p>
+<h4 id="Linux下安装cURL"><a href="#Linux下安装cURL" class="headerlink" title="Linux下安装cURL"></a>Linux下安装cURL</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install -y curl</div></pre></td></tr></table></figure>
+<h4 id="Windows下安装cURL"><a href="#Windows下安装cURL" class="headerlink" title="Windows下安装cURL"></a>Windows下安装cURL</h4><ol>
+<li>Windows下默认没有cURL命令，需要安装后才能使用</li>
+<li>到网址 <a href="https://curl.haxx.se/download/trash/" target="_blank" rel="external">curl download</a> 下载curl安装包，我下载的是 <code>curl-7.33.0-win64-ssl-sspi.zip 2013-10-16 04:24 698K</code> 。</li>
+<li>解压安装包，只有一个curl.exe文件，在 <code>curl.exe</code> 所在目录下打开 <code>cmd</code> 命令行窗口，就可以直接使用 <code>curl</code> 命令了。</li>
+<li>为了让 <code>curl</code> 支持访问 <code>https</code> 的网址，需要下载 <code>OpenSSL</code> ,到 <a href="http://slproweb.com/products/Win32OpenSSL.html" target="_blank" rel="external">Win32OpenSSL</a> 下载 <code>Win32 OpenSSL v1.0.1t Light</code> 文件。</li>
+<li>上面的 2、3、4 步，如果你觉得太麻烦的话，也可以到 <a href="https://curl.haxx.se/download.html#Win64" target="_blank" rel="external">cURL - Download</a> 下载 <code>Win64 x86_64 7zip    7.49.0    binary    SSL  SSH  Viktor Szakáts</code> 这一项，下载后压缩包里的bin目录下有三个文件：<code>curl.exe</code>，<code>curl-ca-bundle.crt</code>，<code>libcurl.dll</code>，里面自带了SSL的证书文件。</li>
+</ol>
+<hr>
+<h4 id="cURL常用命令整理"><a href="#cURL常用命令整理" class="headerlink" title="cURL常用命令整理"></a>cURL常用命令整理</h4><p>格式： <code>curl [参数] [URL地址]</code></p>
+<h5 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a><span id="demo_top">参数介绍</span></h5><table>
+<thead>
+<tr>
+<th style="text-align:center">缩写</th>
+<th style="text-align:left">完整命令</th>
+<th style="text-align:center">示例</th>
+<th style="text-align:left">释意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>-A</code></td>
+<td style="text-align:left"><code>--user-agent &lt;agent string&gt;</code></td>
+<td style="text-align:center"><a href="#demo_user_agent">demo</a></td>
+<td style="text-align:left">指定User-Agent的值</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-b</code></td>
+<td style="text-align:left"><code>--cookie &lt;name=data/file&gt;</code></td>
+<td style="text-align:center"><a href="#demo_b">demo</a></td>
+<td style="text-align:left">cookie字符串或文件读取位置，使用option来把上次的cookie信息追加到http request里面去</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-c</code></td>
+<td style="text-align:left"><code>--cookie-jar &lt;file name&gt;</code></td>
+<td style="text-align:center"><a href="#demo_c">demo</a></td>
+<td style="text-align:left">操作结束后把cookie写入到这个文件中</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-C</code></td>
+<td style="text-align:left"><code>--continue-at &lt;offset&gt;</code></td>
+<td style="text-align:center"><a href="#demo_continue">demo</a></td>
+<td style="text-align:left">断点续传</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-d</code></td>
+<td style="text-align:left"><code>--data &lt;data&gt;</code></td>
+<td style="text-align:center"><a href="#demo_data">demo</a></td>
+<td style="text-align:left">HTTP POST方式传送数据 <code>application/x-www-url-encoded</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-D</code></td>
+<td style="text-align:left"><code>--dump-header &lt;file&gt;</code></td>
+<td style="text-align:center"><a href="#demo_dump">demo</a></td>
+<td style="text-align:left">将请求返回的响应信息保存到指定的文件中</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-e</code></td>
+<td style="text-align:left"><code>--referer &lt;URL&gt;</code></td>
+<td style="text-align:center"><a href="#demo_referer">demo</a></td>
+<td style="text-align:left">指定引用地址，表示从哪里跳转过来的</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-E</code></td>
+<td style="text-align:left"><code>--cert &lt;certificate[:password]&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-F</code></td>
+<td style="text-align:left"><code>--form &lt;name=content&gt;</code></td>
+<td style="text-align:center"><a href="#demo_form">demo</a></td>
+<td style="text-align:left">HTTP 表单方式提交数据 <code>multipart/form-data</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-G</code></td>
+<td style="text-align:left"><code>--get</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">使用GET方式请求，并将参数拼接在URL的<code>?</code>后面</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-H</code></td>
+<td style="text-align:left"><code>--header &lt;header&gt;</code></td>
+<td style="text-align:center"><a href="#demo_header">demo</a></td>
+<td style="text-align:left">指定请求头参数</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-I</code></td>
+<td style="text-align:left"><code>--head</code></td>
+<td style="text-align:center"><a href="#demo_head">demo</a></td>
+<td style="text-align:left">仅返回头部信息，使用<code>HEAD</code>请求</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-L</code></td>
+<td style="text-align:left"><code>--location</code></td>
+<td style="text-align:center"><a href="#demo_location">demo</a></td>
+<td style="text-align:left">执行重定向操作 <code>3xx</code></td>
+</tr>
+<tr>
+<td style="text-align:center"><code> </code></td>
+<td style="text-align:left"><code>--limit-rate &lt;speed&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">限制最大传输率</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-m</code></td>
+<td style="text-align:left"><code>--max-time &lt;seconds&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">指定处理的最大时长</td>
+</tr>
+<tr>
+<td style="text-align:center"><code> </code></td>
+<td style="text-align:left"><code>--max-filesize &lt;bytes&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">指定要下载的文件的最大长度，如果超过bytes值，下载并不开始、返回退出码63</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-o</code></td>
+<td style="text-align:left"><code>--output &lt;file&gt;</code></td>
+<td style="text-align:center"><a href="#demo_output">demo</a></td>
+<td style="text-align:left">将文件保存为命令行中指定的文件名的文件中</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&gt;</code></td>
+<td style="text-align:left"><code>&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">等同于<code>-o</code>,对输出进行转向输出</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-O</code></td>
+<td style="text-align:left"><code>--remote-name</code></td>
+<td style="text-align:center"><a href="#demo_remote">demo</a></td>
+<td style="text-align:left">使用URL中默认的文件名保存文件到本地</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-r</code></td>
+<td style="text-align:left"><code>--range &lt;range&gt;</code></td>
+<td style="text-align:center"><a href="#demo_range">demo</a></td>
+<td style="text-align:left">检索来自HTTP/1.1或FTP服务器字节范围;分块下载</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-s</code></td>
+<td style="text-align:left"><code>--silent</code></td>
+<td style="text-align:center"><a href="#demo_silent">demo</a></td>
+<td style="text-align:left">减少输出信息,比如进度显示或错误信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><code> </code></td>
+<td style="text-align:left"><code>--ssl</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">使用SSL/TLS方式创建连接请求</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-T</code></td>
+<td style="text-align:left"><code>--upload-file &lt;file&gt;</code></td>
+<td style="text-align:center"><a href="#demo_upload">demo</a></td>
+<td style="text-align:left">使用PUT方法上传，<code>-T</code>参数指定上传文件</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-u</code></td>
+<td style="text-align:left"><code>--user &lt;user:password&gt;</code></td>
+<td style="text-align:center"><a href="#demo_user">demo</a></td>
+<td style="text-align:left">设置服务器的用户和密码</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-v</code></td>
+<td style="text-align:left"><code>--verbose</code></td>
+<td style="text-align:center"><a href="#demo_verbose">demo</a></td>
+<td style="text-align:left">小写的v参数，用于打印更多信息，包括发送的请求信息，这在调试脚本是特别有用</td>
+</tr>
+<tr>
+<td style="text-align:center"><code> </code></td>
+<td style="text-align:left"><code>--trace</code></td>
+<td style="text-align:center"><a href="#demo_trace">demo</a></td>
+<td style="text-align:left">查看更详细的通信过程</td>
+</tr>
+<tr>
+<td style="text-align:center"><code> </code></td>
+<td style="text-align:left"><code>--trace-ascii</code></td>
+<td style="text-align:center"><a href="#demo_trace">demo</a></td>
+<td style="text-align:left">查看更详细的通信过程</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-w</code></td>
+<td style="text-align:left"><code>--write-out &lt;format&gt;</code></td>
+<td style="text-align:center"><a href="#demo_write_out">demo</a></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-x</code></td>
+<td style="text-align:left"><code>--proxy &lt;[protocol://][user:password@]proxyhost[:port]&gt;</code></td>
+<td style="text-align:center"><a href="#demo_proxy">demo</a></td>
+<td style="text-align:left">指定代理服务器地址和端口，端口默认为1080</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-X</code></td>
+<td style="text-align:left"><code>--request &lt;command&gt;</code></td>
+<td style="text-align:center"><a href="#demo_request">demo</a></td>
+<td style="text-align:left">指定GET,HEAD,POST,PUT,DELETE等请求协议</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-h</code></td>
+<td style="text-align:left"><code>--help</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">使用帮助</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>-V</code></td>
+<td style="text-align:left"><code>--version</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">版本信息</td>
+</tr>
+<tr>
+<td style="text-align:center"><code> </code></td>
+<td style="text-align:left"><code>--retry &lt;num&gt;</code></td>
+<td style="text-align:center"></td>
+<td style="text-align:left">指定重试次数</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p><i id="demo_user_agent"></i>  <code>-A</code> 指定User-Agent的值  <a href="#demo_top">Back To Top</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -A &quot;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)&quot; -o page.html http://www.www.baidu.com</div></pre></td></tr></table></figure></p>
+<p><i id="demo_b"></i>  <code>-b</code> 使用cookie文件(当前目录下的cookie.txt文件)  <a href="#demo_top">Back To Top</a> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 指定 cookie信息 访问</div><div class="line">$ curl -b &quot;name=data&quot; http://www.baidu.com</div><div class="line">// 使用 本地文件中的cookie信息 访问</div><div class="line">$ curl -b cookie.txt http://www.xxxx.com/api</div></pre></td></tr></table></figure>
+<p><i id="demo_c"></i> <code>-c</code> 将请求得到的cookie信息保存到本地的 cookie.txt文件中  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -c cookie.txt http://www.alibaba.com</div></pre></td></tr></table></figure>
+<p><i id="demo_continue"></i>  <code>-C</code> 选项可对大文件使用断点续传功能  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 当文件在下载完成之前结束该进程</div><div class="line">$ curl -O http://www.xxx.com/gettext.html</div><div class="line">// ############# 20.1%</div><div class="line">// 通过添加-C选项继续对该文件进行下载，已经下载过的文件不会被重新下载</div><div class="line">$ curl -C -O http://www.xxx.com/gettext.html</div><div class="line">// ############# 20.1%</div></pre></td></tr></table></figure>
+<p><i id="demo_data"></i>  <code>-d</code> 通过 <code>application/x-www-url-encoded</code> 方式发送POST请求，-d参数以<code>name=value</code>的方式指定参数内容  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//多个参数用&amp;连接</div><div class="line">$ curl -d &quot;q=hello&amp;param2=test&quot; http://www.google.com  </div><div class="line">//多个参数分别指定    </div><div class="line">$ curl -d &quot;action=del&quot; -d &quot;id=12&quot; http://localhost/action.php</div></pre></td></tr></table></figure>
+<p><strong>注意：<code>-d</code> 后面<code>post</code> 的参数必须用双引号<code>&quot;</code>而不是单引号<code>&#39;</code>括起来，否则会报错 </strong></p>
+<p><i id="demo_dump"></i> <code>-D</code> 将请求返回的响应信息保存到指定的文件中  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -D cookie.txt http://www.alibaba.com</div></pre></td></tr></table></figure>
+<p><strong>注意：-c 仅包含响应头中的cookie信息 -D 包含响应头中的所有响应信息</strong>  </p>
+<p><i id="demo_referer"></i> <code>-e</code> 设置<code>Referer</code>引用地址  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -e http://localhost http://www.XXXX.com/wp-login.php</div></pre></td></tr></table></figure>
+<p><i id="demo_form"></i> <code>-F</code> 通过 <code>multipart/form-data</code> 方式发送POST请求，<code>-F</code>参数以<code>name=value</code>的方式指定参数内容；如果值是一个文件，使用<code>name=@file</code>的方式来指定;需要指定上传文件类型时，用<code>type=</code>来指定 <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ curl -F &quot;action=upload&quot; -F &quot;filename=@file.tar.gz&quot; http://localhost/action.php</div><div class="line">//如果通过代理，上述命令可能会被代理拒绝，需要指定上传文件的MIME类型：</div><div class="line">$ curl -x proxy.com:8080 -F &quot;action=upload&quot; -F &quot;filename=@file.tar.gz; type=application/octet-stream&quot; http://localhost/action.php</div></pre></td></tr></table></figure>
+<p><i id="demo_header"></i> <code>-H</code> 指定请求头参数  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -H &quot;Content-Type:application/json&quot; http://example.com</div></pre></td></tr></table></figure>
+<p><i id="demo_head"></i> <code>-I</code> 仅返回头部信息，使用<code>HEAD</code>请求  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -I http://www.baidu.com</div></pre></td></tr></table></figure>
+<p><strong>注意：使用<code>-I</code>时，接口需要支持<code>Method=HEAD</code>请求，否则会返回<code>405 Method Not Allowed</code></strong></p>
+<p><i id="demo_location"></i> <code>-L</code> 执行重定向操作  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -L www.baidu.com</div></pre></td></tr></table></figure>
+<p><i id="demo_output"></i> <code>-o</code> 将文件保存为命令行中指定的文件名的文件中  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 将百度首页内容抓到 home.html 中</div><div class="line">$ curl -o home.html http://baidu.com</div><div class="line">// 符号`&gt;`和`-o`效果相同</div><div class="line">$ curl &gt; home.html http://baidu.com</div></pre></td></tr></table></figure>
+<p><i id="demo_remote"></i> <code>-O</code> 使用URL中默认的文件名保存文件到本地  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//将内容保存到 gettext.html 中</div><div class="line">$ curl -O http://www.xxx.com/gettext.html</div></pre></td></tr></table></figure>
+<p><i id="demo_range"></i> <code>-r</code> 分段下载  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//获取前100字节的数据</div><div class="line">$ curl -r 0-99 http://www.get.this/</div><div class="line">//获取最后500字节的数据</div><div class="line">$ curl -r -500 http://www.get.this/</div></pre></td></tr></table></figure>
+<p><i id="demo_silent"></i> <code>-s</code> 减少输出信息  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -s http://www.get.this/</div></pre></td></tr></table></figure>
+<p><i id="demo_upload"></i> <code>-T</code> 指定上传文件路径；可以一个<code>-T</code>对应一条Url来表示将一个文件上传到指定的Url;或者同时向一条Url上传多个文件  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// ftp 上传</div><div class="line">$ curl -T test.sql ftp://用户名:密码@ip:port/demo/curtain/bbstudy_files/</div><div class="line">//同时上传多个文件</div><div class="line">$ curl -T &quot;&#123;file1,file2&#125;&quot; http://www.example.com</div></pre></td></tr></table></figure>
+<p><i id="demo_user"></i> <code>-u</code> 设置服务器的用户和密码  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl -u 用户名:密码 http://www.example.com</div><div class="line">$ curl -u 用户名:密码 -O http://www.XXXX.com/demo/curtain/bbstudy_files/style.css</div></pre></td></tr></table></figure>
+<p><i id="demo_verbose"></i> <code>-v</code> 用于打印更多信息，可以显示一次http通信的整个过程，包括端口连接和http request头信息  <a href="#demo_top">Back To Top</a>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -v www.baidu.com</div></pre></td></tr></table></figure>
+<p><i id="demo_trace"></i> <code>--trace</code> 查看更详细的通信过程  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ curl --trace output.txt www.baidu.com</div><div class="line">//或</div><div class="line">$ curl --trace-ascii output.txt www.baidu.com</div></pre></td></tr></table></figure>
+<p><i id="demo_write_out"></i> <code>-w</code> 获取指定输出内容  <a href="#demo_top">Back To Top</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -m 10 -w &apos;%&#123;http_code&#125;\n&apos; http://wyh.life/ -so /dev/null</div></pre></td></tr></table></figure>
+<p><i id="demo_referer"></i> <code>-x</code> 指定代理服务器地址和端口  <a href="#demo_top">Back To Top</a>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ curl -u &lt;user&gt;:&lt;passwd&gt; -x &lt;proxy&gt;:&lt;port&gt; http://www.get.this/</div></pre></td></tr></table></figure>
+<p><i id="demo_request"></i> <code>-X</code> -X参数可以支持其他动词  <a href="#demo_top">Back To Top</a>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl -X POST www.example.com</div><div class="line">$ curl -X DELETE www.example.com</div></pre></td></tr></table></figure>
+<h4 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h4><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2011/09/curl.html" target="_blank" rel="external">curl网站开发指南 - 阮一峰的网络日志</a></li>
+<li><a href="http://www.cnblogs.com/gbyukg/p/3326825.html" target="_blank" rel="external">CURL常用命令 - 张贺 - 博客园</a></li>
+<li><a href="http://www.jianshu.com/p/f686e40ad647" target="_blank" rel="external">Curl使用 - 简书</a></li>
+<li><a href="http://www.jianshu.com/p/febb67b699eb" target="_blank" rel="external">linux curl - 简书</a></li>
+<li><a href="http://www.jianshu.com/p/9a2a9802487a" target="_blank" rel="external">提升开发效率小工具之-curl - 简书</a></li>
+<li><a href="https://segmentfault.com/a/1190000005177475" target="_blank" rel="external">curl命令常用操作 - web开发 - SegmentFault</a></li>
+<li><a href="https://segmentfault.com/a/1190000004899829" target="_blank" rel="external">cURL备忘 - 脸滚键盘教™ - SegmentFault</a></li>
+<li><a href="https://github.com/dongjun111111/blog/issues/42" target="_blank" rel="external">Curl使用 · Issue #42 · dongjun111111/blog · GitHub</a></li>
+<li><a href="http://wiki.zheng-ji.info/Tool/curl.html" target="_blank" rel="external">curl - zheng-ji’s Wiki</a></li>
+</ul>
+<hr>
+<h4 id="help"><a href="#help" class="headerlink" title="help"></a><strong>help</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div></pre></td><td class="code"><pre><div class="line">$ curl --help</div><div class="line">Usage: curl [options...] &lt;url&gt;</div><div class="line">Options: (H) means HTTP/HTTPS only, (F) means FTP only</div><div class="line">     --anyauth       Pick &quot;any&quot; authentication method (H)</div><div class="line"> -a, --append        Append to target file when uploading (F/SFTP)</div><div class="line">     --basic         Use HTTP Basic Authentication (H)</div><div class="line">     --cacert FILE   CA certificate to verify peer against (SSL)</div><div class="line">     --capath DIR    CA directory to verify peer against (SSL)</div><div class="line"> -E, --cert CERT[:PASSWD]  Client certificate file and password (SSL)</div><div class="line">     --cert-status   Verify the status of the server certificate (SSL)</div><div class="line">     --cert-type TYPE  Certificate file type (DER/PEM/ENG) (SSL)</div><div class="line">     --ciphers LIST  SSL ciphers to use (SSL)</div><div class="line">     --compressed    Request compressed response (using deflate or gzip)</div><div class="line"> -K, --config FILE   Read config from FILE</div><div class="line">     --connect-timeout SECONDS  Maximum time allowed for connection</div><div class="line"> -C, --continue-at OFFSET  Resumed transfer OFFSET</div><div class="line"> -b, --cookie STRING/FILE  Read cookies from STRING/FILE (H)</div><div class="line"> -c, --cookie-jar FILE  Write cookies to FILE after operation (H)</div><div class="line">     --create-dirs   Create necessary local directory hierarchy</div><div class="line">     --crlf          Convert LF to CRLF in upload</div><div class="line">     --crlfile FILE  Get a CRL list in PEM format from the given file</div><div class="line"> -d, --data DATA     HTTP POST data (H)</div><div class="line">     --data-raw DATA  HTTP POST data, &apos;@&apos; allowed (H)</div><div class="line">     --data-ascii DATA  HTTP POST ASCII data (H)</div><div class="line">     --data-binary DATA  HTTP POST binary data (H)</div><div class="line">     --data-urlencode DATA  HTTP POST data url encoded (H)</div><div class="line">     --delegation STRING  GSS-API delegation permission</div><div class="line">     --digest        Use HTTP Digest Authentication (H)</div><div class="line">     --disable-eprt  Inhibit using EPRT or LPRT (F)</div><div class="line">     --disable-epsv  Inhibit using EPSV (F)</div><div class="line">     --dns-servers   DNS server addrs to use: 1.1.1.1;2.2.2.2</div><div class="line">     --dns-interface  Interface to use for DNS requests</div><div class="line">     --dns-ipv4-addr  IPv4 address to use for DNS requests, dot notation</div><div class="line">     --dns-ipv6-addr  IPv6 address to use for DNS requests, dot notation</div><div class="line"> -D, --dump-header FILE  Write the headers to FILE</div><div class="line">     --egd-file FILE  EGD socket path for random data (SSL)</div><div class="line">     --engine ENGINE  Crypto engine (use &quot;--engine list&quot; for list) (SSL)</div><div class="line"> -f, --fail          Fail silently (no output at all) on HTTP errors (H)</div><div class="line">     --false-start   Enable TLS False Start.</div><div class="line"> -F, --form CONTENT  Specify HTTP multipart POST data (H)</div><div class="line">     --form-string STRING  Specify HTTP multipart POST data (H)</div><div class="line">     --ftp-account DATA  Account data string (F)</div><div class="line">     --ftp-alternative-to-user COMMAND  String to replace &quot;USER [name]&quot; (F)</div><div class="line">     --ftp-create-dirs  Create the remote dirs if not present (F)</div><div class="line">     --ftp-method [MULTICWD/NOCWD/SINGLECWD]  Control CWD usage (F)</div><div class="line">     --ftp-pasv      Use PASV/EPSV instead of PORT (F)</div><div class="line"> -P, --ftp-port ADR  Use PORT with given address instead of PASV (F)</div><div class="line">     --ftp-skip-pasv-ip  Skip the IP address for PASV (F)</div><div class="line">     --ftp-pret      Send PRET before PASV (for drftpd) (F)</div><div class="line">     --ftp-ssl-ccc   Send CCC after authenticating (F)</div><div class="line">     --ftp-ssl-ccc-mode ACTIVE/PASSIVE  Set CCC mode (F)</div><div class="line">     --ftp-ssl-control  Require SSL/TLS for FTP login, clear for transfer (F)</div><div class="line"> -G, --get           Send the -d data with a HTTP GET (H)</div><div class="line"> -g, --globoff       Disable URL sequences and ranges using &#123;&#125; and []</div><div class="line"> -H, --header LINE   Pass custom header LINE to server (H)</div><div class="line"> -I, --head          Show document info only</div><div class="line"> -h, --help          This help text</div><div class="line">     --hostpubmd5 MD5  Hex-encoded MD5 string of the host public key. (SSH)</div><div class="line"> -0, --http1.0       Use HTTP 1.0 (H)</div><div class="line">     --http1.1       Use HTTP 1.1 (H)</div><div class="line">     --http2         Use HTTP 2 (H)</div><div class="line">     --ignore-content-length  Ignore the HTTP Content-Length header</div><div class="line"> -i, --include       Include protocol headers in the output (H/F)</div><div class="line"> -k, --insecure      Allow connections to SSL sites without certs (H)</div><div class="line">     --interface INTERFACE  Use network INTERFACE (or address)</div><div class="line"> -4, --ipv4          Resolve name to IPv4 address</div><div class="line"> -6, --ipv6          Resolve name to IPv6 address</div><div class="line"> -j, --junk-session-cookies  Ignore session cookies read from file (H)</div><div class="line">     --keepalive-time SECONDS  Wait SECONDS between keepalive probes</div><div class="line">     --key KEY       Private key file name (SSL/SSH)</div><div class="line">     --key-type TYPE  Private key file type (DER/PEM/ENG) (SSL)</div><div class="line">     --krb LEVEL     Enable Kerberos with security LEVEL (F)</div><div class="line">     --libcurl FILE  Dump libcurl equivalent code of this command line</div><div class="line">     --limit-rate RATE  Limit transfer speed to RATE</div><div class="line"> -l, --list-only     List only mode (F/POP3)</div><div class="line">     --local-port RANGE  Force use of RANGE for local port numbers</div><div class="line"> -L, --location      Follow redirects (H)</div><div class="line">     --location-trusted  Like &apos;--location&apos;, and send auth to other hosts (H)</div><div class="line">     --login-options OPTIONS  Server login options (IMAP, POP3, SMTP)</div><div class="line"> -M, --manual        Display the full manual</div><div class="line">     --mail-from FROM  Mail from this address (SMTP)</div><div class="line">     --mail-rcpt TO  Mail to this/these addresses (SMTP)</div><div class="line">     --mail-auth AUTH  Originator address of the original email (SMTP)</div><div class="line">     --max-filesize BYTES  Maximum file size to download (H/F)</div><div class="line">     --max-redirs NUM  Maximum number of redirects allowed (H)</div><div class="line"> -m, --max-time SECONDS  Maximum time allowed for the transfer</div><div class="line">     --metalink      Process given URLs as metalink XML file</div><div class="line">     --negotiate     Use HTTP Negotiate (SPNEGO) authentication (H)</div><div class="line"> -n, --netrc         Must read .netrc for user name and password</div><div class="line">     --netrc-optional  Use either .netrc or URL; overrides -n</div><div class="line">     --netrc-file FILE  Specify FILE for netrc</div><div class="line"> -:, --next          Allows the following URL to use a separate set of options</div><div class="line">     --no-alpn       Disable the ALPN TLS extension (H)</div><div class="line"> -N, --no-buffer     Disable buffering of the output stream</div><div class="line">     --no-keepalive  Disable keepalive use on the connection</div><div class="line">     --no-npn        Disable the NPN TLS extension (H)</div><div class="line">     --no-sessionid  Disable SSL session-ID reusing (SSL)</div><div class="line">     --noproxy       List of hosts which do not use proxy</div><div class="line">     --ntlm          Use HTTP NTLM authentication (H)</div><div class="line">     --oauth2-bearer TOKEN  OAuth 2 Bearer Token (IMAP, POP3, SMTP)</div><div class="line"> -o, --output FILE   Write to FILE instead of stdout</div><div class="line">     --pass PASS     Pass phrase for the private key (SSL/SSH)</div><div class="line">     --path-as-is    Do not squash .. sequences in URL path</div><div class="line">     --pinnedpubkey FILE/HASHES Public key to verify peer against (SSL)</div><div class="line">     --post301       Do not switch to GET after following a 301 redirect (H)</div><div class="line">     --post302       Do not switch to GET after following a 302 redirect (H)</div><div class="line">     --post303       Do not switch to GET after following a 303 redirect (H)</div><div class="line"> -#, --progress-bar  Display transfer progress as a progress bar</div><div class="line">     --proto PROTOCOLS  Enable/disable PROTOCOLS</div><div class="line">     --proto-default PROTOCOL  Use PROTOCOL for any URL missing a scheme</div><div class="line">     --proto-redir PROTOCOLS   Enable/disable PROTOCOLS on redirect</div><div class="line"> -x, --proxy [PROTOCOL://]HOST[:PORT]  Use proxy on given port</div><div class="line">     --proxy-anyauth  Pick &quot;any&quot; proxy authentication method (H)</div><div class="line">     --proxy-basic   Use Basic authentication on the proxy (H)</div><div class="line">     --proxy-digest  Use Digest authentication on the proxy (H)</div><div class="line">     --proxy-negotiate  Use HTTP Negotiate (SPNEGO) authentication on the proxy (H)</div><div class="line">     --proxy-ntlm    Use NTLM authentication on the proxy (H)</div><div class="line">     --proxy-service-name NAME  SPNEGO proxy service name</div><div class="line">     --service-name NAME  SPNEGO service name</div><div class="line"> -U, --proxy-user USER[:PASSWORD]  Proxy user and password</div><div class="line">     --proxy1.0 HOST[:PORT]  Use HTTP/1.0 proxy on given port</div><div class="line"> -p, --proxytunnel   Operate through a HTTP proxy tunnel (using CONNECT)</div><div class="line">     --pubkey KEY    Public key file name (SSH)</div><div class="line"> -Q, --quote CMD     Send command(s) to server before transfer (F/SFTP)</div><div class="line">     --random-file FILE  File for reading random data from (SSL)</div><div class="line"> -r, --range RANGE   Retrieve only the bytes within RANGE</div><div class="line">     --raw           Do HTTP &quot;raw&quot;; no transfer decoding (H)</div><div class="line"> -e, --referer       Referer URL (H)</div><div class="line"> -J, --remote-header-name  Use the header-provided filename (H)</div><div class="line"> -O, --remote-name   Write output to a file named as the remote file</div><div class="line">     --remote-name-all  Use the remote file name for all URLs</div><div class="line"> -R, --remote-time   Set the remote file&apos;s time on the local output</div><div class="line"> -X, --request COMMAND  Specify request command to use</div><div class="line">     --resolve HOST:PORT:ADDRESS  Force resolve of HOST:PORT to ADDRESS</div><div class="line">     --retry NUM   Retry request NUM times if transient problems occur</div><div class="line">     --retry-delay SECONDS  Wait SECONDS between retries</div><div class="line">     --retry-max-time SECONDS  Retry only within this period</div><div class="line">     --sasl-ir       Enable initial response in SASL authentication</div><div class="line"> -S, --show-error    Show error. With -s, make curl show errors when they occur</div><div class="line"> -s, --silent        Silent mode (don&apos;t output anything)</div><div class="line">     --socks4 HOST[:PORT]  SOCKS4 proxy on given host + port</div><div class="line">     --socks4a HOST[:PORT]  SOCKS4a proxy on given host + port</div><div class="line">     --socks5 HOST[:PORT]  SOCKS5 proxy on given host + port</div><div class="line">     --socks5-hostname HOST[:PORT]  SOCKS5 proxy, pass host name to proxy</div><div class="line">     --socks5-gssapi-service NAME  SOCKS5 proxy service name for GSS-API</div><div class="line">     --socks5-gssapi-nec  Compatibility with NEC SOCKS5 server</div><div class="line"> -Y, --speed-limit RATE  Stop transfers below RATE for &apos;speed-time&apos; secs</div><div class="line"> -y, --speed-time SECONDS  Trigger &apos;speed-limit&apos; abort after SECONDS (default: 30)</div><div class="line">     --ssl           Try SSL/TLS (FTP, IMAP, POP3, SMTP)</div><div class="line">     --ssl-reqd      Require SSL/TLS (FTP, IMAP, POP3, SMTP)</div><div class="line"> -2, --sslv2         Use SSLv2 (SSL)</div><div class="line"> -3, --sslv3         Use SSLv3 (SSL)</div><div class="line">     --ssl-allow-beast  Allow security flaw to improve interop (SSL)</div><div class="line">     --ssl-no-revoke    Disable cert revocation checks (WinSSL)</div><div class="line">     --stderr FILE   Where to redirect stderr (use &quot;-&quot; for stdout)</div><div class="line">     --tcp-nodelay   Use the TCP_NODELAY option</div><div class="line"> -t, --telnet-option OPT=VAL  Set telnet option</div><div class="line">     --tftp-blksize VALUE  Set TFTP BLKSIZE option (must be &gt;512)</div><div class="line"> -z, --time-cond TIME  Transfer based on a time condition</div><div class="line"> -1, --tlsv1         Use &gt;= TLSv1 (SSL)</div><div class="line">     --tlsv1.0       Use TLSv1.0 (SSL)</div><div class="line">     --tlsv1.1       Use TLSv1.1 (SSL)</div><div class="line">     --tlsv1.2       Use TLSv1.2 (SSL)</div><div class="line">     --trace FILE    Write a debug trace to FILE</div><div class="line">     --trace-ascii FILE  Like --trace, but without hex output</div><div class="line">     --trace-time    Add time stamps to trace/verbose output</div><div class="line">     --tr-encoding   Request compressed transfer encoding (H)</div><div class="line"> -T, --upload-file FILE  Transfer FILE to destination</div><div class="line">     --url URL       URL to work with</div><div class="line"> -B, --use-ascii     Use ASCII/text transfer</div><div class="line"> -u, --user USER[:PASSWORD]  Server user and password</div><div class="line">     --tlsuser USER  TLS username</div><div class="line">     --tlspassword STRING  TLS password</div><div class="line">     --tlsauthtype STRING  TLS authentication type (default: SRP)</div><div class="line">     --unix-socket FILE    Connect through this Unix domain socket</div><div class="line"> -A, --user-agent STRING  Send User-Agent STRING to server (H)</div><div class="line"> -v, --verbose       Make the operation more talkative</div><div class="line"> -V, --version       Show version number and quit</div><div class="line"> -w, --write-out FORMAT  Use output FORMAT after completion</div><div class="line">     --xattr         Store metadata in extended file attributes</div><div class="line"> -q                  Disable .curlrc (must be first parameter)</div></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2016/05/04/linux-curl/" title="cURL-命令行下工作的文件传输工具">http://www.itfanr.cc/2016/05/04/linux-curl/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/17/transfer-data-from-filter-to-action/" rel="next" title="MVC和WebAPI如何从Filter向Action中传递数据">
+                <i class="fa fa-chevron-left"></i> MVC和WebAPI如何从Filter向Action中传递数据
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/06/linux-performance-monitoring-tool-netdata/" rel="prev" title="Netdata-Linux下性能监视工具">
+                Netdata-Linux下性能监视工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux下安装cURL"><span class="nav-number">1.</span> <span class="nav-text">Linux下安装cURL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows下安装cURL"><span class="nav-number">2.</span> <span class="nav-text">Windows下安装cURL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cURL常用命令整理"><span class="nav-number">3.</span> <span class="nav-text">cURL常用命令整理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参数介绍"><span class="nav-number">3.1.</span> <span class="nav-text">参数介绍</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例"><span class="nav-number">4.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关链接"><span class="nav-number">5.</span> <span class="nav-text">相关链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#help"><span class="nav-number">6.</span> <span class="nav-text">help</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>
