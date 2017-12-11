@@ -1,11 +1,11 @@
 ---
 title: Golang下通过Gin体验WebSocket框架Melody
 date: 2017-08-14 13:52:19
+updated: 2017-08-14 13:52:19
 tags:
 	- Golang
 	- Gin
 description: Melody 是一个 Go 语言的微型 WebSocket 框架，基于 github.com/gorilla/websocket 开发.
-top: True
 ---
 
 Melody 是一个 Go 语言的微型 WebSocket 框架，基于 github.com/gorilla/websocket 开发.
