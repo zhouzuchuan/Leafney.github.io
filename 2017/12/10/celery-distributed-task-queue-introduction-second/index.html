@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Celery,Docker,RabbitMQ," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="实践在Docker容器中配置Celery运行环境。">
+<meta name="keywords" content="Celery,Docker,RabbitMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Celery分布式任务队列入门(二)-环境配置">
+<meta property="og:url" content="http://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="实践在Docker容器中配置Celery运行环境。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171211/cc9H40dDJ5.jpg?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171211/9JEB2m262l.jpg?imageslim">
+<meta property="og:updated_time" content="2017-12-11T08:16:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Celery分布式任务队列入门(二)-环境配置">
+<meta name="twitter:description" content="实践在Docker容器中配置Celery运行环境。">
+<meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/171211/cc9H40dDJ5.jpg?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/"/>
+
+
+
+
+
+  <title>Celery分布式任务队列入门(二)-环境配置 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Celery分布式任务队列入门(二)-环境配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T23:57:14+08:00">
+                2017-12-10
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2017-12-11T16:16:18+08:00">
+                2017-12-11
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Celery分布式任务队列入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Celery分布式任务队列入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,048
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  实践在Docker容器中配置Celery运行环境。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>实践在Docker容器中配置Celery运行环境。</p>
+<h4 id="创建Docker容器"><a href="#创建Docker容器" class="headerlink" title="创建Docker容器"></a>创建Docker容器</h4><p>在容器 <code>Ubuntu:16.04</code> 系统中来搭建，创建容器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run -it --name celery1 -p 5672:5672 -p 15673:15672 -v /home/tiger/dckerfile/celery1:/app ubuntu /bin/bash</div></pre></td></tr></table></figure>
+<p>需要注意的是在Docker容器中不需要 <code>sudo</code> 命令，默认即是 <code>root</code> 权限。下面的命令请根据自己所在系统类型自行添加 <code>sudo</code> 操作。</p>
+<h5 id="更新软件源"><a href="#更新软件源" class="headerlink" title="更新软件源"></a>更新软件源</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># echo &quot;deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse&quot; &gt;&gt; /etc/apt/sources.list</div><div class="line"># echo &quot;deb http://cn.archive.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse&quot; &gt;&gt; /etc/apt/sources.list</div><div class="line"></div><div class="line"></div><div class="line"># apt-get update</div></pre></td></tr></table></figure>
+<h5 id="安装Erlang依赖"><a href="#安装Erlang依赖" class="headerlink" title="安装Erlang依赖"></a>安装Erlang依赖</h5><p>Erlang可以通过包管理器来安装，或者直接从官方网站下载安装包来安装。</p>
+<p>执行如下命令安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cd /tmp</div><div class="line">wget http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc</div><div class="line"># apt-key add erlang_solutions.asc</div><div class="line"># apt-get update</div><div class="line"># apt-get install erlang</div><div class="line"># apt-get install erlang-nox</div></pre></td></tr></table></figure>
+<p>或者直接从网站 <a href="https://packages.erlang-solutions.com/erlang/#tabs-debian" target="_blank" rel="external">Erlang Downloads</a> 下载 <code>.deb</code> 安装包来安装。</p>
+<h5 id="安装RabbitMQ"><a href="#安装RabbitMQ" class="headerlink" title="安装RabbitMQ"></a>安装RabbitMQ</h5><p>执行如下命令通过包管理器来安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># echo &quot;deb https://dl.bintray.com/rabbitmq/debian xenial main&quot; | tee /etc/apt/sources.list.d/bintray.rabbitmq.list</div><div class="line"></div><div class="line"># wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add -</div><div class="line"></div><div class="line"># apt-get update</div><div class="line"># apt-get install rabbitmq-server</div></pre></td></tr></table></figure>
+<p>发现通过上面方法安装的 <code>Erlang Version</code> 为 <code>Erlang/OTP 18 [erts-7.3] [source] [64-bit] [smp:2:2]</code> ，<br><code>RabbitMQ Version</code> 为 <code>&quot;RabbitMQ&quot;,&quot;3.5.7&quot;</code></p>
+<p>都不是官网上的最新版本，但在软件源中来说已是可安装的最新版本。所以如果想要安装官方的最新版本，可以采用直接从官网获取安装包的方式来安装。</p>
+<h5 id="安装官方最新版"><a href="#安装官方最新版" class="headerlink" title="安装官方最新版"></a>安装官方最新版</h5><p>在Ubuntu系统下直接下载 <code>rabbitmq</code> 的 <code>*.deb</code> 安装包：</p>
+<p>从地址 <a href="https://www.rabbitmq.com/install-debian.html" target="_blank" rel="external">Installing on Debian / Ubuntu</a> 看到最新版本是 3.7.0 <a href="https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.0/rabbitmq-server_3.7.0-1_all.deb" target="_blank" rel="external">rabbitmq-server_3.7.0-1_all.deb</a></p>
+<p>也可以从网址 <a href="https://www.rabbitmq.com/releases/rabbitmq-server/" target="_blank" rel="external">Released Artifacts</a> 选择其他指定版本。</p>
+<p>下面以 <code>rabbitmq-server_3.7.0-1_all.deb</code> 为例安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># wget https://dl.bintray.com/rabbitmq/all/rabbitmq-server/3.7.0/rabbitmq-server_3.7.0-1_all.deb</div><div class="line"># dpkg -i rabbitmq-server_3.7.0-1_all.deb</div></pre></td></tr></table></figure>
+<p>如果提示依赖其他的包，执行如下命令安装依赖包:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># apt-get -f install</div></pre></td></tr></table></figure>
+<p>然后再次执行安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># dpkg -i rabbitmq-server_3.7.0-1_all.deb</div></pre></td></tr></table></figure>
+<p>我在执行 <code>apt-get -f install</code> 时遇到问题，输出提示是要移除 <code>rabbitmq-server</code> ，并没有自动安装其他依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">root@b792ae940e3e:/app# dpkg -i rabbitmq-server_3.7.0-1_all.deb </div><div class="line">Selecting previously unselected package rabbitmq-server.</div><div class="line">(Reading database ... 7744 files and directories currently installed.)</div><div class="line">Preparing to unpack rabbitmq-server_3.7.0-1_all.deb ...</div><div class="line">Unpacking rabbitmq-server (3.7.0-1) ...</div><div class="line">dpkg: dependency problems prevent configuration of rabbitmq-server:</div><div class="line"> rabbitmq-server depends on erlang-nox (&gt;= 1:19.3) | esl-erlang (&gt;= 1:19.3); however:</div><div class="line">  Package erlang-nox is not installed.</div><div class="line">  Package esl-erlang is not installed.</div><div class="line"> rabbitmq-server depends on logrotate; however:</div><div class="line">  Package logrotate is not installed.</div><div class="line"> rabbitmq-server depends on socat; however:</div><div class="line">  Package socat is not installed.</div><div class="line"></div><div class="line">dpkg: error processing package rabbitmq-server (--install):</div><div class="line"> dependency problems - leaving unconfigured</div><div class="line">Processing triggers for systemd (229-4ubuntu21) ...</div><div class="line">Errors were encountered while processing:</div><div class="line"> rabbitmq-server</div><div class="line">root@b792ae940e3e:/app# apt-get -f install</div><div class="line">Reading package lists... Done</div><div class="line">Building dependency tree       </div><div class="line">Reading state information... Done</div><div class="line">Correcting dependencies... Done</div><div class="line">The following packages will be REMOVED:</div><div class="line">  rabbitmq-server</div><div class="line">0 upgraded, 0 newly installed, 1 to remove and 2 not upgraded.</div><div class="line">1 not fully installed or removed.</div><div class="line">After this operation, 13.3 MB disk space will be freed.</div><div class="line">Do you want to continue? [Y/n]</div></pre></td></tr></table></figure>
+<p>所以，我选择手动安装 <code>Erland</code> 的 <code>.deb</code> 包。</p>
+<p>从 网站 <a href="https://www.rabbitmq.com/which-erlang.html" target="_blank" rel="external">RabbitMQ Erlang Version Requirements</a> 中可以看到RabbitMQ和Erlang版本之间的对应关系。这里上面的我按照的是RabbitMQ的 <code>3.7.0</code> 版本，所以我可以选择Erlang的最新版即 <code>20.1.7</code> 版本安装。下载地址见：<a href="https://packages.erlang-solutions.com/erlang/#tabs-debian" target="_blank" rel="external">Erlang Downloads</a> 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># wget http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</div><div class="line"></div><div class="line"># dpkg -i esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</div></pre></td></tr></table></figure>
+<p>这次安装时也提示缺少依赖，所以我执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># apt-get -f install</div></pre></td></tr></table></figure>
+<p>结果是找到了相关的依赖包，输入 <code>y</code> 进行安装。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">root@b792ae940e3e:/app# ls</div><div class="line">esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb  rabbitmq-server_3.7.0-1_all.deb</div><div class="line">root@b792ae940e3e:/app# dpkg -i esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb </div><div class="line">Selecting previously unselected package esl-erlang.</div><div class="line">(Reading database ... 7744 files and directories currently installed.)</div><div class="line">Preparing to unpack esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb ...</div><div class="line">Unpacking esl-erlang (1:20.1.7) ...</div><div class="line">dpkg: dependency problems prevent configuration of esl-erlang:</div><div class="line"> esl-erlang depends on libwxbase2.8-0 | libwxbase3.0-0 | libwxbase3.0-0v5; however:</div><div class="line">  Package libwxbase2.8-0 is not installed.</div><div class="line">  Package libwxbase3.0-0 is not installed.</div><div class="line">  Package libwxbase3.0-0v5 is not installed.</div><div class="line"> esl-erlang depends on libwxgtk2.8-0 | libwxgtk3.0-0 | libwxgtk3.0-0v5; however:</div><div class="line">  Package libwxgtk2.8-0 is not installed.</div><div class="line">  Package libwxgtk3.0-0 is not installed.</div><div class="line">  Package libwxgtk3.0-0v5 is not installed.</div><div class="line"> esl-erlang depends on libsctp1; however:</div><div class="line">  Package libsctp1 is not installed.</div><div class="line"></div><div class="line">dpkg: error processing package esl-erlang (--install):</div><div class="line"> dependency problems - leaving unconfigured</div><div class="line">Errors were encountered while processing:</div><div class="line"> esl-erlang</div><div class="line">root@b792ae940e3e:/app# apt-get -f install</div><div class="line">Reading package lists... Done</div><div class="line">Building dependency tree       </div><div class="line">Reading state information... Done</div><div class="line">Correcting dependencies... Done</div><div class="line">The following additional packages will be installed:</div><div class="line">......</div><div class="line">......</div></pre></td></tr></table></figure>
+<p>然后再次安装 <code>esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</code> 包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># dpkg -i esl-erlang_20.1.7-1~ubuntu~xenial_amd64.deb</div></pre></td></tr></table></figure>
+<p>最后，安装RabbitMQ的包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># dpkg -i rabbitmq-server_3.6.14-1_all.deb</div></pre></td></tr></table></figure>
+<p>如果中途再出现缺少依赖包的问题，通过 <code>apt-get -f install</code> 来解决。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">root@b792ae940e3e:/app# dpkg -i rabbitmq-server_3.7.0-1_all.deb </div><div class="line">Selecting previously unselected package rabbitmq-server.</div><div class="line">(Reading database ... 29232 files and directories currently installed.)</div><div class="line">Preparing to unpack rabbitmq-server_3.7.0-1_all.deb ...</div><div class="line">Unpacking rabbitmq-server (3.7.0-1) ...</div><div class="line">dpkg: dependency problems prevent configuration of rabbitmq-server:</div><div class="line"> rabbitmq-server depends on logrotate; however:</div><div class="line">  Package logrotate is not installed.</div><div class="line"> rabbitmq-server depends on socat; however:</div><div class="line">  Package socat is not installed.</div><div class="line"></div><div class="line">dpkg: error processing package rabbitmq-server (--install):</div><div class="line"> dependency problems - leaving unconfigured</div><div class="line">Processing triggers for systemd (229-4ubuntu21) ...</div><div class="line">Errors were encountered while processing:</div><div class="line"> rabbitmq-server</div><div class="line">root@b792ae940e3e:/app# apt-get -f install </div><div class="line">Reading package lists... Done</div><div class="line">Building dependency tree       </div><div class="line">Reading state information... Done</div><div class="line">Correcting dependencies... Done</div><div class="line">The following additional packages will be installed:</div><div class="line">  cron libpopt0 libwrap0 logrotate socat tcpd</div><div class="line">Suggested packages:</div><div class="line">  anacron checksecurity exim4 | postfix | mail-transport-agent mailx</div><div class="line">The following NEW packages will be installed:</div><div class="line">  cron libpopt0 libwrap0 logrotate socat tcpd</div><div class="line">0 upgraded, 6 newly installed, 0 to remove and 2 not upgraded.</div><div class="line">1 not fully installed or removed.</div><div class="line">Need to get 522 kB of archives.</div><div class="line">After this operation, 1674 kB of additional disk space will be used.</div><div class="line">Do you want to continue? [Y/n]</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="https://www.rabbitmq.com/download.html" target="_blank" rel="external">Downloading and Installing RabbitMQ</a></li>
+<li><a href="https://www.36nu.com/post/240.html" target="_blank" rel="external">RabbitMQ安装方式及常用命令 </a> ☆</li>
+<li><a href="https://packages.erlang-solutions.com/erlang/#tabs-debian" target="_blank" rel="external">Erlang Downloads</a></li>
+</ul>
+<hr>
+<h5 id="Run-RabbitMQ-Server"><a href="#Run-RabbitMQ-Server" class="headerlink" title="Run RabbitMQ Server"></a>Run RabbitMQ Server</h5><p>启动 RabbitMQ 服务:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># service rabbitmq-server start</div></pre></td></tr></table></figure></p>
+<p>安装 RabbitMQWeb 管理插件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># rabbitmq-plugins enable rabbitmq_management  </div><div class="line"># service rabbitmq-server restart</div></pre></td></tr></table></figure></p>
+<p>打开浏览器登录：<a href="http://127.0.0.1:15672，登录账号密码默认都是" target="_blank" rel="external">http://127.0.0.1:15672，登录账号密码默认都是</a> <code>guest</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">root@730778dc65bd:/app# rabbitmq-plugins enable rabbitmq_management</div><div class="line">The following plugins have been enabled:</div><div class="line">  mochiweb</div><div class="line">  webmachine</div><div class="line">  rabbitmq_web_dispatch</div><div class="line">  amqp_client</div><div class="line">  rabbitmq_management_agent</div><div class="line">  rabbitmq_management</div><div class="line"></div><div class="line">Applying plugin configuration to rabbit@730778dc65bd... started 6 plugins.</div><div class="line">root@730778dc65bd:/app# service rabbitmq-server restart</div><div class="line"> * Restarting RabbitMQ Messaging Server rabbitmq-server                                                      [ OK ] </div><div class="line">root@730778dc65bd:/app#</div></pre></td></tr></table></figure>
+<p>测试代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">## 查看rabbitmq状态</div><div class="line">root@730778dc65bd:/app# rabbitmqctl status</div><div class="line">Status of node rabbit@730778dc65bd ...</div><div class="line">Error: unable to connect to node rabbit@730778dc65bd: nodedown</div><div class="line"></div><div class="line">DIAGNOSTICS</div><div class="line">===========</div><div class="line"></div><div class="line">attempted to contact: [rabbit@730778dc65bd]</div><div class="line"></div><div class="line">rabbit@730778dc65bd:</div><div class="line">  * connected to epmd (port 4369) on 730778dc65bd</div><div class="line">  * epmd reports: node &apos;rabbit&apos; not running at all</div><div class="line">                  no other nodes on 730778dc65bd</div><div class="line">  * suggestion: start the node</div><div class="line"></div><div class="line">current node details:</div><div class="line">- node name: &apos;rabbitmq-cli-9223@730778dc65bd&apos;</div><div class="line">- home dir: /var/lib/rabbitmq</div><div class="line">- cookie hash: MwPrvM8WUeAkWCiIWYw2fg==</div><div class="line"></div><div class="line">root@730778dc65bd:/app# </div><div class="line"></div><div class="line">root@730778dc65bd:/app# service rabbitmq-server start</div><div class="line"> * Starting RabbitMQ Messaging Server rabbitmq-server                                                        [ OK ] </div><div class="line">root@730778dc65bd:/app# rabbitmqctl status</div><div class="line">Status of node rabbit@730778dc65bd ...</div><div class="line">[&#123;pid,9527&#125;,</div><div class="line"> &#123;running_applications,[&#123;rabbit,&quot;RabbitMQ&quot;,&quot;3.5.7&quot;&#125;,</div><div class="line">                        &#123;mnesia,&quot;MNESIA  CXC 138 12&quot;,&quot;4.13.3&quot;&#125;,</div><div class="line">                        &#123;xmerl,&quot;XML parser&quot;,&quot;1.3.10&quot;&#125;,</div><div class="line">                        &#123;os_mon,&quot;CPO  CXC 138 46&quot;,&quot;2.4&quot;&#125;,</div><div class="line">                        &#123;sasl,&quot;SASL  CXC 138 11&quot;,&quot;2.7&quot;&#125;,</div><div class="line">                        &#123;stdlib,&quot;ERTS  CXC 138 10&quot;,&quot;2.8&quot;&#125;,</div><div class="line">                        &#123;kernel,&quot;ERTS  CXC 138 10&quot;,&quot;4.2&quot;&#125;]&#125;,</div><div class="line"> &#123;os,&#123;unix,linux&#125;&#125;,</div><div class="line"> &#123;erlang_version,&quot;Erlang/OTP 18 [erts-7.3] [source] [64-bit] [smp:2:2] [async-threads:64] [kernel-poll:true]\n&quot;&#125;,</div><div class="line"> &#123;memory,[&#123;total,83922208&#125;,</div><div class="line">          &#123;connection_readers,0&#125;,</div><div class="line">          &#123;connection_writers,0&#125;,</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="RabbitMQ中的vitrual-host"><a href="#RabbitMQ中的vitrual-host" class="headerlink" title="RabbitMQ中的vitrual host"></a>RabbitMQ中的vitrual host</h5><p><code>Virtual host</code>，是起到隔离作用的。每一个 <code>vhost</code> 都有自己的 <code>exchanges</code> 和 <code>queues</code>，它们互不影响。不同的应用可以跑在相同的 <code>rabbitmq</code> 上，使用 <code>vhost</code> 把它们隔离开就行。默认情况下，<code>rabbitmq</code> 安装后，默认的 <code>vhost</code> 是 <code>/</code>。</p>
+<h5 id="创建用户并设置虚拟主机"><a href="#创建用户并设置虚拟主机" class="headerlink" title="创建用户并设置虚拟主机"></a>创建用户并设置虚拟主机</h5><p>可以发现上面我们通过 <code>guest</code> 用户在其他电脑上或外网段访问时，会提示 <code>User can only log in via localhost</code> ，这是因为 <code>guest</code> 是仅允许在 <code>localhost</code> 下才能登陆的。如果我们想在外部访问，可以创建一个新的账户。</p>
+<p>创建用户的同时为该用户指定允许访问的虚拟主机 <code>myvhost</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rabbitmqctl add_user myuser mypassword</div><div class="line"># rabbitmqctl add_vhost myvhost</div><div class="line"># rabbitmqctl set_permissions -p myvhost myuser &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</div></pre></td></tr></table></figure>
+<p>此时，新创建的账户 <code>myuser</code> 也并没有权限在外网访问，可以用 <code>set_user_tags</code> 为用户设置角色：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># rabbitmqctl set_user_tags myuser administrator</div></pre></td></tr></table></figure>
+<p>然后我们就能在外网通过地址 <code>http://192.168.5.107:15673/</code> 来访问管理端了。</p>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># User: myuser </div><div class="line"># UserPwd: hello</div><div class="line"># VHost: hellohost</div><div class="line"></div><div class="line">root@b792ae940e3e:/app# rabbitmqctl add_user myuser hello</div><div class="line">Adding user &quot;myuser&quot; ...</div><div class="line">root@b792ae940e3e:/app# rabbitmqctl add_vhost hellohost</div><div class="line">Adding vhost &quot;hellohost&quot; ...</div><div class="line">root@b792ae940e3e:/app# rabbitmqctl set_permissions -p hellohost myuser &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</div><div class="line">Setting permissions for user &quot;myuser&quot; in vhost &quot;hellohost&quot; ...</div><div class="line">root@b792ae940e3e:/app#</div></pre></td></tr></table></figure>
+<p>然后重启服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># service rabbitmq-server restart</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="Celery"><a href="#Celery" class="headerlink" title="Celery"></a>Celery</h4><p>Celery官方推荐使用 <code>RabbitMQ</code> 或 <code>Redis</code> 来作为中间件。设置也很简单，通过 <code>broker</code> 和 <code>backend</code> 参数即可绑定。</p>
+<h5 id="broker-和-backend"><a href="#broker-和-backend" class="headerlink" title="broker 和 backend"></a>broker 和 backend</h5><p>可以用RabbitMQ和Redis来作为broker或backend：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app = Celery(&apos;tasks&apos;, backend=&apos;amqp&apos;, broker=&apos;amqp://&apos;)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app = Celery(&apos;tasks&apos;, backend=&apos;redis://localhost&apos;, broker=&apos;amqp://&apos;)</div></pre></td></tr></table></figure>
+<p>注意，虽然推荐使用RabbitMQ来作为 <code>broker</code>，但不推荐其作为 <code>backend</code> 。具体原因我会在后面的文章中说明。</p>
+<h5 id="中间人RabbitMQ"><a href="#中间人RabbitMQ" class="headerlink" title="中间人RabbitMQ"></a>中间人RabbitMQ</h5><p>RabbitMQ 功能完备、稳定，是一个非常可靠的选择。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">BROKER_URL =transport://userid:password@hostname:port/virtual_host</div><div class="line"></div><div class="line">BROKER_URL = &apos;amqp://guest:guest@localhost:5672//&apos;</div></pre></td></tr></table></figure>
+<p>完整的格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CELERY_BROKER_URL = &apos;amqp://[YOUR_NAME]:[PASSWORD]@localhost:[PORT]/[VHOST_NAME]&apos;</div></pre></td></tr></table></figure>
+<h5 id="中间人Redis"><a href="#中间人Redis" class="headerlink" title="中间人Redis"></a>中间人Redis</h5><p>与 <code>RabbitMQ</code> 相比，使用 <code>Redis</code> 作为 <code>broker</code> 缺点是可能因为掉电或异常退出导致数据丢失，优点是使用简单。</p>
+<p>以下命令可以同时安装 <code>celery</code> 和 <code>redis</code> 相关的依赖，但是 <code>redis server</code> 还是必须单独安装的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install -U celery[redis] # -U 的意思是把所有指定的包都升级到最新的版本</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BROKER_URL = &apos;redis://localhost:6379//&apos;</div></pre></td></tr></table></figure>
+<h5 id="安装celery"><a href="#安装celery" class="headerlink" title="安装celery"></a>安装celery</h5><p>先安装 <code>python3</code>  <code>pip3</code> 等依赖:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># apt-get install -y python3 python3-pip</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># pip3 install celery</div><div class="line"># 或者：</div><div class="line"># pip3 install -U Celery</div></pre></td></tr></table></figure>
+<p>创建一个 <code>tasks.py</code> 文件:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">from celery import Celery</div><div class="line"></div><div class="line">app = Celery(&apos;tasks&apos;, broker=&apos;amqp://guest@localhost//&apos;)</div><div class="line"></div><div class="line">@app.task</div><div class="line">def add(x, y):</div><div class="line">    return x + y</div></pre></td></tr></table></figure>
+<p>注意，其中的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app = Celery(&apos;tasks&apos;, broker=&apos;amqp://guest@localhost//&apos;)</div></pre></td></tr></table></figure>
+<p>中 <code>broker</code> 要改为上面设置的RabbitMQ的信息，所以结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">app = Celery(&apos;tasks&apos;,broker=&apos;amqp://myuser:hello@localhost:5672/hellohost&apos;)</div></pre></td></tr></table></figure>
+<p>Celery 的第一个参数是当前模块的名称，这个参数是必须的，这样的话名称可以自动生成。<br>第二个参数是中间人关键字参数，指定你所使用的消息中间人的 URL。</p>
+<h5 id="保存结果"><a href="#保存结果" class="headerlink" title="保存结果"></a>保存结果</h5><p>执行完成后的结果，Celery 需要在某个地方存储或发送任务处理后的状态，可以通过 <code>backend</code> 参数来指定。格式和 <code>broker</code> 一致。</p>
+<p>完整的 <code>tasks.py</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python3</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line"></div><div class="line">from celery import Celery</div><div class="line"></div><div class="line">app = Celery(&apos;tasks&apos;,</div><div class="line">             broker=&apos;amqp://myuser:hello@localhost:5672/hellohost&apos;,</div><div class="line">             backend=&apos;amqp://myuser:hello@localhost:5672/hellohost&apos;</div><div class="line">             )</div><div class="line"></div><div class="line"></div><div class="line">@app.task</div><div class="line">def add(x, y):</div><div class="line">    return x + y</div></pre></td></tr></table></figure>
+<h5 id="运行Celery"><a href="#运行Celery" class="headerlink" title="运行Celery"></a>运行Celery</h5><p>用 worker 参数执行程序:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ celery -A tasks worker --loglevel=info</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">root@b792ae940e3e:/app# celery -A tasks worker --loglevel=info</div><div class="line">/usr/local/lib/python3.5/dist-packages/celery/platforms.py:795: RuntimeWarning: You&apos;re running the worker with superuser privileges: this is</div><div class="line">absolutely not recommended!</div><div class="line"></div><div class="line">Please specify a different user using the -u option.</div><div class="line"></div><div class="line">User information: uid=0 euid=0 gid=0 egid=0</div><div class="line"></div><div class="line">  uid=uid, euid=euid, gid=gid, egid=egid,</div><div class="line">/usr/local/lib/python3.5/dist-packages/celery/backends/amqp.py:68: CPendingDeprecationWarning: </div><div class="line">    The AMQP result backend is scheduled for deprecation in     version 4.0 and removal in version v5.0.     Please use RPC backend or a persistent backend.</div><div class="line"></div><div class="line">  alternative=&apos;Please use RPC backend or a persistent backend.&apos;)</div><div class="line"> </div><div class="line"> -------------- celery@b792ae940e3e v4.1.0 (latentcall)</div><div class="line">---- **** ----- </div><div class="line">--- * ***  * -- Linux-4.4.0-42-generic-x86_64-with-Ubuntu-16.04-xenial 2017-12-09 13:50:06</div><div class="line">-- * - **** --- </div><div class="line">- ** ---------- [config]</div><div class="line">- ** ---------- .&gt; app:         tasks:0x7f97a8360dd8</div><div class="line">- ** ---------- .&gt; transport:   amqp://myuser:**@localhost:5672/hellohost</div><div class="line">- ** ---------- .&gt; results:     amqp://</div><div class="line">- *** --- * --- .&gt; concurrency: 2 (prefork)</div><div class="line">-- ******* ---- .&gt; task events: OFF (enable -E to monitor tasks in this worker)</div><div class="line">--- ***** ----- </div><div class="line"> -------------- [queues]</div><div class="line">                .&gt; celery           exchange=celery(direct) key=celery</div><div class="line">                </div><div class="line"></div><div class="line">[tasks]</div><div class="line">  . tasks.add</div><div class="line"></div><div class="line">[2017-12-09 13:50:06,121: INFO/MainProcess] Connected to amqp://myuser:**@127.0.0.1:5672/hellohost</div><div class="line">[2017-12-09 13:50:06,137: INFO/MainProcess] mingle: searching for neighbors</div><div class="line">[2017-12-09 13:50:07,178: INFO/MainProcess] mingle: all alone</div><div class="line">[2017-12-09 13:50:07,228: INFO/MainProcess] celery@b792ae940e3e ready.</div></pre></td></tr></table></figure>
+<p>可以看到 <code>celery</code> 的 <code>worker</code> 已经准备就绪了。</p>
+<p>查看 <code>worker</code> 完整的命令行参数列表:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$  celery worker --help</div><div class="line">## 或者：</div><div class="line">$ celery help</div></pre></td></tr></table></figure>
+<h5 id="调用任务"><a href="#调用任务" class="headerlink" title="调用任务"></a>调用任务</h5><p>使用 <code>delay()</code> 方法来调用任务。</p>
+<p>新打开一个控制台界面，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker exec -it celery1 /bin/bash</div></pre></td></tr></table></figure>
+<p>执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># python3</div><div class="line"></div><div class="line">&gt;&gt;&gt; from tasks import add</div><div class="line">&gt;&gt;&gt; add.delay(4, 4)</div></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">root@b792ae940e3e:/app# python3</div><div class="line">Python 3.5.2 (default, Nov 23 2017, 16:37:01) </div><div class="line">[GCC 5.4.0 20160609] on linux</div><div class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</div><div class="line">&gt;&gt;&gt; from tasks import add</div><div class="line">&gt;&gt;&gt; add.delay(3,4)</div><div class="line">&lt;AsyncResult: e1ae8ea3-8a8f-47c5-befb-e6ba975f0580&gt;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171211/cc9H40dDJ5.jpg?imageslim" alt="mark"></p>
+<p>同时，也可以在 <code>RabbitMQ web</code> 管理页面看到新增了一个任务并存储了处理结果：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/171211/9JEB2m262l.jpg?imageslim" alt="mark"></p>
+<p>为了得到调用任务后返回的 <code>AsyncResult</code> 实例，通过一个参数来接收：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; result=add.delay(3,4)</div></pre></td></tr></table></figure>
+<p><code>ready()</code> 方法查看任务是否完成处理:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; result.ready()</div><div class="line">True #结果返回 `True` 表示任务处理完成</div></pre></td></tr></table></figure>
+<p>这里是异步调用，如果我们需要返回的结果，那么要等 <code>ready</code> 状态为 <code>True</code> 才行。</p>
+<p>执行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[2017-12-09 13:50:07,228: INFO/MainProcess] celery@b792ae940e3e ready.</div><div class="line">[2017-12-09 14:00:33,132: INFO/MainProcess] Received task: tasks.add[e1ae8ea3-8a8f-47c5-befb-e6ba975f0580]  </div><div class="line">[2017-12-09 14:00:33,163: INFO/ForkPoolWorker-1] Task tasks.add[e1ae8ea3-8a8f-47c5-befb-e6ba975f0580] succeeded in 0.02956800399988424s: 7</div><div class="line">[2017-12-09 14:17:21,033: INFO/MainProcess] Received task: tasks.add[c178619e-3af3-41ed-8d2c-6371de80a601]  </div><div class="line">[2017-12-09 14:17:21,058: INFO/ForkPoolWorker-1] Task tasks.add[c178619e-3af3-41ed-8d2c-6371de80a601] succeeded in 0.024445844999718247s: 7</div></pre></td></tr></table></figure>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="http://docs.jinkan.org/docs/celery/getting-started/first-steps-with-celery.html" target="_blank" rel="external">Celery 初步</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/" title="Celery分布式任务队列入门(二)-环境配置">http://www.itfanr.cc/2017/12/10/celery-distributed-task-queue-introduction-second/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Celery/" rel="tag"># Celery</a>
+          
+            <a href="/tags/Docker/" rel="tag"># Docker</a>
+          
+            <a href="/tags/RabbitMQ/" rel="tag"># RabbitMQ</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/10/celery-distributed-task-queue-introduction-first/" rel="next" title="Celery分布式任务队列入门(一)-理论">
+                <i class="fa fa-chevron-left"></i> Celery分布式任务队列入门(一)-理论
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/10/celery-distributed-task-queue-introduction-third/" rel="prev" title="Celery分布式任务队列入门(三)-任务">
+                Celery分布式任务队列入门(三)-任务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建Docker容器"><span class="nav-number">1.</span> <span class="nav-text">创建Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更新软件源"><span class="nav-number">1.1.</span> <span class="nav-text">更新软件源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Erlang依赖"><span class="nav-number">1.2.</span> <span class="nav-text">安装Erlang依赖</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装RabbitMQ"><span class="nav-number">1.3.</span> <span class="nav-text">安装RabbitMQ</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装官方最新版"><span class="nav-number">1.4.</span> <span class="nav-text">安装官方最新版</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Run-RabbitMQ-Server"><span class="nav-number">1.5.</span> <span class="nav-text">Run RabbitMQ Server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RabbitMQ中的vitrual-host"><span class="nav-number">1.6.</span> <span class="nav-text">RabbitMQ中的vitrual host</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#创建用户并设置虚拟主机"><span class="nav-number">1.7.</span> <span class="nav-text">创建用户并设置虚拟主机</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Celery"><span class="nav-number">2.</span> <span class="nav-text">Celery</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#broker-和-backend"><span class="nav-number">2.1.</span> <span class="nav-text">broker 和 backend</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间人RabbitMQ"><span class="nav-number">2.2.</span> <span class="nav-text">中间人RabbitMQ</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#中间人Redis"><span class="nav-number">2.3.</span> <span class="nav-text">中间人Redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装celery"><span class="nav-number">2.4.</span> <span class="nav-text">安装celery</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#保存结果"><span class="nav-number">2.5.</span> <span class="nav-text">保存结果</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#运行Celery"><span class="nav-number">2.6.</span> <span class="nav-text">运行Celery</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#调用任务"><span class="nav-number">2.7.</span> <span class="nav-text">调用任务</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">3.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>
