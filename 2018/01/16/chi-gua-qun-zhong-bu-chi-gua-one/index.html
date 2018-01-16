@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="直播问答," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="通过程序实现直播答题神器">
+<meta name="keywords" content="直播问答">
+<meta property="og:type" content="article">
+<meta property="og:title" content="百万英雄，看程序员带你如何任性吃瓜(1)">
+<meta property="og:url" content="http://www.itfanr.cc/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="通过程序实现直播答题神器">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/B2c2Deah5B.png?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/k9mAhDA6dC.png?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/2aeEkGG7Bd.png?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/b1bhafB5i5.png?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/K8cJF6i7Dj.png?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/JEbI5EbHEB.png?imageslim">
+<meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/GaimbE8mfm.jpeg?imageslim">
+<meta property="og:updated_time" content="2018-01-16T15:23:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="百万英雄，看程序员带你如何任性吃瓜(1)">
+<meta name="twitter:description" content="通过程序实现直播答题神器">
+<meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/B2c2Deah5B.png?imageslim">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.itfanr.cc/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/"/>
+
+
+
+
+
+  <title>百万英雄，看程序员带你如何任性吃瓜(1) | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程序员改变世界</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">百万英雄，看程序员带你如何任性吃瓜(1)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T23:20:26+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-16T23:23:58+08:00">
+                2018-01-16
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,659
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  通过程序实现直播答题神器
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天中午的时候没事，随手打开掘金app打算看看最近有什么好文章。看到热门推荐下有一篇文章名为 <a href="https://juejin.im/entry/5a5c189e518825733d69093d" target="_blank" rel="external">qanswer：冲顶大会等游戏答题神器（Golang）</a> ,号称《冲顶大会》，《百万英雄》等答题游戏的答题神器，让人顺利吃鸡！</p>
+<p>因为我最近也一直在关注西瓜视频里的“百万英雄”这个“全民直播答题吃瓜”的活动，但无奈自己的知识储备量太少，最高的一次答到第9题就被kill了。看到这篇文章顿时来了兴趣，准备好好研究一番。</p>
+<p>该项目的github地址为 <a href="https://github.com/silenceper/qanswer" target="_blank" rel="external">silenceper/qanswer</a> 。在README.md中也记录了如何来部署运行，下面把我的部署流程简单的记录如下。</p>
+<h4 id="qanswer部署"><a href="#qanswer部署" class="headerlink" title="qanswer部署"></a>qanswer部署</h4><p>我使用的设备是 MacBook Pro，手机是 红米Note4x 高通版，分辨率为1920x1080。</p>
+<p>对于其他平台如 Win或Linux，我也会顺带提一下。</p>
+<h5 id="安装go环境"><a href="#安装go环境" class="headerlink" title="安装go环境"></a>安装go环境</h5><p>配置golang运行环境，可以直接参考我之前写的博客文章来安装：<a href="http://www.itfanr.cc/2017/04/02/golang-running-environment-configuration/">Golang运行环境配置</a></p>
+<h5 id="安卓设备"><a href="#安卓设备" class="headerlink" title="安卓设备"></a>安卓设备</h5><p>连接安卓设备时需要安装一个驱动类工具adb。adb全称为 <code>Android Debug Bridge</code> ,即Android调试桥。Android 调试桥 (adb) 是一个通用命令行工具，其允许您与模拟器实例或连接的 Android 设备进行通信。它可为各种设备操作提供便利，如安装和调试应用，并提供对 Unix shell（可用来在模拟器或连接的设备上运行各种命令）的访问。</p>
+<h6 id="Mac系统安装adb"><a href="#Mac系统安装adb" class="headerlink" title="Mac系统安装adb"></a>Mac系统安装adb</h6><p>通过 <code>homebrew</code> 来安装，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew cask install android-platform-tools</div></pre></td></tr></table></figure>
+<p>当看到提示 “android-platform-tools was successfully installed!” 信息，说明安装成功。</p>
+<p>命令 <code>adb devices</code> 可以用来查看当前连接的安卓设备：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ adb devices</div><div class="line">List of devices attached</div><div class="line">* daemon not running; starting now at tcp:5037</div><div class="line">* daemon started successfully</div></pre></td></tr></table></figure>
+<p>可见当前并没有连接的设备。</p>
+<h6 id="Ubuntu安装adb"><a href="#Ubuntu安装adb" class="headerlink" title="Ubuntu安装adb"></a>Ubuntu安装adb</h6><p>使用如下的命令来安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:nilarimogard/webupd8</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install android-tools-adb</div></pre></td></tr></table></figure>
+<h6 id="Win安装adb"><a href="#Win安装adb" class="headerlink" title="Win安装adb"></a>Win安装adb</h6><p>直接下载解压后就可使用 <a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" rel="external">Download the ADB ZIP file for Windows</a></p>
+<h5 id="ios设备"><a href="#ios设备" class="headerlink" title="ios设备"></a>ios设备</h5><p>对于ios设备，需要安装WDA。</p>
+<p>具体的安装方法可参考项目中给出的文章 <a href="https://testerhome.com/topics/7220" target="_blank" rel="external">iOS 真机如何安装 WebDriverAgent</a></p>
+<hr>
+<h4 id="开启小米手机-MIUI9-USB调试模式"><a href="#开启小米手机-MIUI9-USB调试模式" class="headerlink" title="开启小米手机 MIUI9 USB调试模式"></a>开启小米手机 MIUI9 USB调试模式</h4><p>为了能够调试手机，需要打开小米手机或其他安卓手机的USB调试模式。</p>
+<p>小米手机 MIUI9系统的开启方法：</p>
+<ol>
+<li>打开 “设置” – “我的设备” – “全部参数” 页面</li>
+<li>然后连续三次以上点击“MIUI版本”一栏，会出现 开发者模式已打开的提示信息</li>
+<li>返回设置主界面，进入“更多设置”，在无障碍选项下面出现了“开发者选项”，点击进入</li>
+<li>在开发者选项中就可以找到“USB调试”，启用即可</li>
+</ol>
+<p>通过数据线连接手机，再次执行上面命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ adb devices</div><div class="line">List of devices attached</div><div class="line">a1529b810604    device</div></pre></td></tr></table></figure>
+<p>可以看到发现了我的安卓手机，并连接上了。</p>
+<hr>
+<h4 id="文字识别"><a href="#文字识别" class="headerlink" title="文字识别"></a>文字识别</h4><p>对于文字图像识别，项目中实现了两种方式：<code>百度ocr</code> 和 <code>tesseract</code>。这里我采用百度ocr来实现。</p>
+<p>从百度的文字识别接口网站 <a href="https://cloud.baidu.com/product/ocr.html" target="_blank" rel="external">百度文字识别</a> 中，登录百度云管理平台后，在左侧选择“产品服务”–“人工智能”–“文字识别” 一项，选择 “创建应用” 就可以获得需要的api key 和secret key。</p>
+<p>百度的文字识别接口有 <code>500次/天</code> 的免费使用权限，一般也够用了。</p>
+<hr>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>将项目克隆到 <code>gopath</code> 目录下 <code>git clone https://github.com/silenceper/qanswer.git</code>，如我这里是 <code>/Go/xgo_workspace/src</code> 目录下，然后添加项目引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ go get github.com/silenceper/qanswer</div></pre></td></tr></table></figure>
+<p>执行编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd qanswer/cmd</div><div class="line"></div><div class="line">$ go build -o ../qanswer</div></pre></td></tr></table></figure>
+<p>然后会在 <code>qanswer</code> 目录下生成一个名为 <code>qanswer</code> 的执行文件。</p>
+<p>执行该程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./qanswer</div></pre></td></tr></table></figure>
+<p>结果输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">配置文件：./config.yml</div><div class="line">设备：ios; 图片识别方式：baidu</div><div class="line"></div><div class="line">请按空格键开始搜索答案...</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="设置配置文件"><a href="#设置配置文件" class="headerlink" title="设置配置文件"></a>设置配置文件</h4><p>程序运行用到的配置文件是在当前目录下的 <code>config.yml</code> 文件。</p>
+<p>配置参数说明如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"># 是否开始调试模式</div><div class="line">debug: false</div><div class="line"># 对应的设备类型：ios or android</div><div class="line">device: ios</div><div class="line"># 使用的ocr工具：baidu or tesseract</div><div class="line">ocr_type: baidu</div><div class="line"># ios 设备连接wda的地址</div><div class="line">wda_address: &apos;127.0.0.1:8100&apos;</div><div class="line"># 截取题目的位置 ：</div><div class="line">question_x: 30</div><div class="line">question_y: 310</div><div class="line">question_w: 650</div><div class="line">question_h: 135</div><div class="line"># 截取答案的位置</div><div class="line">answer_x: 30</div><div class="line">answer_y: 500</div><div class="line">answer_w: 680</div><div class="line">answer_h: 370</div><div class="line">#当选用baidu ocr时，需要执行api_key和secret_key</div><div class="line">baidu_api_key: &quot;xxx....&quot;</div><div class="line">baidu_secret_key: &quot;xxx....&quot;</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="成功的关键"><a href="#成功的关键" class="headerlink" title="成功的关键"></a>成功的关键</h4><p>在上面的配置文件中，关键的一点就是配置文件中设置的对于不同手机类型及不同分辨率的坐标设定了。</p>
+<p>你需要根据自己手机对直播问答页面进行截图后获取的坐标点及像素长度来设定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 截取题目的位置</div><div class="line">question_x: 30</div><div class="line">question_y: 310</div><div class="line">question_w: 650</div><div class="line">question_h: 135</div><div class="line"># 截取答案的位置</div><div class="line">answer_x: 30</div><div class="line">answer_y: 500</div><div class="line">answer_w: 680</div><div class="line">answer_h: 370</div></pre></td></tr></table></figure>
+<p>对直播答题界面截屏，然后通过Mac系统自带的图片预览可以得到该界面中题目左上角顶点的x坐标位置和y坐标位置以及题目区域的宽度和高度。<br>同理能够获得答案部分的值。</p>
+<p>这里要提一下的是，这里的坐标是向右为x轴正方向，向下为y轴正方向。所以值均为正数。</p>
+<p>经过测量，我的手机的配置信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"># 百万英雄 红米Note4x 高通版 1920x1080</div><div class="line">debug: true</div><div class="line">device: android</div><div class="line">ocr_type: baidu</div><div class="line">wda_address: &apos;127.0.0.1:8100&apos;</div><div class="line">question_x: 80</div><div class="line">question_y: 270</div><div class="line">question_w: 920</div><div class="line">question_h: 400</div><div class="line">answer_x: 80</div><div class="line">answer_y: 680</div><div class="line">answer_w: 920</div><div class="line">answer_h: 580</div><div class="line">baidu_api_key: xxx...</div><div class="line">baidu_secret_key: xxx...</div></pre></td></tr></table></figure>
+<p>另外，<code>baidu_api_key</code> 和 <code>baidu_secret_key</code> 设置成在百度文本识别中创建应用的对应值。如果使用的是 <code>tesseract</code> 这两项则不用管。</p>
+<hr>
+<h4 id="执行效果"><a href="#执行效果" class="headerlink" title="执行效果"></a>执行效果</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">配置文件：./config.yml</div><div class="line">设备：android; 图片识别方式：baidu</div><div class="line"></div><div class="line">请按空格键开始搜索答案...</div><div class="line">正在开始搜索....</div><div class="line">2018/01/16 13:33:27 image.go:41: [debug] 保存question截图成功</div><div class="line">2018/01/16 13:33:27 image.go:51: [debug] 保存answer截图成功</div><div class="line">2018/01/16 13:33:27 image.go:22: [debug] 保存完整截图成功，./images/screenshot.png</div><div class="line">2018/01/16 13:33:28 qanswer.go:144: [debug] 斗杓东指,天下皆冬</div><div class="line">北斗一星为天权</div><div class="line">玉衡星是七星中最亮的星</div><div class="line">2018/01/16 13:33:28 qanswer.go:133: [debug] 2.关于北七斗七星,下列说法正确的</div><div class="line">是?</div><div class="line">识别题目：</div><div class="line">关于北七斗七星,下列说法正确的是?</div><div class="line">识别答案：</div><div class="line">[斗杓东指,天下皆冬 北斗一星为天权 玉衡星是七星中最亮的星]</div><div class="line">================百度搜索==============</div><div class="line">关于北七斗七星,下列说法正确的是?</div><div class="line">答案：</div><div class="line">斗杓东指,天下皆冬 : 结果总数 7400 ， 答案出现频率： 0</div><div class="line">北斗一星为天权 : 结果总数 189000 ， 答案出现频率： 0</div><div class="line">玉衡星是七星中最亮的星 : 结果总数 383000 ， 答案出现频率： 0</div><div class="line">======================================</div><div class="line"></div><div class="line">耗时：7.24113s</div><div class="line"></div><div class="line"></div><div class="line">请按空格键开始搜索答案...</div></pre></td></tr></table></figure>
+<p>另外附上一些执行过程截图：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/B2c2Deah5B.png?imageslim" alt="mark"></p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/k9mAhDA6dC.png?imageslim" alt="mark"></p>
+<hr>
+<h4 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h4><p>在实际的测试中，我也发现了该项目的一些问题。</p>
+<h5 id="判断逻辑的可行性"><a href="#判断逻辑的可行性" class="headerlink" title="判断逻辑的可行性"></a>判断逻辑的可行性</h5><p>目前该项目中使用的搜索引擎是百度。</p>
+<p>而程序当前对问题答案获取的后台逻辑是：通过将问题和三个不同的答案拼接输出到搜索引擎中进行搜索查询，如使用百度，在搜索结果页面中会输出：“百度为您找到相关结果约487,000个” 类似这样的一段话。而答案的判断逻辑就是看三种答案对应的搜索结果的数据总条数来预测该答案可能为正确的答案。</p>
+<p>但这样的方法并不一定能保证完全的正确，如下面的一个问题：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/2aeEkGG7Bd.png?imageslim" alt="mark"></p>
+<p>如果按照推荐的答案，要选 “探戈” 。而这道题的正确答案应该是 “森巴” 。</p>
+<p>后来，我又对其他常用的搜索引擎做了对比。如我对比了 <code>Baidu</code> 、<code>Bing国内版</code> 、 <code>Bing国际版</code> 和 <code>Google（需FQ）</code> ，结果发现这四种搜索结果的正确率为：</p>
+<blockquote>
+<p>Google &gt; Bing国际版 &gt; Bing国内版 &gt; Baidu</p>
+</blockquote>
+<p>但是后来我增加了问题的测试数量，发现Google对于答案的判断正确率也比较低。</p>
+<p>例如其中的一个问题：</p>
+<blockquote>
+<p>哪一种反应属于化学反应? </p>
+<p>食物腐烂<br>冰化水<br>玻璃碎成块  </p>
+</blockquote>
+<p>通过百度测试，对于三个答案的搜索结果数量为：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/b1bhafB5i5.png?imageslim" alt="mark"></p>
+<p>可见，按照搜索数量结果来看的话，要选 “玻璃碎成块” ，但正确的答案应该是 “食物腐烂”。</p>
+<p>后来我又使用 google 进行了测试:</p>
+<blockquote>
+<p>食物腐烂  98400<br>冰化水   483000<br>玻璃碎成块  116000   </p>
+</blockquote>
+<p>可见在Google下这种方式得到的答案也不正确。</p>
+<p>所以，我觉得这种判断逻辑只能给出70%的正确率，在答题过程中也仅仅作为参考答案，而不能一味的相信。</p>
+<h5 id="否定句"><a href="#否定句" class="headerlink" title="否定句"></a>否定句</h5><p>如果遇到标题是否定句式的情况，通过上面这种搜索的形式就无法找到正确的答案了，一般搜索出来的也是“肯定句式”下的答案。</p>
+<p>比如下面这个问题：</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/K8cJF6i7Dj.png?imageslim" alt="mark"></p>
+<p>正确的答案应该是 <code>爱如潮水</code>。</p>
+<h5 id="文字识别出错"><a href="#文字识别出错" class="headerlink" title="文字识别出错"></a>文字识别出错</h5><p>还有一种情况就是图像文字没有识别出来的情况，最后也就不能给出相应的答案了。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/JEbI5EbHEB.png?imageslim" alt="mark"></p>
+<hr>
+<h4 id="其他方法实现"><a href="#其他方法实现" class="headerlink" title="其他方法实现"></a>其他方法实现</h4><p>个人认为类似这种问答类的题目，可行的方式比如对问题进行分词处理，然后对关键词去搜索匹配，通过词频来判断；或者弹出浏览器由用户自己去判断最终的答案，一般像搜索引擎的搜索结果页面，都会有标题和简短的内容，内容中的关键字会被标红显示，由用户自己去判断，准确性会更高一些，但这样耗费的时间也会特别长。应该还有其他的方法吧。</p>
+<p>目前我也在用python来实现一种可能的方法，我会在后续的文章中详细说明，敬请期待吧！</p>
+<p>最后再说一句。如果看到这篇文章后你也对这种“答题吃瓜”的直播问题活动产生了兴趣，可以使用我的邀请码来获得一张复活卡的机会，输入下面的邀请码即可。</p>
+<p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/GaimbE8mfm.jpeg?imageslim" alt="mark"></p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="https://github.com/silenceper/qanswer" target="_blank" rel="external">qanswer</a></li>
+<li><a href="https://www.xda-developers.com/install-adb-windows-macos-linux/" target="_blank" rel="external">How to Install ADB on Windows, macOS, and Linux</a></li>
+<li><a href="https://developer.android.com/studio/command-line/adb.html" target="_blank" rel="external">Android 调试桥</a></li>
+<li><a href="https://www.jianshu.com/p/1b3fb1f27b67" target="_blank" rel="external">在 MAC OS X 安装 ADB (Android调试桥)</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/" title="百万英雄，看程序员带你如何任性吃瓜(1)">http://www.itfanr.cc/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/直播问答/" rel="tag"># 直播问答</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/10/celery-distributed-task-queue-introduction-third/" rel="next" title="Celery分布式任务队列入门(三)-任务">
+                <i class="fa fa-chevron-left"></i> Celery分布式任务队列入门(三)-任务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description">Stay Hungry. Stay Foolish.</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#qanswer部署"><span class="nav-number">1.</span> <span class="nav-text">qanswer部署</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装go环境"><span class="nav-number">1.1.</span> <span class="nav-text">安装go环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安卓设备"><span class="nav-number">1.2.</span> <span class="nav-text">安卓设备</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Mac系统安装adb"><span class="nav-number">1.2.1.</span> <span class="nav-text">Mac系统安装adb</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Ubuntu安装adb"><span class="nav-number">1.2.2.</span> <span class="nav-text">Ubuntu安装adb</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Win安装adb"><span class="nav-number">1.2.3.</span> <span class="nav-text">Win安装adb</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ios设备"><span class="nav-number">1.3.</span> <span class="nav-text">ios设备</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启小米手机-MIUI9-USB调试模式"><span class="nav-number">2.</span> <span class="nav-text">开启小米手机 MIUI9 USB调试模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文字识别"><span class="nav-number">3.</span> <span class="nav-text">文字识别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行"><span class="nav-number">4.</span> <span class="nav-text">运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置配置文件"><span class="nav-number">5.</span> <span class="nav-text">设置配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#成功的关键"><span class="nav-number">6.</span> <span class="nav-text">成功的关键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行效果"><span class="nav-number">7.</span> <span class="nav-text">执行效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#出现的问题"><span class="nav-number">8.</span> <span class="nav-text">出现的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#判断逻辑的可行性"><span class="nav-number">8.1.</span> <span class="nav-text">判断逻辑的可行性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#否定句"><span class="nav-number">8.2.</span> <span class="nav-text">否定句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文字识别出错"><span class="nav-number">8.3.</span> <span class="nav-text">文字识别出错</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他方法实现"><span class="nav-number">9.</span> <span class="nav-text">其他方法实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">10.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>
