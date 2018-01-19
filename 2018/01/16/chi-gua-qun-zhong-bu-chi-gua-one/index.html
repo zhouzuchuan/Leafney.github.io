@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="通过程序实现直播答题神器">
+<meta name="description" content="通过Golang程序实现直播答题神器">
 <meta name="keywords" content="直播问答">
 <meta property="og:type" content="article">
 <meta property="og:title" content="百万英雄，看程序员带你如何任性吃瓜(1)">
 <meta property="og:url" content="http://www.itfanr.cc/2018/01/16/chi-gua-qun-zhong-bu-chi-gua-one/index.html">
 <meta property="og:site_name" content="IT范儿">
-<meta property="og:description" content="通过程序实现直播答题神器">
+<meta property="og:description" content="通过Golang程序实现直播答题神器">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/B2c2Deah5B.png?imageslim">
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/k9mAhDA6dC.png?imageslim">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/K8cJF6i7Dj.png?imageslim">
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/JEbI5EbHEB.png?imageslim">
 <meta property="og:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/GaimbE8mfm.jpeg?imageslim">
-<meta property="og:updated_time" content="2018-01-16T15:23:58.000Z">
+<meta property="og:updated_time" content="2018-01-19T14:20:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="百万英雄，看程序员带你如何任性吃瓜(1)">
-<meta name="twitter:description" content="通过程序实现直播答题神器">
+<meta name="twitter:description" content="通过Golang程序实现直播答题神器">
 <meta name="twitter:image" content="http://ouej55gp9.bkt.clouddn.com/blog/180116/B2c2Deah5B.png?imageslim">
 
 
@@ -350,8 +350,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-01-16T23:23:58+08:00">
-                2018-01-16
+              <time title="更新于" itemprop="dateModified" datetime="2018-01-19T22:20:43+08:00">
+                2018-01-19
               </time>
             
           </span>
@@ -397,7 +397,7 @@
 
           
               <div class="post-description">
-                  通过程序实现直播答题神器
+                  通过Golang程序实现直播答题神器
               </div>
           
 
@@ -414,16 +414,16 @@
       
 
       
-        <p>今天中午的时候没事，随手打开掘金app打算看看最近有什么好文章。看到热门推荐下有一篇文章名为 <a href="https://juejin.im/entry/5a5c189e518825733d69093d" target="_blank" rel="external">qanswer：冲顶大会等游戏答题神器（Golang）</a> ,号称《冲顶大会》，《百万英雄》等答题游戏的答题神器，让人顺利吃鸡！</p>
+        <p>今天中午的时候没事，随手打开掘金app打算看看最近有什么好文章。看到热门推荐下有一篇文章名为 <a href="https://juejin.im/entry/5a5c189e518825733d69093d" target="_blank" rel="external">qanswer：冲顶大会等游戏答题神器（Golang）</a> 号称《冲顶大会》,《百万英雄》等答题游戏的答题神器，让人顺利吃鸡！</p>
 <p>因为我最近也一直在关注西瓜视频里的“百万英雄”这个“全民直播答题吃瓜”的活动，但无奈自己的知识储备量太少，最高的一次答到第9题就被kill了。看到这篇文章顿时来了兴趣，准备好好研究一番。</p>
-<p>该项目的github地址为 <a href="https://github.com/silenceper/qanswer" target="_blank" rel="external">silenceper/qanswer</a> 。在README.md中也记录了如何来部署运行，下面把我的部署流程简单的记录如下。</p>
+<p>该项目的github地址为 <a href="https://github.com/silenceper/qanswer" target="_blank" rel="external">silenceper/qanswer</a> 。在 <code>README.md</code> 中也记录了如何来部署运行，下面把我的部署流程简单的记录如下。</p>
 <h4 id="qanswer部署"><a href="#qanswer部署" class="headerlink" title="qanswer部署"></a>qanswer部署</h4><p>我使用的设备是 MacBook Pro，手机是 红米Note4x 高通版，分辨率为1920x1080。</p>
 <p>对于其他平台如 Win或Linux，我也会顺带提一下。</p>
 <h5 id="安装go环境"><a href="#安装go环境" class="headerlink" title="安装go环境"></a>安装go环境</h5><p>配置golang运行环境，可以直接参考我之前写的博客文章来安装：<a href="http://www.itfanr.cc/2017/04/02/golang-running-environment-configuration/">Golang运行环境配置</a></p>
-<h5 id="安卓设备"><a href="#安卓设备" class="headerlink" title="安卓设备"></a>安卓设备</h5><p>连接安卓设备时需要安装一个驱动类工具adb。adb全称为 <code>Android Debug Bridge</code> ,即Android调试桥。Android 调试桥 (adb) 是一个通用命令行工具，其允许您与模拟器实例或连接的 Android 设备进行通信。它可为各种设备操作提供便利，如安装和调试应用，并提供对 Unix shell（可用来在模拟器或连接的设备上运行各种命令）的访问。</p>
+<h5 id="安卓设备"><a href="#安卓设备" class="headerlink" title="安卓设备"></a>安卓设备</h5><p>连接安卓设备时需要安装一个驱动类工具adb。adb全称为 <code>Android Debug Bridge</code> ,即Android调试桥。Android 调试桥 (adb) 是一个通用命令行工具，其允许您与模拟器实例或连接的 Android 设备进行通信。它可为各种设备操作提供便利，如安装和调试应用，并提供对 <code>Unix shell</code>（可用来在模拟器或连接的设备上运行各种命令）的访问。</p>
 <h6 id="Mac系统安装adb"><a href="#Mac系统安装adb" class="headerlink" title="Mac系统安装adb"></a>Mac系统安装adb</h6><p>通过 <code>homebrew</code> 来安装，执行如下命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ brew cask install android-platform-tools</div></pre></td></tr></table></figure>
-<p>当看到提示 “android-platform-tools was successfully installed!” 信息，说明安装成功。</p>
+<p>当看到提示 <code>android-platform-tools was successfully installed!</code> 信息，说明安装成功。</p>
 <p>命令 <code>adb devices</code> 可以用来查看当前连接的安卓设备：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ adb devices</div><div class="line">List of devices attached</div><div class="line">* daemon not running; starting now at tcp:5037</div><div class="line">* daemon started successfully</div></pre></td></tr></table></figure>
 <p>可见当前并没有连接的设备。</p>
@@ -442,7 +442,7 @@
 <li>在开发者选项中就可以找到“USB调试”，启用即可</li>
 </ol>
 <p>通过数据线连接手机，再次执行上面命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ adb devices</div><div class="line">List of devices attached</div><div class="line">a1529b810604    device</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ adb devices</div><div class="line"></div><div class="line">List of devices attached</div><div class="line">a1529b810604    device</div></pre></td></tr></table></figure>
 <p>可以看到发现了我的安卓手机，并连接上了。</p>
 <hr>
 <h4 id="文字识别"><a href="#文字识别" class="headerlink" title="文字识别"></a>文字识别</h4><p>对于文字图像识别，项目中实现了两种方式：<code>百度ocr</code> 和 <code>tesseract</code>。这里我采用百度ocr来实现。</p>
@@ -511,7 +511,7 @@
 <hr>
 <h4 id="其他方法实现"><a href="#其他方法实现" class="headerlink" title="其他方法实现"></a>其他方法实现</h4><p>个人认为类似这种问答类的题目，可行的方式比如对问题进行分词处理，然后对关键词去搜索匹配，通过词频来判断；或者弹出浏览器由用户自己去判断最终的答案，一般像搜索引擎的搜索结果页面，都会有标题和简短的内容，内容中的关键字会被标红显示，由用户自己去判断，准确性会更高一些，但这样耗费的时间也会特别长。应该还有其他的方法吧。</p>
 <p>目前我也在用python来实现一种可能的方法，我会在后续的文章中详细说明，敬请期待吧！</p>
-<p>最后再说一句。如果看到这篇文章后你也对这种“答题吃瓜”的直播问题活动产生了兴趣，可以使用我的邀请码来获得一张复活卡的机会，输入下面的邀请码即可。</p>
+<p>最后再说一句。如果看到这篇文章后你也对这种“答题吃瓜”的直播问题活动产生了兴趣，可以使用我的邀请码来获得一张复活卡的机会，输入下面的邀请码即可。</p>
 <p><img src="http://ouej55gp9.bkt.clouddn.com/blog/180116/GaimbE8mfm.jpeg?imageslim" alt="mark"></p>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
