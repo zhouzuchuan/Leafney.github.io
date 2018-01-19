@@ -1,19 +1,17 @@
 ---
 title: 百万英雄，看程序员带你如何任性吃瓜(1)
 date: 2018-01-16 23:20:26
-updated: 2018-01-16 23:23:58
+updated: 2018-01-19 22:20:43
 tags:
-    - 直播问答
-# categories: 
-#     - Celery分布式任务队列入门
-description: 通过程序实现直播答题神器
+	- 直播问答
+description: 通过Golang程序实现直播答题神器
 ---
 
-今天中午的时候没事，随手打开掘金app打算看看最近有什么好文章。看到热门推荐下有一篇文章名为 [qanswer：冲顶大会等游戏答题神器（Golang）](https://juejin.im/entry/5a5c189e518825733d69093d) ,号称《冲顶大会》，《百万英雄》等答题游戏的答题神器，让人顺利吃鸡！
+今天中午的时候没事，随手打开掘金app打算看看最近有什么好文章。看到热门推荐下有一篇文章名为 [qanswer：冲顶大会等游戏答题神器（Golang）](https://juejin.im/entry/5a5c189e518825733d69093d) 号称《冲顶大会》,《百万英雄》等答题游戏的答题神器，让人顺利吃鸡！
 
 因为我最近也一直在关注西瓜视频里的“百万英雄”这个“全民直播答题吃瓜”的活动，但无奈自己的知识储备量太少，最高的一次答到第9题就被kill了。看到这篇文章顿时来了兴趣，准备好好研究一番。
 
-该项目的github地址为 [silenceper/qanswer](https://github.com/silenceper/qanswer) 。在README.md中也记录了如何来部署运行，下面把我的部署流程简单的记录如下。
+该项目的github地址为 [silenceper/qanswer](https://github.com/silenceper/qanswer) 。在 `README.md` 中也记录了如何来部署运行，下面把我的部署流程简单的记录如下。
 
 #### qanswer部署
 
@@ -27,7 +25,7 @@ description: 通过程序实现直播答题神器
 
 ##### 安卓设备
 
-连接安卓设备时需要安装一个驱动类工具adb。adb全称为 `Android Debug Bridge` ,即Android调试桥。Android 调试桥 (adb) 是一个通用命令行工具，其允许您与模拟器实例或连接的 Android 设备进行通信。它可为各种设备操作提供便利，如安装和调试应用，并提供对 Unix shell（可用来在模拟器或连接的设备上运行各种命令）的访问。
+连接安卓设备时需要安装一个驱动类工具adb。adb全称为 `Android Debug Bridge` ,即Android调试桥。Android 调试桥 (adb) 是一个通用命令行工具，其允许您与模拟器实例或连接的 Android 设备进行通信。它可为各种设备操作提供便利，如安装和调试应用，并提供对 `Unix shell`（可用来在模拟器或连接的设备上运行各种命令）的访问。
 
 ###### Mac系统安装adb
 
@@ -37,7 +35,7 @@ description: 通过程序实现直播答题神器
 $ brew cask install android-platform-tools
 ```
 
-当看到提示 “android-platform-tools was successfully installed!” 信息，说明安装成功。
+当看到提示 `android-platform-tools was successfully installed!` 信息，说明安装成功。
 
 命令 `adb devices` 可以用来查看当前连接的安卓设备：
 
@@ -87,6 +85,7 @@ sudo apt-get install android-tools-adb
 
 ```
 $ adb devices
+
 List of devices attached
 a1529b810604    device
 ```
@@ -214,7 +213,6 @@ answer_w: 920
 answer_h: 580
 baidu_api_key: xxx...
 baidu_secret_key: xxx...
-
 ```
 
 另外，`baidu_api_key` 和 `baidu_secret_key` 设置成在百度文本识别中创建应用的对应值。如果使用的是 `tesseract` 这两项则不用管。
@@ -333,7 +331,7 @@ baidu_secret_key: xxx...
 
 目前我也在用python来实现一种可能的方法，我会在后续的文章中详细说明，敬请期待吧！
 
-最后再说一句。如果看到这篇文章后你也对这种“答题吃瓜”的直播问题活动产生了兴趣，可以使用我的邀请码来获得一张复活卡的机会，输入下面的邀请码即可。
+最后再说一句。如果看到这篇文章后你也对这种“答题吃瓜”的直播问题活动产生了兴趣，可以使用我的邀请码来获得一张复活卡的机会，输入下面的邀请码即可。
 
 ![mark](http://ouej55gp9.bkt.clouddn.com/blog/180116/GaimbE8mfm.jpeg?imageslim)
 
@@ -345,3 +343,5 @@ baidu_secret_key: xxx...
 * [How to Install ADB on Windows, macOS, and Linux](https://www.xda-developers.com/install-adb-windows-macos-linux/)
 * [Android 调试桥](https://developer.android.com/studio/command-line/adb.html)
 * [在 MAC OS X 安装 ADB (Android调试桥)](https://www.jianshu.com/p/1b3fb1f27b67)
+
+
