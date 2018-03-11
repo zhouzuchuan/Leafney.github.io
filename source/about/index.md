@@ -1,6 +1,7 @@
 ---
 title: 关于
 date: 2016-09-24 01:41:57
+updated: 2018-03-11 18:04:50
 type: "about"
 comments: false
 ---
@@ -15,14 +16,16 @@ comments: false
 
 #### 涉猎
 
-* 后端：ASP.NET MVC/.NET Core、Python、Golang、Shell 等
-* 前端：jQuery、Vue.js 等
+* 战场：Mac、Ubuntu、RaspberryPi、Docker
+* 后端（主）：ASP.NET MVC/.NET Core、Python、Golang、Shell 等
+* 前端（微）：jQuery、Vue.js 等
 * 数据库：Mysql、SqlServer、MongoDB、SqlLite 等
 * Docker容器化技术
-* 爬虫、数据挖掘、Elasticsearch（ELK）技术
-* 缓存技术
+* 分布式爬虫、Celery、RabbitMQ、数据挖掘
+* Elasticsearch（ELK）技术
+* Redis、缓存技术
 * 人工智能、TensorFlow技术
-* 智能家居
+* 智能家居相关
 
 #### 主页
 
@@ -42,11 +45,21 @@ Email: service@itfanr.cc
 
 说明：如在浏览文章时遇到相关技术问题或有任何疑问，欢迎通过Email的方式和我讨论，我会在看到邮件留言后的第一时间回复您。
 
-#### 打赏
+#### 鼓励
 
 如果觉得我的文章对您有所帮助，可以请我喝一杯咖啡哟！！！
 
-<center class="half">
-    <img src="/images/wechat-reward-image.jpg" width="300"/>
-    <img src="/images/alipay.jpg" width="300"/>
-</center>
+<div class="half">
+    <img src="/images/wechat-reward-image.jpg" width="250"/>
+    <img src="/images/alipay.jpg" width="250"/>
+</div>
+
+#### Thanks
+
+感谢以下朋友对我的支持和鼓励！
+
+| 支持者 |  支持方式 | 支持金额 | 时间 |
+| ----- | -------- | ------- | ---- |
+| 嬉** | 微信红包 | ¥ 5.00 | 2016-09-28 21:41:58 |
+| \*** | 微信支付 | ¥ 5.00 | 2017-12-17 13:57:26 |
+| \*** | 微信支付 | ¥ 5.00 | 2018-03-08 11:28:48 |
