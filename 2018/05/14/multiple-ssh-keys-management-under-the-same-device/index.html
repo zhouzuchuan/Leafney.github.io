@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-flash.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GitHub," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一般我们在自己的个人电脑上使用git时都会通过SSH的方式来连接代码管理站点如Github等。但有时候我们也会遇到多重SSH的问题。该文章告诉你如何在同一个设备下快速方便的设置多重SSH Keys。">
+<meta name="keywords" content="GitHub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同一设备下多重SSH Keys管理">
+<meta property="og:url" content="http://www.itfanr.cc/2018/05/14/multiple-ssh-keys-management-under-the-same-device/index.html">
+<meta property="og:site_name" content="IT范儿">
+<meta property="og:description" content="一般我们在自己的个人电脑上使用git时都会通过SSH的方式来连接代码管理站点如Github等。但有时候我们也会遇到多重SSH的问题。该文章告诉你如何在同一个设备下快速方便的设置多重SSH Keys。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-13T17:01:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="同一设备下多重SSH Keys管理">
+<meta name="twitter:description" content="一般我们在自己的个人电脑上使用git时都会通过SSH的方式来连接代码管理站点如Github等。但有时候我们也会遇到多重SSH的问题。该文章告诉你如何在同一个设备下快速方便的设置多重SSH Keys。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.itfanr.cc/2018/05/14/multiple-ssh-keys-management-under-the-same-device/"/>
+
+
+
+
+
+  <title>同一设备下多重SSH Keys管理 | IT范儿</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">IT范儿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">程序员改变世界</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.itfanr.cc/2018/05/14/multiple-ssh-keys-management-under-the-same-device/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leafney">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="IT范儿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">同一设备下多重SSH Keys管理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T01:01:51+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-05-14T01:01:51+08:00">
+                2018-05-14
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git操作系列/" itemprop="url" rel="index">
+                    <span itemprop="name">Git操作系列</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读量 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,294
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  一般我们在自己的个人电脑上使用git时都会通过SSH的方式来连接代码管理站点如Github等。但有时候我们也会遇到多重SSH的问题。该文章告诉你如何在同一个设备下快速方便的设置多重SSH Keys。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一般我们在自己的个人电脑上使用git时都会通过SSH的方式来连接代码管理站点如Github等。但有时候我们也会遇到多重SSH的问题。</p>
+<h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>最常见的情况就是一般的公司都会有自己的私有git仓库，比如用gitlab来搭建的git仓库站点。而公司里也会为每位员工设置一个个人专属的公司域名邮箱，这样的情况下就遇到问题了：我们在自己的电脑上已经配置了自己的邮箱账号作为主力的git账户，而在开发公司的项目时，用来提交git操作的时候就要切换为公司分配的邮箱账号了。虽然我们可以在项目目录内使用 <code>git config user.name</code> 和 <code>git config user.email</code> 来为该项目指定单独的git提交账户，但在 <code>git pull</code> 和 <code>git push</code> 时，每次都需要使用 <code>http</code> 的方式输入密码才行，非常的麻烦。</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>那么现在问题就来了，个人使用的git账户和公司分配的git账户应该如何在一台电脑上同时存在并保证都能分别使用SSH的方式来提交代码呢？</p>
+<p>首先，我们指定下面示例使用的git账户：</p>
+<p>我的个人git账户: <code>leafney</code> <code>leafney@gmail.com</code> git仓库：<code>github.com</code><br>我的公司git账户: <code>wuyazi</code> <code>wuyazi@company.com</code> git仓库：<code>111.206.223.205:8080</code> （公司配置的gitlab对应ip地址）<br>我使用的Bash : <code>iTerm2+zsh</code></p>
+<p>我的需求是，因为我使用的是个人电脑，所以我希望的是在默认情况下，仍然使用我自己的git账户 <code>leafney@gmail.com</code> 作为全局账户来提交项目。对于公司的项目，则使用公司的git账户 <code>wuyazi@company.com</code> 作为局部账户来仅提交公司的项目。</p>
+<p>之前在我的mac下已经设置了默认的git账号 <code>leafney@gmail.com</code> 对应的ssh密钥 。如果你还没有设置过SSH，可以参考我之前的文章：<a href="/2017/03/03/using-ssh-key-connection-github-in-linux/">Linux下使用SSH密钥连接Github
+</a></p>
+<h4 id="新增SSH-key"><a href="#新增SSH-key" class="headerlink" title="新增SSH key"></a>新增SSH key</h4><p>现在要新增一个工作的账号，以 <code>wuyazi</code> <code>wuyazi@company.com</code> 为示例账户来添加。</p>
+<h5 id="查看已添加SSH密钥"><a href="#查看已添加SSH密钥" class="headerlink" title="查看已添加SSH密钥"></a>查看已添加SSH密钥</h5><p>查看mac下已经添加的我的个人git账号信息:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">~/.ssh</div><div class="line">➜ ls</div><div class="line">id_rsa      id_rsa.pub  known_hosts</div></pre></td></tr></table></figure>
+<p>查看 <code>id_rsa.pub</code> 内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ vim id_rsa.pub</div><div class="line">ssh-ras xxxxxxxxxxxx  leafney@gmail.com</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="新增SSH密钥"><a href="#新增SSH密钥" class="headerlink" title="新增SSH密钥"></a>新增SSH密钥</h5><p>创建新的 ssh key：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 切换到 .ssh 目录下</div><div class="line">➜ cd ~/.ssh</div><div class="line">// 输入工作邮箱来创建新的ssh key,git唯一认证标准是邮箱</div><div class="line">➜ ssh-keygen -t rsa -C &quot;wuyazi@company.com&quot;</div></pre></td></tr></table></figure>
+<p>需要注意的一点是，当提示 <code>Enter file in which to save the key (/Users/leafney/.ssh/id_rsa):</code> 时，我们不使用默认的名称 <code>id_rsa</code> ，因为该名称我们之前在设置个人git账户时已经使用过了，所以这里新设置一个针对于公司git账户的名称 <code>id_rsa_work</code>。</p>
+<p>操作记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">~/.ssh</div><div class="line">➜ ssh-keygen -t rsa -C &quot;wuyazi@company.com&quot;</div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file in which to save the key (/Users/leafney/.ssh/id_rsa): id_rsa_work</div><div class="line">Enter passphrase (empty for no passphrase):</div><div class="line">Enter same passphrase again:</div><div class="line">Your identification has been saved in id_rsa_work.</div><div class="line">Your public key has been saved in id_rsa_work.pub.</div><div class="line">The key fingerprint is:</div><div class="line">SHA256:gZO6tyeOrp0FLGT5q2kBn3+9Et+P1shzjuyv3rUXWY0 wuyazi@company.com</div><div class="line">The key&apos;s randomart image is:</div><div class="line">+---[RSA 2048]----+</div><div class="line">|                 |</div><div class="line">|       o         |</div><div class="line">|.     + .      . |</div><div class="line">| o o .   .    E .|</div><div class="line">|  B .   S    o . |</div><div class="line">| o = ...    o    |</div><div class="line">|  . B oo.o o ..  |</div><div class="line">|   = Ao.oo*++. . |</div><div class="line">|  +=B.o+.+BB=..  |</div><div class="line">+----[SHA256]-----+</div><div class="line"></div><div class="line">~/.ssh took 22s</div></pre></td></tr></table></figure>
+<h5 id="将密钥添加到ssh-agent管理"><a href="#将密钥添加到ssh-agent管理" class="headerlink" title="将密钥添加到ssh agent管理"></a>将密钥添加到ssh agent管理</h5><p>通过ssh agent对密钥的管理我们可以实现免密码提交。使用 <code>ssh-add</code> 命令来将新增的密钥添加到 <code>ssh-agent</code> 的高速缓存中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">~/.ssh</div><div class="line"></div><div class="line">//添加之前所新生成的用于work的密钥</div><div class="line">➜ ssh-add ~/.ssh/id_rsa_work</div><div class="line">Identity added: /Users/leafney/.ssh/id_rsa_work (/Users/leafney/.ssh/id_rsa_work)</div></pre></td></tr></table></figure>
+<p>可以通过命令 <code>ssh-add -l</code> 来查看存在于 <code>ssh-agent</code> 密钥管理器中所有的密钥列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">~/.ssh</div><div class="line">➜ ssh-add -l</div><div class="line">2048 SHA256:gZO6tyeOrp0FLGT5q2kBn3+9Et+P1shzjuyv3rUXWY0 /Users/leafney/.ssh/id_rsa_work (RSA)</div><div class="line">2048 SHA256:My6EL2r7d20oq01x1PeuRiYJSK2aID3sQlR+xCagPnE /Users/leafney/.ssh/id_rsa (RSA)</div></pre></td></tr></table></figure>
+<p>这里如果发现之前的 <code>id_rsa</code> 的密钥不存在，可以重新添加一下。</p>
+<p>如果要删除所有已添加的密钥，可以使用命令：<code>ssh-add -D</code> 。</p>
+<h4 id="配置ssh-config"><a href="#配置ssh-config" class="headerlink" title="配置ssh config"></a>配置ssh config</h4><h5 id="编辑config"><a href="#编辑config" class="headerlink" title="编辑config"></a>编辑config</h5><p><code>SSH</code> 程序可以从以下途径获取配置参数： </p>
+<p>用户配置文件：<code>~/.ssh/config</code><br>系统配置文件：<code>/etc/ssh/ssh_config</code></p>
+<p>配置文件可分为多个配置区段，每个配置区段使用 <code>Host</code> 来区分。我们可以在命令行中输入不同的Host来加载不同的配置段。</p>
+<p>在 <code>~/.ssh</code> 目录下打开配置文件 <code>config</code>(没有则新增该文件)，如下是我的配置示例：</p>
+<p>新增：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ cd ~/.ssh/</div><div class="line">➜ touch config</div></pre></td></tr></table></figure>
+<p><code>config</code> 内容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Host work</div><div class="line">    HostName 111.206.223.205:8080</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa_work</div><div class="line"></div><div class="line">Host github.com</div><div class="line">    HostName github.com</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa</div></pre></td></tr></table></figure>
+<h5 id="配置项说明"><a href="#配置项说明" class="headerlink" title="配置项说明"></a>配置项说明</h5><p>常用的SSH配置项：</p>
+<ul>
+<li><code>Host</code> 别名 : <code>Host myhost</code> 表示自定义的host简称，以后连接远程服务器就可以使用命令 <code>ssh myhost</code> (注意下面有缩进)</li>
+<li><code>HostName</code> 主机名 : 主机名可以是ip也可以是域名(如:github.com或者bitbucket.org)</li>
+<li><code>Port</code> 端口 : 表示服务器open-ssh端口，默认22，默认时一般不写此行</li>
+<li><code>User</code> 用户名 : <code>User git</code> 表示登录ssh的用户名，如 <code>git</code></li>
+<li><code>IdentityFile</code> ： 表示证书文件路径（如 <code>~/.ssh/id_rsa_*</code>)</li>
+</ul>
+<p>其他SSH配置项：</p>
+<ul>
+<li><code>IdentitiesOnly</code> 只接受 SSH Key 登录  可选 <code>yes</code> or <code>no</code></li>
+<li><code>PreferredAuthentications</code> 强制使用Public Key验证</li>
+</ul>
+<h5 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h5><p>如上，我用别名 <code>work</code> 指代了公司gitlab的ip地址 <code>111.206.223.205:8080</code> ，使用 <code>ssh -T</code> 命令来验证一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">➜ ssh -T git@work</div><div class="line">The authenticity of host &apos;111.206.223.205:8080 (111.206.223.205:8080)&apos; can&apos;t be established.</div><div class="line">RSA key fingerprint is SHA256:/UwiMSDZVkgF+3yLAxHwMJfYGxK2XGk5DU3txRr+LNg.</div><div class="line">Are you sure you want to continue connecting (yes/no)? yes</div><div class="line">Warning: Permanently added &apos;111.206.223.205:8080&apos; (RSA) to the list of known hosts.</div><div class="line">Welcome to GitLab, 无崖子!</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="第一版示例"><a href="#第一版示例" class="headerlink" title="第一版示例"></a>第一版示例</h4><h5 id="项目clone"><a href="#项目clone" class="headerlink" title="项目clone"></a>项目clone</h5><p>如上的步骤配置完成后，我们就可以通过ssh别名的方式来区分使用不同的SSH Key了。</p>
+<p>在 <code>clone</code> 项目到本地之前，我们需要进行一个小小的改动。</p>
+<p>之前的clone命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git clone git@111.206.223.205:8080:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
+<p>更改后的clone命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git clone git@work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
+<p>即我们将原来ssh地址中的域名用我们在配置文件中的别名来代替了，而相应的别名又对应着ssh密钥文件。</p>
+<p>当然，我们还可以更精简一下，因为我们在<code>config</code> 文件中已经指定了用户为 <code>git</code> ，所以可将路径中的用户名也省略掉：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
+<p>这样，看起来是不是非常的舒服呢？</p>
+<p>而如果我要clone自己的个人项目，则仍然按照之前的操作即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git clone git@github.com:Leafney/docker-alpine-mysql.git</div></pre></td></tr></table></figure>
+<h5 id="设置项目提交账户"><a href="#设置项目提交账户" class="headerlink" title="设置项目提交账户"></a>设置项目提交账户</h5><p>在将项目 <code>clone</code> 到本地之后，还要为该项目单独设置commit提交时使用的git账户。</p>
+<p>因为我们在之前已经按照 <a href="/2017/03/03/using-ssh-key-connection-github-in-linux/">Linux下使用SSH密钥连接Github
+</a> 操作中的方法将我的个人账户 <code>leafney</code> <code>leafney@gmail.com</code> 设置为了全局的git账户，在提交项目时如果没有设置项目单独的git账户，就会使用全局的，那这样就不对了。</p>
+<p>不加 <code>--global</code> 参数，为刚刚clone下来的公司项目设置公司分配的git账户：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">➜ git config user.name &quot;wuyazi&quot;   # 双引号是为了防止name中含有空格而导致错误</div><div class="line">➜ git config user.email &quot;wuyazi@company.com&quot;</div></pre></td></tr></table></figure>
+<p>这样就配置完成了。</p>
+<hr>
+<h4 id="还能再快一点吗"><a href="#还能再快一点吗" class="headerlink" title="还能再快一点吗"></a>还能再快一点吗</h4><p>总结上面的操作步骤，无非是设置了如下两项：</p>
+<ol>
+<li>指定git项目使用的SSH Key</li>
+<li>指定git项目提交时使用的git账户</li>
+</ol>
+<p>那么第一步我们已经在ssh的 <code>config</code> 中做了指定，貌似已经是最快的操作了。那就看看第二项如何优化呢？</p>
+<p>我们是在git项目clone到本地之后，再去为该项目添加了使用的git账户，那是否能将这两步合并为一步呢？</p>
+<p><strong>答案当然是可以的。</strong></p>
+<h4 id="设置Base-Zsh方便clone操作"><a href="#设置Base-Zsh方便clone操作" class="headerlink" title="设置Base/Zsh方便clone操作"></a>设置Base/Zsh方便clone操作</h4><p>为了以后方便使用不同git账户 <code>git clone</code> 项目，我们在 <code>bash</code> 的 <code>~/.bashrc</code> 或者 <code>zsh</code> 的 <code>~/.zshrc</code> 内加入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alias work-git-clone=&apos;git clone --config user.name=&quot;wuyazi&quot; --config user.email=&quot;wuyazi@company.com&quot; $@&apos;</div></pre></td></tr></table></figure>
+<p>以后就只要输入 <code>work-git-clone REPO-SSH-URL</code> ，效果就相当于执行了如下的命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">git clone REPO-SSH-URL</div><div class="line">cd REPO</div><div class="line">git config user.name &quot;wuyazi&quot;</div><div class="line">git config user.email &quot;wuyazi@company.com&quot;</div></pre></td></tr></table></figure>
+<p>然后，更新 <code>Bash/Zsh</code> 的设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 更新Bash设置</div><div class="line">➜ source ~/.bashrc</div><div class="line"></div><div class="line"># 更新zsh设置</div><div class="line">➜ source ~/.zshrc</div></pre></td></tr></table></figure>
+<p>参考自；<a href="https://kuanyui.github.io/2016/08/01/git-multiple-ssh-key/" target="_blank" rel="external">多重 SSH Keys 與 Github 帳號</a></p>
+<h4 id="第二版示例"><a href="#第二版示例" class="headerlink" title="第二版示例"></a>第二版示例</h4><p>经过上面的操作，我们在 <code>git clone</code> 公司的git项目时，只需要执行如下简单的两步即可：</p>
+<p>第一步：更改SSH地址</p>
+<p>将项目SSH地址： <code>git@111.206.223.205:8080:how_to_use_multiple_git_ssh/you_can_by_this_way.git</code> 更改为 <code>work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</code></p>
+<p>第二步：<code>work-git-clone</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ work-git-clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
+<p>而操作个人的git项目，命令只需要一步：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git clone git@github.com:Leafney/docker-alpine-mysql.git</div></pre></td></tr></table></figure>
+<hr>
+<p>未完待续。。。</p>
+<hr>
+<h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
+<li><a href="https://blog.kinpzz.com/2016/02/12/muti-git-ssh-management/" target="_blank" rel="external">同一设备多个git账号的ssh管理</a></li>
+<li><a href="https://gist.github.com/jexchan/2351996" target="_blank" rel="external">Multiple SSH Keys settings for different github account</a></li>
+<li><a href="https://gist.github.com/yeungeek/596984fd9e53d6c36c0d" target="_blank" rel="external">Git多帐号配置</a></li>
+<li><a href="https://www.hi-linux.com/posts/14346.html" target="_blank" rel="external">利用SSH的用户配置文件Config管理SSH会话</a> –config配置项说明</li>
+<li><a href="https://www.jianshu.com/p/cd20ac5b2a3e" target="_blank" rel="external">一个客户端设置多个GitHub账号</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <div>如有疑问或需要技术讨论，请发邮件到 service@itfanr.cc</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>鼓励</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat-reward-image.jpg" alt="Leafney 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leafney 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Leafney
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.itfanr.cc/2018/05/14/multiple-ssh-keys-management-under-the-same-device/" title="同一设备下多重SSH Keys管理">http://www.itfanr.cc/2018/05/14/multiple-ssh-keys-management-under-the-same-device/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/11/hexo-blog-optimization-two/" rel="next" title="Hexo博客功能优化二">
+                <i class="fa fa-chevron-left"></i> Hexo博客功能优化二
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Leafney" />
+            
+              <p class="site-author-name" itemprop="name">Leafney</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leafney" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://hub.docker.com/r/leafney/" target="_blank" title="DockerHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>DockerHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:service@itfanr.cc" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新增SSH-key"><span class="nav-number">3.</span> <span class="nav-text">新增SSH key</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看已添加SSH密钥"><span class="nav-number">3.1.</span> <span class="nav-text">查看已添加SSH密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#新增SSH密钥"><span class="nav-number">3.2.</span> <span class="nav-text">新增SSH密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将密钥添加到ssh-agent管理"><span class="nav-number">3.3.</span> <span class="nav-text">将密钥添加到ssh agent管理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置ssh-config"><span class="nav-number">4.</span> <span class="nav-text">配置ssh config</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#编辑config"><span class="nav-number">4.1.</span> <span class="nav-text">编辑config</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置项说明"><span class="nav-number">4.2.</span> <span class="nav-text">配置项说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试"><span class="nav-number">4.3.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一版示例"><span class="nav-number">5.</span> <span class="nav-text">第一版示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#项目clone"><span class="nav-number">5.1.</span> <span class="nav-text">项目clone</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置项目提交账户"><span class="nav-number">5.2.</span> <span class="nav-text">设置项目提交账户</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还能再快一点吗"><span class="nav-number">6.</span> <span class="nav-text">还能再快一点吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置Base-Zsh方便clone操作"><span class="nav-number">7.</span> <span class="nav-text">设置Base/Zsh方便clone操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二版示例"><span class="nav-number">8.</span> <span class="nav-text">第二版示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">9.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leafney</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数 <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      访问量 <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=58685295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.3"></script>
+
+
+  
+
+</body>
+</html>
