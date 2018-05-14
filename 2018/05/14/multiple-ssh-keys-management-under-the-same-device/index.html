@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  2,294
+                  3,255
                 </span>
               
 
@@ -471,7 +471,7 @@
 <h5 id="配置项说明"><a href="#配置项说明" class="headerlink" title="配置项说明"></a>配置项说明</h5><p>常用的SSH配置项：</p>
 <ul>
 <li><code>Host</code> 别名 : <code>Host myhost</code> 表示自定义的host简称，以后连接远程服务器就可以使用命令 <code>ssh myhost</code> (注意下面有缩进)</li>
-<li><code>HostName</code> 主机名 : 主机名可以是ip也可以是域名(如:github.com或者bitbucket.org)</li>
+<li><code>HostName</code> 主机名 : 主机名可以是ip也可以是域名(如:github.com或者bitbucket.org);如果主机名中包含 <code>%h</code> ，则实际使用时会被命令行中的主机名替换。</li>
 <li><code>Port</code> 端口 : 表示服务器open-ssh端口，默认22，默认时一般不写此行</li>
 <li><code>User</code> 用户名 : <code>User git</code> 表示登录ssh的用户名，如 <code>git</code></li>
 <li><code>IdentityFile</code> ： 表示证书文件路径（如 <code>~/.ssh/id_rsa_*</code>)</li>
@@ -520,20 +520,62 @@
 <p>参考自；<a href="https://kuanyui.github.io/2016/08/01/git-multiple-ssh-key/" target="_blank" rel="external">多重 SSH Keys 與 Github 帳號</a></p>
 <h4 id="第二版示例"><a href="#第二版示例" class="headerlink" title="第二版示例"></a>第二版示例</h4><p>经过上面的操作，我们在 <code>git clone</code> 公司的git项目时，只需要执行如下简单的两步即可：</p>
 <p>第一步：更改SSH地址</p>
-<p>将项目SSH地址： <code>git@111.206.223.205:8080:how_to_use_multiple_git_ssh/you_can_by_this_way.git</code> 更改为 <code>work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</code></p>
-<p>第二步：<code>work-git-clone</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 将项目SSH地址：</div><div class="line">git@111.206.223.205:8080:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div><div class="line"># 更改为:</div><div class="line">work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
+<p>第二步：执行 <code>work-git-clone</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ work-git-clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
 <p>而操作个人的git项目，命令只需要一步：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ git clone git@github.com:Leafney/docker-alpine-mysql.git</div></pre></td></tr></table></figure>
 <hr>
-<p>未完待续。。。</p>
+<h4 id="新的复杂需求"><a href="#新的复杂需求" class="headerlink" title="新的复杂需求"></a>新的复杂需求</h4><p>上面的需求可能是相对来说比较常见而且普通的一种情况了，那么下面的需求算是一种稍微复杂的情况了。</p>
+<p>因为在Github上发布私有的项目，是需要付费的，所以一般针对于个人的私有项目，我们一般会选择自己购买服务器来搭建属于自己的私有个人仓库，比如我自己的 <code>gogit.itfanr.cc</code> 就是我用开源项目 <code>Gogs</code> 来搭建的。有兴趣可查看我的开源项目：<a href="https://github.com/Leafney/ubuntu-gogs" target="_blank" rel="external">Docker Ubuntu-Gogs 用更简单的方式部署、升级或迁移Gogs服务。</a> 。</p>
+<p>那么，现在就出现了下面的四种情况：</p>
+<ol>
+<li>对于我个人想要开源的代码项目，我会选择使用个人账户发布到 <code>github.com</code> 站点下；</li>
+<li>对于我个人的私有代码项目，我会选择使用个人账户发布到我自己搭建的 <code>gogit.itfanr.cc</code> 仓库站点下；</li>
+<li>对于公司的私有项目，我要选择使用公司分配的git账户发布到公司搭建的私有仓库 <code>111.206.223.205:8080</code> 站点下；</li>
+<li>对于我在工作中的一些积累或私人的项目，我想使用公司分配的git账户发布到我个人的 <code>gogit.itfanr.cc</code> 仓库站点下；</li>
+</ol>
+<h5 id="修改ssh-config"><a href="#修改ssh-config" class="headerlink" title="修改ssh config"></a>修改ssh config</h5><p>经过上面的步骤，我们很容易的就知道想要实现上面的需求，只需要通过修改SSH的配置文件 <code>config</code> 中的配置即可实现。</p>
+<p>对于公司的项目，针对于上面第3个情况，我们仍然如之前的配置即可：</p>
+<p><code>config</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># company repo account</div><div class="line">Host work</div><div class="line">    HostName 111.206.223.205:8080</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa_work</div></pre></td></tr></table></figure>
+<p>那么在clone项目时的操作如下：</p>
+<ol>
+<li><p>更改项目SSH地址中的域名部分；</p>
+</li>
+<li><p>执行命令：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">➜ work-git-clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git</div></pre></td></tr></table></figure>
+<hr>
+<p>对于工作中的私人项目，我们要使用公司的git账户来发布到我的个人仓库站点 <code>gogit.itfanr.cc</code>。配置时我们还需要指定使用密钥 <code>id_rsa_work</code> ：</p>
+<p><code>config</code> :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># wuyazi private repo account</div><div class="line">Host wuyazigogit</div><div class="line">    HostName gogit.itfanr.cc</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa_work</div></pre></td></tr></table></figure>
+<p>那么在clone项目时的操作如下：</p>
+<ol>
+<li>更改项目SSH地址中的域名部分；</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 如将: </div><div class="line">ssh://git@gogit.itfanr.cc:9527/wuyazi/repo_for_myself.git</div><div class="line"># 更改为:</div><div class="line">ssh://git@wuyazigogit:9527/wuyazi/repo_for_myself.git</div></pre></td></tr></table></figure>
+<ol>
+<li>执行命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">work-git-clone ssh://git@wuyazigogit:9527/wuyazi/repo_for_myself.git</div></pre></td></tr></table></figure>
+<hr>
+<p>因为我的个人账户是作为全局账户来使用的，就是说在 <code>config</code> 文件中如果上面的 <code>Host</code> 部分没有匹配上，那么要保证最后一个 <code>Host</code> 匹配到我的个人git账户。再次回顾 <code>config</code> 配置项中的常用参数，我们发现 <code>HostName</code> 除了可以设置域名或ip地址之外，还可以设置为 <code>%h</code> ，表示<strong>实际使用时会被命令行中的主机名替换</strong>。</p>
+<p>所以，为了实现上面的第1种和第2种情况，以及实现对未特殊说明的项目的默认匹配，我用如下的方式来配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># leafney default account for github.com or gogit.itfanr.cc</div><div class="line">Host github.com gogit.itfanr.cc</div><div class="line">    HostName %h</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa</div></pre></td></tr></table></figure>
+<p>如上，针对于不同主机地址使用同一私钥进行登录的情况，可以在 <code>Host</code> 中指定多个别名来匹配，而 <code>HostName</code> 中的 <code>%h</code> 会自动匹配用户输入的ssh地址中的域名部分，来匹配到对应的密钥。</p>
+<p>那么在clone项目时的操作如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git clone git@github.com:Leafney/ubuntu-gogs.git</div></pre></td></tr></table></figure>
+<p>综上，我的 <code>config</code> 配置内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># company repo account</div><div class="line">Host work</div><div class="line">    HostName 111.206.223.205:8080</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa_work</div><div class="line"></div><div class="line"># wuyazi private repo account</div><div class="line">Host wuyazigogit</div><div class="line">    HostName gogit.itfanr.cc</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa_work</div><div class="line"></div><div class="line"># leafney default account for github.com or gogit.itfanr.cc</div><div class="line">Host github.com gogit.itfanr.cc</div><div class="line">    HostName %h</div><div class="line">    User git</div><div class="line">    IdentityFile ~/.ssh/id_rsa</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h4><ul>
 <li><a href="https://blog.kinpzz.com/2016/02/12/muti-git-ssh-management/" target="_blank" rel="external">同一设备多个git账号的ssh管理</a></li>
-<li><a href="https://gist.github.com/jexchan/2351996" target="_blank" rel="external">Multiple SSH Keys settings for different github account</a></li>
-<li><a href="https://gist.github.com/yeungeek/596984fd9e53d6c36c0d" target="_blank" rel="external">Git多帐号配置</a></li>
-<li><a href="https://www.hi-linux.com/posts/14346.html" target="_blank" rel="external">利用SSH的用户配置文件Config管理SSH会话</a> –config配置项说明</li>
-<li><a href="https://www.jianshu.com/p/cd20ac5b2a3e" target="_blank" rel="external">一个客户端设置多个GitHub账号</a></li>
+<li><a href="https://gist.github.com/yeungeek/596984fd9e53d6c36c0d" target="_blank" rel="external">Git多帐号配置
+</a></li>
+<li><a href="https://www.hi-linux.com/posts/14346.html" target="_blank" rel="external">利用SSH的用户配置文件Config管理SSH会话</a></li>
+<li><a href="https://kuanyui.github.io/2016/08/01/git-multiple-ssh-key/" target="_blank" rel="external">多重 SSH Keys 與 Github 帳號</a></li>
 </ul>
 
       
@@ -779,7 +821,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新增SSH-key"><span class="nav-number">3.</span> <span class="nav-text">新增SSH key</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看已添加SSH密钥"><span class="nav-number">3.1.</span> <span class="nav-text">查看已添加SSH密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#新增SSH密钥"><span class="nav-number">3.2.</span> <span class="nav-text">新增SSH密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将密钥添加到ssh-agent管理"><span class="nav-number">3.3.</span> <span class="nav-text">将密钥添加到ssh agent管理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置ssh-config"><span class="nav-number">4.</span> <span class="nav-text">配置ssh config</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#编辑config"><span class="nav-number">4.1.</span> <span class="nav-text">编辑config</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置项说明"><span class="nav-number">4.2.</span> <span class="nav-text">配置项说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试"><span class="nav-number">4.3.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一版示例"><span class="nav-number">5.</span> <span class="nav-text">第一版示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#项目clone"><span class="nav-number">5.1.</span> <span class="nav-text">项目clone</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置项目提交账户"><span class="nav-number">5.2.</span> <span class="nav-text">设置项目提交账户</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还能再快一点吗"><span class="nav-number">6.</span> <span class="nav-text">还能再快一点吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置Base-Zsh方便clone操作"><span class="nav-number">7.</span> <span class="nav-text">设置Base/Zsh方便clone操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二版示例"><span class="nav-number">8.</span> <span class="nav-text">第二版示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">9.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#准备"><span class="nav-number">2.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新增SSH-key"><span class="nav-number">3.</span> <span class="nav-text">新增SSH key</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看已添加SSH密钥"><span class="nav-number">3.1.</span> <span class="nav-text">查看已添加SSH密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#新增SSH密钥"><span class="nav-number">3.2.</span> <span class="nav-text">新增SSH密钥</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将密钥添加到ssh-agent管理"><span class="nav-number">3.3.</span> <span class="nav-text">将密钥添加到ssh agent管理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置ssh-config"><span class="nav-number">4.</span> <span class="nav-text">配置ssh config</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#编辑config"><span class="nav-number">4.1.</span> <span class="nav-text">编辑config</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置项说明"><span class="nav-number">4.2.</span> <span class="nav-text">配置项说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试"><span class="nav-number">4.3.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一版示例"><span class="nav-number">5.</span> <span class="nav-text">第一版示例</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#项目clone"><span class="nav-number">5.1.</span> <span class="nav-text">项目clone</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置项目提交账户"><span class="nav-number">5.2.</span> <span class="nav-text">设置项目提交账户</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#还能再快一点吗"><span class="nav-number">6.</span> <span class="nav-text">还能再快一点吗</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置Base-Zsh方便clone操作"><span class="nav-number">7.</span> <span class="nav-text">设置Base/Zsh方便clone操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二版示例"><span class="nav-number">8.</span> <span class="nav-text">第二版示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新的复杂需求"><span class="nav-number">9.</span> <span class="nav-text">新的复杂需求</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#修改ssh-config"><span class="nav-number">9.1.</span> <span class="nav-text">修改ssh config</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">10.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
             
 
           </div>
