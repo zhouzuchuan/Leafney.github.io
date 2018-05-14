@@ -13,7 +13,8 @@ tags:
     - GitHub
 categories: 
     - Celery分布式任务队列入门
-top: true
+description: 这里是描述信息
+top: false
 ---
 ```
 
