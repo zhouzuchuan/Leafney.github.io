@@ -160,7 +160,7 @@ Host github.com
 常用的SSH配置项：
 
 * `Host` 别名 : `Host myhost` 表示自定义的host简称，以后连接远程服务器就可以使用命令 `ssh myhost` (注意下面有缩进)
-* `HostName` 主机名 : 主机名可以是ip也可以是域名(如:github.com或者bitbucket.org)
+* `HostName` 主机名 : 主机名可以是ip也可以是域名(如:github.com或者bitbucket.org);如果主机名中包含 `%h` ，则实际使用时会被命令行中的主机名替换。
 * `Port` 端口 : 表示服务器open-ssh端口，默认22，默认时一般不写此行
 * `User` 用户名 : `User git` 表示登录ssh的用户名，如 `git`
 * `IdentityFile` ： 表示证书文件路径（如 `~/.ssh/id_rsa_*`)
@@ -287,10 +287,15 @@ git config user.email "wuyazi@company.com"
 经过上面的操作，我们在 `git clone` 公司的git项目时，只需要执行如下简单的两步即可：
 
 第一步：更改SSH地址
-    
-将项目SSH地址： `git@111.206.223.205:8080:how_to_use_multiple_git_ssh/you_can_by_this_way.git` 更改为 `work:how_to_use_multiple_git_ssh/you_can_by_this_way.git`
 
-第二步：`work-git-clone`
+```
+# 将项目SSH地址：
+git@111.206.223.205:8080:how_to_use_multiple_git_ssh/you_can_by_this_way.git
+# 更改为:
+work:how_to_use_multiple_git_ssh/you_can_by_this_way.git
+```
+
+第二步：执行 `work-git-clone`
 
 ```
 ➜ work-git-clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git
@@ -304,14 +309,127 @@ git config user.email "wuyazi@company.com"
 
 ****
 
-未完待续。。。
+#### 新的复杂需求
+
+上面的需求可能是相对来说比较常见而且普通的一种情况了，那么下面的需求算是一种稍微复杂的情况了。
+
+因为在Github上发布私有的项目，是需要付费的，所以一般针对于个人的私有项目，我们一般会选择自己购买服务器来搭建属于自己的私有个人仓库，比如我自己的 `gogit.itfanr.cc` 就是我用开源项目 `Gogs` 来搭建的。有兴趣可查看我的开源项目：[Docker Ubuntu-Gogs 用更简单的方式部署、升级或迁移Gogs服务。](https://github.com/Leafney/ubuntu-gogs) 。
+
+那么，现在就出现了下面的四种情况：
+
+1. 对于我个人想要开源的代码项目，我会选择使用个人账户发布到 `github.com` 站点下；
+2. 对于我个人的私有代码项目，我会选择使用个人账户发布到我自己搭建的 `gogit.itfanr.cc` 仓库站点下；
+3. 对于公司的私有项目，我要选择使用公司分配的git账户发布到公司搭建的私有仓库 `111.206.223.205:8080` 站点下；
+4. 对于我在工作中的一些积累或私人的项目，我想使用公司分配的git账户发布到我个人的 `gogit.itfanr.cc` 仓库站点下；
+
+##### 修改ssh config
+
+经过上面的步骤，我们很容易的就知道想要实现上面的需求，只需要通过修改SSH的配置文件 `config` 中的配置即可实现。
+
+对于公司的项目，针对于上面第3个情况，我们仍然如之前的配置即可：
+
+`config` :
+
+```
+# company repo account
+Host work
+    HostName 111.206.223.205:8080
+    User git
+    IdentityFile ~/.ssh/id_rsa_work
+```
+
+那么在clone项目时的操作如下：
+
+1. 更改项目SSH地址中的域名部分；
+
+2. 执行命令：
+
+```
+➜ work-git-clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git
+```
+
+****
+
+对于工作中的私人项目，我们要使用公司的git账户来发布到我的个人仓库站点 `gogit.itfanr.cc`。配置时我们还需要指定使用密钥 `id_rsa_work` ：
+
+`config` :
+
+```
+# wuyazi private repo account
+Host wuyazigogit
+    HostName gogit.itfanr.cc
+    User git
+    IdentityFile ~/.ssh/id_rsa_work
+```
+
+那么在clone项目时的操作如下：
+
+1. 更改项目SSH地址中的域名部分；
+
+```
+# 如将: 
+ssh://git@gogit.itfanr.cc:9527/wuyazi/repo_for_myself.git
+# 更改为:
+ssh://git@wuyazigogit:9527/wuyazi/repo_for_myself.git
+```
+
+2. 执行命令：
+
+```
+work-git-clone ssh://git@wuyazigogit:9527/wuyazi/repo_for_myself.git
+```
+
+****
+
+因为我的个人账户是作为全局账户来使用的，就是说在 `config` 文件中如果上面的 `Host` 部分没有匹配上，那么要保证最后一个 `Host` 匹配到我的个人git账户。再次回顾 `config` 配置项中的常用参数，我们发现 `HostName` 除了可以设置域名或ip地址之外，还可以设置为 `%h` ，表示**实际使用时会被命令行中的主机名替换**。
+
+所以，为了实现上面的第1种和第2种情况，以及实现对未特殊说明的项目的默认匹配，我用如下的方式来配置：
+
+```
+# leafney default account for github.com or gogit.itfanr.cc
+Host github.com gogit.itfanr.cc
+    HostName %h
+    User git
+    IdentityFile ~/.ssh/id_rsa
+```
+
+如上，针对于不同主机地址使用同一私钥进行登录的情况，可以在 `Host` 中指定多个别名来匹配，而 `HostName` 中的 `%h` 会自动匹配用户输入的ssh地址中的域名部分，来匹配到对应的密钥。
+
+那么在clone项目时的操作如下：
+
+```
+git clone git@github.com:Leafney/ubuntu-gogs.git
+```
+
+综上，我的 `config` 配置内容如下：
+
+```
+# company repo account
+Host work
+    HostName 111.206.223.205:8080
+    User git
+    IdentityFile ~/.ssh/id_rsa_work
+
+# wuyazi private repo account
+Host wuyazigogit
+    HostName gogit.itfanr.cc
+    User git
+    IdentityFile ~/.ssh/id_rsa_work
+
+# leafney default account for github.com or gogit.itfanr.cc
+Host github.com gogit.itfanr.cc
+    HostName %h
+    User git
+    IdentityFile ~/.ssh/id_rsa
+```
 
 ****
 
 #### 相关参考
 
 * [同一设备多个git账号的ssh管理](https://blog.kinpzz.com/2016/02/12/muti-git-ssh-management/)
-* [Multiple SSH Keys settings for different github account](https://gist.github.com/jexchan/2351996)
-* [Git多帐号配置](https://gist.github.com/yeungeek/596984fd9e53d6c36c0d)
-* [利用SSH的用户配置文件Config管理SSH会话](https://www.hi-linux.com/posts/14346.html) --config配置项说明
-* [一个客户端设置多个GitHub账号](https://www.jianshu.com/p/cd20ac5b2a3e)
+* [Git多帐号配置
+](https://gist.github.com/yeungeek/596984fd9e53d6c36c0d)
+* [利用SSH的用户配置文件Config管理SSH会话](https://www.hi-linux.com/posts/14346.html)
+* [多重 SSH Keys 與 Github 帳號](https://kuanyui.github.io/2016/08/01/git-multiple-ssh-key/)
+
