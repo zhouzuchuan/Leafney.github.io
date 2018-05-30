@@ -28,4 +28,7 @@ branches:
 
 env:
     global:
+        # Github Pages
         - GH_REF: github.com/Leafney/Leafney.github.io.git
+        # Coding Pages
+        - CD_REF: git.coding.net/Leafney/Leafney.coding.me.git

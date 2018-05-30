@@ -13,7 +13,7 @@ description: 自从使用GitHub Pages和Hexo来发布博客之后，不得不说
 
 我一般的操作是将平时整理好的md文件放到私有的git仓库中（感兴趣可了解 [Ubuntu-Gogs 用更简单的方式部署、升级或迁移Gogs服务](https://github.com/Leafney/ubuntu-gogs)），每次发布的时候都要先将文件 `clone` 到本地，然后配置一下hexo的运行环境，接着再执行 `hexo s -g` 来预览和调整，最后执行 `hexo d` 命令将博客发布上去，在这之前如果你没有配置过GitHub的 `SSH Key`,还要花一些时间来弄权限的问题。久而久之就发现这样操作起来实在是太繁琐了。
 
-后来看到一篇文章介绍可以使用Travis CI来自动部署hexo的博客，只需要将md文件 `pull` 到仓库中博客就自动发布好了。趁着这几天工作任务不太着急，研究了一下，特纪录在此，希望能帮到有需要的朋友。
+后来看到一篇文章介绍可以使用Travis CI来自动部署hexo的博客，只需要将md文件 `push` 到仓库中博客就自动发布好了。趁着这几天工作任务不太着急，研究了一下，特纪录在此，希望能帮到有需要的朋友。
 
 Travis CI 是目前新兴的开源持续集成构建项目，用来构建托管在GitHub上的代码。它提供了多种编程语言的支持，包括Ruby，JavaScript，Java，Scala，PHP，Haskell和Erlang在内的多种语言。
 

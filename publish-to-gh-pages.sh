@@ -18,4 +18,8 @@ git config user.email "babycoolzx@126.com"
 git add .
 git commit -m "Travis CI Auto Builder at `date +"%Y-%m-%d %H:%M"`"
 
+# Github Pages
 git push --force --quiet "https://${TravisCIToken}@${GH_REF}" master:master
+
+# Coding Pages
+git push --force --quiet "https://${CodingToken}@${CD_REF}" master:master
