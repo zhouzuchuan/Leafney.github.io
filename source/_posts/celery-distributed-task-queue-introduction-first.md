@@ -6,7 +6,7 @@ tags:
     - Celery
 categories: 
     - Celery分布式任务队列入门
-top: true
+top: false
 ---
 
 之前曾在公司的一个分布式爬虫项目中使用 `Celery` 和 `RabbitMQ` 实现过分布式爬虫的功能。最近在整理之前的开发笔记时，看到之前写的关于 `Celery` 的文章，决定趁着有时间再把关于Celery相关的内容好好的整理一番，没想到越写越想把相关的点都理清楚，也就有了这个Celery系列文章。
