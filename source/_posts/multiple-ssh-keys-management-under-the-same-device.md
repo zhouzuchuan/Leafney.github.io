@@ -1,7 +1,7 @@
 ---
 title: 同一设备下多重SSH Keys管理
 date: 2018-05-14 01:01:51
-updated: 2018-05-14 14:42:43
+updated: 2018-07-01 23:54:38
 tags:
     - GitHub
 categories: 
@@ -424,6 +424,75 @@ Host github.com gogit.itfanr.cc
 ```
 
 ****
+
+#### 新增项目配置
+
+上面的操作中说到的方法一般适用的场景比如你去到一家新公司，然后会给你分配公司的邮箱及git账号，以及公司项目的私有git站点，直接从站点上面 `clone` 项目到你的开发电脑上，这些项目一般都是公司已有的项目了。
+
+某些情况下，可能需要你新增一个公司的项目，那对于新增公司的项目时，我们要如何使用指定的SSH账户来操作呢？
+
+一般的步骤如下：
+
+##### 初始化项目
+
+在你的开发电脑上，新增一个git管理的项目。在项目目录下使用 `git init` 来初始化。
+
+##### 设置项目git账户
+
+注意，这里就是最关键的一步了。我们要为该新增的项目创建针对于该项目的git账户。在上面的流程中也提到过，要使用不加 `--global` 的命令来设置：
+
+```
+git config user.name "wuyazi"
+git config user.email "wuyazi@company.com"
+```
+
+##### 创建远端项目
+
+然后就是在公司的私有git站点上创建一个空项目。一般在创建完成后都会有类似于下面的一个提示页面：
+
+```
+从命令行创建一个新的仓库
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin ssh://git@111.206.223.205:8080:how_to_use_multiple_git_ssh/new.git
+git push -u origin master
+
+从命令行推送已经创建的仓库
+git remote add origin ssh://git@111.206.223.205:8080:how_to_use_multiple_git_ssh/new.git
+git push -u origin master
+```
+
+##### 提交到远端仓库
+
+对于只有一个SSH密钥的情况下，我们要将本地项目提交到远端，只要执行页面中后面这两句就可以了。而现在我们要将本地新增的公司项目使用我的公司git账户提交到公司的私有git站点上，首先呢还是需要更改一下提交的项目地址：
+
+```
+# 将项目SSH地址：
+ssh://git@111.206.223.205:8080:how_to_use_multiple_git_ssh/new.git
+# 更改为:
+ssh://work:how_to_use_multiple_git_ssh/new.git
+```
+
+然后我们就可以执行上面两条命令了：
+
+```
+git remote add origin ssh://work:how_to_use_multiple_git_ssh/new.git
+git push -u origin master
+```
+
+##### 有没有简洁命令
+
+可能有的朋友会想了，在之前 `clone` 已有项目时，我们使用了一条简洁的命令： `work-git-clone work:how_to_use_multiple_git_ssh/you_can_by_this_way.git` 来直接省略了单独设置git操作账户的步骤，那在新增时，是不是也可以有类似的操作呢？
+
+答案是否定的。
+
+因为 `git clone` 命令是可以接收 `--config` 参数的，以便在clone的同时指定配置；而 `git push` 命令却是没有该项的。具体的可以通过命令 `git clone help` 和 `git push help` 来详细了解。
+
+至此，后面的操作就是常用的 `pull` 和 `push` 等操作了。
+
+***
 
 #### 相关参考
 
