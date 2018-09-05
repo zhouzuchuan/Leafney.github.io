@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="IT范儿">
 <meta property="og:description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-18T04:09:34.238Z">
+<meta property="og:updated_time" content="2018-09-05T06:55:59.177Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu系统下安装终极Shell-zsh">
 <meta name="twitter:description" content="如果你还在为linux系统自带的bash而苦恼，那快试试zsh吧">
@@ -349,8 +349,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-07-18T12:09:34+08:00">
-                2018-07-18
+              <time title="更新于" itemprop="dateModified" datetime="2018-09-05T14:55:59+08:00">
+                2018-09-05
               </time>
             
           </span>
@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  625
+                  846
                 </span>
               
 
@@ -419,18 +419,17 @@
 <h4 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h4><p>安装 <code>zsh</code> 需要 <code>git</code> 环境支持，请先确保已安装 <code>git</code> 环境：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install git</div></pre></td></tr></table></figure>
 <h5 id="安装-zsh-1"><a href="#安装-zsh-1" class="headerlink" title="安装 zsh"></a>安装 zsh</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install zsh</div></pre></td></tr></table></figure>
-<h5 id="安装增强插件-oh-my-zsh"><a href="#安装增强插件-oh-my-zsh" class="headerlink" title="安装增强插件 oh-my-zsh"></a>安装增强插件 oh-my-zsh</h5><p>可以通过 <code>wget</code> 或者 <code>curl</code> 来安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// wget</div><div class="line">$ wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// curl</div><div class="line">$ curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh</div></pre></td></tr></table></figure>
-<hr>
-<h5 id="安装-oh-my-zsh-2017-1-13-Update"><a href="#安装-oh-my-zsh-2017-1-13-Update" class="headerlink" title="安装 oh-my-zsh (2017-1-13 Update)"></a>安装 oh-my-zsh (2017-1-13 Update)</h5><p>上面的命令仍然可以执行。<br>下面的命令是在 <a href="http://ohmyz.sh/" target="_blank" rel="external">Oh My Zsh</a> 官网中查看到的最新安装命令，建议用官网中的推荐安装方法：</p>
+<h5 id="安装增强插件-oh-my-zsh"><a href="#安装增强插件-oh-my-zsh" class="headerlink" title="安装增强插件 oh-my-zsh"></a>安装增强插件 oh-my-zsh</h5><p>可以通过 <code>wget</code> 或者 <code>curl</code> 来安装。下面的命令是在 <a href="https://ohmyz.sh/" target="_blank" rel="external">Oh My Zsh</a> 官网中查看到的最新安装命令，建议用官网中的推荐安装方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// wget</div><div class="line">$ sh -c &quot;$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)&quot;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// curl</div><div class="line">$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</div></pre></td></tr></table></figure>
-<hr>
-<p>执行完上面的命令后，如果提示如下信息，直接忽略即可，继续执行下面的步骤。</p>
+<p>执行完上面的命令后，可能会出现两种情况。</p>
+<h6 id="输入密码后立即生效"><a href="#输入密码后立即生效" class="headerlink" title="输入密码后立即生效"></a>输入密码后立即生效</h6><p>当提示停留在 <code>Password</code> 处要求输入当前账户的密码时，直接输入密码，等待自动配置完成即可。<code>oh-my-zsh</code> 会立即生效。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ubuntu@VM-46-228-ubuntu:~$ sh -c &quot;$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;</div><div class="line">Cloning Oh My Zsh...</div><div class="line">Cloning into &apos;/home/ubuntu/.oh-my-zsh&apos;...</div><div class="line">remote: Counting objects: 891, done.</div><div class="line">remote: Compressing objects: 100% (756/756), done.</div><div class="line">remote: Total 891 (delta 20), reused 708 (delta 7), pack-reused 0</div><div class="line">Receiving objects: 100% (891/891), 590.35 KiB | 111.00 KiB/s, done.</div><div class="line">Resolving deltas: 100% (20/20), done.</div><div class="line">Checking connectivity... done.</div><div class="line">Looking for an existing zsh config...</div><div class="line">Using the Oh My Zsh template file and adding it to ~/.zshrc</div><div class="line">Time to change your default shell to zsh!</div><div class="line">Password:</div><div class="line">         __                                     __</div><div class="line">  ____  / /_     ____ ___  __  __   ____  _____/ /_</div><div class="line"> / __ \/ __ \   / __ `__ \/ / / /  /_  / / ___/ __ \</div><div class="line">/ /_/ / / / /  / / / / / / /_/ /    / /_(__  ) / / /</div><div class="line">\____/_/ /_/  /_/ /_/ /_/\__, /    /___/____/_/ /_/</div><div class="line">                        /____/                       ....is now installed!</div><div class="line"></div><div class="line"></div><div class="line">Please look over the ~/.zshrc file to select plugins, themes, and options.</div><div class="line"></div><div class="line">p.s. Follow us at https://twitter.com/ohmyzsh.</div><div class="line"></div><div class="line">p.p.s. Get stickers and t-shirts at https://shop.planetargon.com.</div><div class="line"></div><div class="line">➜  ~</div></pre></td></tr></table></figure>
+<p>可以看到前面的提示符已经变了。</p>
+<h6 id="需要重启生效"><a href="#需要重启生效" class="headerlink" title="需要重启生效"></a>需要重启生效</h6><p>如果提示如下信息，则直接忽略即可，继续执行下面的步骤。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Looking for an existing zsh config...</div><div class="line">Using the Oh My Zsh template file and adding it to ~/.zshrc</div><div class="line">Time to change your default shell to zsh!</div><div class="line">Password: chsh: PAM: Authentication failure</div></pre></td></tr></table></figure>
-<hr>
-<h5 id="将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效"><a href="#将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效" class="headerlink" title="将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效"></a>将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ chsh -s /bin/zsh</div><div class="line">//或:</div><div class="line">$ chsh -s `which zsh`</div><div class="line"></div><div class="line"></div><div class="line">$ sudo reboot</div></pre></td></tr></table></figure>
+<p>如果提示 <code>Authentication failure</code>，则还需要执行如下命令将zsh更改为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ chsh -s /bin/zsh</div><div class="line">//或:</div><div class="line">$ chsh -s `which zsh`</div><div class="line"></div><div class="line"></div><div class="line">$ sudo reboot</div></pre></td></tr></table></figure>
 <hr>
 <h4 id="zsh-主题"><a href="#zsh-主题" class="headerlink" title="zsh 主题"></a>zsh 主题</h4><p>zsh的默认配置项都在 <code>~/.zshrc</code> 文件中，例如里面的<code>ZSH_THEME=&quot;robbyrussell&quot;</code> 表示当前zsh的主题为<code>robbyrussell</code>.</p>
 <p>配置完之后，我们需要重启终端或打开新的标签，或者用以下命令刷新配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.zshrc</div></pre></td></tr></table></figure></p>
@@ -627,7 +626,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -704,7 +703,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统-shell"><span class="nav-number">1.</span> <span class="nav-text">查看系统 shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-zsh"><span class="nav-number">2.</span> <span class="nav-text">安装 zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-zsh-1"><span class="nav-number">2.1.</span> <span class="nav-text">安装 zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装增强插件-oh-my-zsh"><span class="nav-number">2.2.</span> <span class="nav-text">安装增强插件 oh-my-zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-oh-my-zsh-2017-1-13-Update"><span class="nav-number">2.3.</span> <span class="nav-text">安装 oh-my-zsh (2017-1-13 Update)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#将zsh作为默认shell-根据提示输入当前用户的密码-重新登录终端或重启后生效"><span class="nav-number">2.4.</span> <span class="nav-text">将zsh作为默认shell,根据提示输入当前用户的密码,重新登录终端或重启后生效</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-主题"><span class="nav-number">3.</span> <span class="nav-text">zsh 主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-下的后台程序"><span class="nav-number">4.</span> <span class="nav-text">zsh 下的后台程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统-shell"><span class="nav-number">1.</span> <span class="nav-text">查看系统 shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-zsh"><span class="nav-number">2.</span> <span class="nav-text">安装 zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#安装-zsh-1"><span class="nav-number">2.1.</span> <span class="nav-text">安装 zsh</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装增强插件-oh-my-zsh"><span class="nav-number">2.2.</span> <span class="nav-text">安装增强插件 oh-my-zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#输入密码后立即生效"><span class="nav-number">2.2.1.</span> <span class="nav-text">输入密码后立即生效</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#需要重启生效"><span class="nav-number">2.2.2.</span> <span class="nav-text">需要重启生效</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-主题"><span class="nav-number">3.</span> <span class="nav-text">zsh 主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zsh-下的后台程序"><span class="nav-number">4.</span> <span class="nav-text">zsh 下的后台程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关参考"><span class="nav-number">5.</span> <span class="nav-text">相关参考</span></a></li></ol></div>
             
 
           </div>
